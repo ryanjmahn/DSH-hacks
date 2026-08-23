@@ -5,18 +5,20 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { MuralHeading, Arcs } from "@/components/sections/mural-art";
 
-const sponsors: { name: string; logo: string | null; href: string }[] = [
+const sponsors: { name: string; logo: string; href: string }[] = [
   { name: "CodeCrafters Forum",   logo: "/codecrafters-logo.png", href: "https://codecrafters.io/" },
   { name: "Featherless AI",       logo: "/featherless-logo.png",  href: "https://featherless.ai/" },
   { name: "relay.app",            logo: "/relay-logo.png",        href: "https://relay.app/" },
   { name: "Crackd",               logo: "/crackd-logo.png",       href: "https://www.crackd.one/" },
   { name: "Aniko",                logo: "/aniko-logo.png",        href: "https://www.aniko.ai/" },
-  { name: "CleanShot",            logo: null,                     href: "https://cleanshot.com/" },
+  { name: "CleanShot",            logo: "/cleanshot-logo.png",    href: "https://cleanshot.com/" },
   { name: "Ideavo",               logo: "/ideavo-logo.png",       href: "https://ideavo.ai/" },
-  { name: "Iteration Machine",    logo: null,                     href: "#" },
-  { name: "LLM.API",              logo: "/llmapi-logo.png",       href: "#" },
+  { name: "Iteration Machine",    logo: "/iterationmachine-logo.png", href: "https://iterationmachine.com/" },
+  { name: "LLM.API",              logo: "/llmapi-logo.png",       href: "https://llmapi.com/" },
   { name: "InterviewBuddy",       logo: "/interviewbuddy-logo.png", href: "https://interviewbuddy.net/" },
   { name: "AoPS",                 logo: "/aops-logo.png",         href: "https://artofproblemsolving.com/" },
+  { name: "HowtoHackathon",       logo: "/howtohackathon-logo.png", href: "https://www.howtohackathon.org/" },
+  { name: "Devswarm",             logo: "/devswarm-logo.png",     href: "https://devswarm.ai/" },
 ];
 
 const SponsorsSection = () => {
@@ -47,16 +49,12 @@ const SponsorsSection = () => {
               <a
                 key={name}
                 href={href}
-                target={href !== "#" ? "_blank" : undefined}
-                rel={href !== "#" ? "noopener noreferrer" : undefined}
-                className="flex items-center justify-center rounded-3xl bg-[#12173f] border-2 hover:-translate-y-1 transition-all duration-300 py-8 px-6"
-                style={{ borderColor: ["#e8836f", "#83d3c4", "#eecd7f", "#5a77e6", "#f2e9d8"][i % 5] + "55" }}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center rounded-3xl bg-[#f2e9d8] border-4 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/25 transition-all duration-300 py-8 px-6"
+                style={{ borderColor: ["#e8836f", "#83d3c4", "#eecd7f", "#5a77e6"][i % 4] }}
               >
-                {logo ? (
-                  <Image src={logo} alt={name} width={160} height={60} className="object-contain max-h-[60px] w-auto" />
-                ) : (
-                  <span className="text-[#f2e9d8] text-xl font-bold tracking-tight">{name}</span>
-                )}
+                <Image src={logo} alt={name} width={160} height={60} className="object-contain max-h-[60px] w-auto" />
               </a>
             ))}
           </div>

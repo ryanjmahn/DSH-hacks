@@ -4,15 +4,30 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MuralHeading, DNAHelix, Diamonds } from "@/components/sections/mural-art";
 
-const scheduleItems = [
+const linkClass = "text-[#eeda9f] font-bold underline underline-offset-4 hover:text-[#f2e9d8] transition-colors";
+
+const scheduleItems: { title: string; detail: React.ReactNode; color: string }[] = [
   {
     title: "Registration Open",
-    detail: "Sign up free on Devpost and join the Discord to find teammates.",
+    detail: (
+      <>
+        Sign up free on{" "}
+        <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className={linkClass}>Devpost</a>{" "}
+        and join the{" "}
+        <a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className={linkClass}>Discord</a>{" "}
+        to find teammates.
+      </>
+    ),
     color: "#83d3c4",
   },
   {
     title: "Workshops",
-    detail: "Recorded workshops from industry professionals are live on the DSH Hacks YouTube channel. Event schedules are posted in the Discord.",
+    detail: (
+      <>
+        Workshops from industry professionals are continuously posted on the DSH Hacks{" "}
+        <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className={linkClass}>YouTube channel</a>.
+      </>
+    ),
     color: "#eecd7f",
   },
   {

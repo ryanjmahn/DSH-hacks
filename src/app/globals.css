@@ -201,6 +201,9 @@
   .animate-bob { animation: bob 6s ease-in-out infinite; }
   .animate-bob-slow { animation: bob 9s ease-in-out infinite; }
   .animate-twinkle { animation: twinkle 3.5s ease-in-out infinite; }
+
+  .ribbon-nav a tspan { fill: #f2e9d8; }
+  .ribbon-nav a:hover tspan { fill: #1a2153; }
 }
 
 /* Hide Next.js error overlay portal */

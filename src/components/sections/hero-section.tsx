@@ -16,49 +16,74 @@ const navLinks = [
   { href: "#faq", label: "FAQ" },
 ];
 
+const RibbonNav = () => (
+  <svg viewBox="0 0 900 160" className="ribbon-nav w-full h-auto drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)]" aria-label="Site navigation">
+    <defs>
+      <path id="ribbon-seg-a" d="M 10 56 C 160 68 320 78 448 84" />
+      <path id="ribbon-seg-b" d="M 462 84 C 590 88 750 68 884 48" />
+    </defs>
+
+    {/* left tip fold, tucked under the start of segment A */}
+    <polygon points="10,87 44,91 10,108" fill="#a63b31" />
+
+    {/* segment A */}
+    <use href="#ribbon-seg-a" fill="none" stroke="#e2574c" strokeWidth="64" />
+
+    {/* folded seam: dark parallelogram where the ribbon changes angle */}
+    <polygon points="444,52 468,46 468,112 444,118" fill="#a63b31" />
+
+    {/* segment B, laid over the fold */}
+    <use href="#ribbon-seg-b" fill="none" stroke="#e2574c" strokeWidth="64" />
+
+    {/* swallowtail notch cut into the right end */}
+    <polygon points="886,14 886,82 850,48" fill="#1a2153" />
+
+    <text fontSize="20" letterSpacing="1.4" wordSpacing="17" textAnchor="middle" dominantBaseline="central">
+      <textPath href="#ribbon-seg-a" startOffset="52%">
+        <a href="#about"><tspan>ABOUT</tspan></a> <a href="#schedule"><tspan>SCHEDULE</tspan></a>{" "}
+        <a href="#prizes"><tspan>PRIZES</tspan></a> <a href="#sponsors"><tspan>SPONSORS</tspan></a>
+      </textPath>
+    </text>
+    <text fontSize="20" letterSpacing="1.8" wordSpacing="46" textAnchor="middle" dominantBaseline="central">
+      <textPath href="#ribbon-seg-b" startOffset="47%">
+        <a href="#workshops"><tspan>WORKSHOPS</tspan></a> <a href="#register"><tspan>REGISTER</tspan></a>{" "}
+        <a href="#faq"><tspan>FAQ</tspan></a>
+      </textPath>
+    </text>
+  </svg>
+);
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="mx-auto w-full max-w-6xl px-4 pt-3">
-          {/* Painted ribbon banner */}
-          <div
-            className="relative flex items-center justify-between bg-[#f2e9d8] text-[#1a2153] shadow-lg shadow-black/30 px-5 sm:px-8 h-14"
-            style={{ clipPath: "polygon(0 0, 100% 0, calc(100% - 18px) 50%, 100% 100%, 0 100%, 18px 50%)" }}
-          >
-            <a href="#" className="flex items-center gap-2.5 pl-3">
-              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={34} height={34} className="object-contain" />
-              <span className="text-lg font-bold tracking-tight text-[#1a2153]">
-                DSH <span className="text-[#e2574c]">Hacks</span>
-              </span>
-            </a>
+      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+        <div className="flex items-start justify-between px-4 sm:px-6 pt-3">
+          {/* Floating logo, separate from the ribbon */}
+          <a href="#" className="pointer-events-auto flex items-center gap-2.5 mt-1">
+            <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={40} height={40} className="object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]" />
+            <span className="text-lg font-bold tracking-tight text-[#f2e9d8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              DSH <span className="text-[#eeda9f]">Hacks</span>
+            </span>
+          </a>
 
-            <nav className="hidden lg:flex items-center gap-6 pr-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-bold uppercase tracking-wide text-[#1a2153] hover:text-[#e2574c] transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg text-[#1a2153] pr-3"
-              aria-label="Open menu"
-            >
-              <div className="relative w-6 h-6 flex flex-col justify-center items-center">
-                <span className="block w-6 h-0.5 bg-[#1a2153]"></span>
-                <span className="block w-6 h-0.5 bg-[#1a2153] mt-1"></span>
-                <span className="block w-6 h-0.5 bg-[#1a2153] mt-1"></span>
-              </div>
-            </button>
+          {/* Curved two-segment ribbon, top-right, desktop only */}
+          <div className="pointer-events-auto hidden lg:block w-[660px] xl:w-[780px] -mt-1 -mr-2">
+            <RibbonNav />
           </div>
+
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="pointer-events-auto lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#e2574c] shadow-lg shadow-black/30 mt-1"
+            aria-label="Open menu"
+          >
+            <div className="relative w-5 h-5 flex flex-col justify-center items-center">
+              <span className="block w-5 h-0.5 bg-[#f2e9d8]"></span>
+              <span className="block w-5 h-0.5 bg-[#f2e9d8] mt-1"></span>
+              <span className="block w-5 h-0.5 bg-[#f2e9d8] mt-1"></span>
+            </div>
+          </button>
         </div>
       </header>
 
@@ -119,15 +144,6 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="flex flex-col items-center max-w-4xl"
             >
-              <a
-                href="https://dsh-hacks-v2.devpost.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 mb-8 rounded-full border-2 border-[#eeda9f]/60 text-[#eeda9f] font-bold text-xs sm:text-sm uppercase tracking-widest hover:bg-[#eeda9f] hover:text-[#1a2153] transition-colors"
-              >
-                Hosted by DeltaForge Hacks, NXTHorizon & STEMise
-              </a>
-
               <h1 className="text-[52px] sm:text-[72px] lg:text-[92px] font-bold uppercase tracking-tight leading-none text-[#f2e9d8]">
                 DSH <span className="text-[#eeda9f]">Hacks</span>
               </h1>
@@ -137,7 +153,7 @@ export default function HeroSection() {
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10 text-sm font-bold uppercase tracking-wide">
-                {["Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip, i) => (
+                {["Deadline Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip, i) => (
                   <span
                     key={chip}
                     className="px-4 py-1.5 rounded-full border-2"

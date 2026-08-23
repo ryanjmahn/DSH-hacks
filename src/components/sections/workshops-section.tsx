@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Play, ExternalLink } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { MuralHeading, Clouds, Sparkle } from "@/components/sections/mural-art";
 
 const workshops = [
@@ -18,7 +18,13 @@ const workshops = [
   { id: "hLHiqLXyMfA", speaker: "Eshaan Jain",             topic: "Breaking Into Product & AI" },
 ];
 
+const PAGE_SIZE = 6;
+
 const WorkshopsSection = () => {
+  const [page, setPage] = useState(0);
+  const pageCount = Math.ceil(workshops.length / PAGE_SIZE);
+  const visible = workshops.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+
   return (
     <section id="workshops" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28">
       <Sparkle className="absolute left-[10%] top-16 w-5 animate-twinkle pointer-events-none" />
@@ -36,39 +42,68 @@ const WorkshopsSection = () => {
           </a>.
         </motion.p>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {workshops.map((video, index) => (
-            <motion.a
-              key={video.id}
-              href={`https://www.youtube.com/watch?v=${video.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group bg-[#222a63] border-2 border-[#f2e9d8]/15 rounded-3xl overflow-hidden hover:border-[#eecd7f]/70 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+        <div className="mt-8 flex items-center justify-end gap-3">
+          <button
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={page === 0}
+            aria-label="Previous workshops"
+            className="w-12 h-12 rounded-full bg-[#e2574c] text-[#f2e9d8] flex items-center justify-center shadow-lg shadow-black/30 hover:bg-[#e8836f] transition disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-[#e2574c]"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <span className="text-sm font-bold uppercase tracking-widest text-[#f2e9d8]/70 tabular-nums">
+            {page + 1} / {pageCount}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+            disabled={page === pageCount - 1}
+            aria-label="Next workshops"
+            className="w-12 h-12 rounded-full bg-[#e2574c] text-[#f2e9d8] flex items-center justify-center shadow-lg shadow-black/30 hover:bg-[#e8836f] transition disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-[#e2574c]"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="mt-6 overflow-hidden">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -60 }}
+              transition={{ duration: 0.35 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              <div className="relative aspect-video overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
-                  alt={`${video.speaker}: ${video.topic}`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-[#12173f]/40 group-hover:bg-[#12173f]/15 transition-colors">
-                  <div className="w-14 h-14 rounded-full bg-[#e2574c] shadow-lg shadow-black/40 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play className="w-6 h-6 text-[#f2e9d8] ml-1" fill="#f2e9d8" />
+              {visible.map((video) => (
+                <a
+                  key={video.id}
+                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-[#222a63] border-2 border-[#f2e9d8]/15 rounded-3xl overflow-hidden hover:border-[#eecd7f]/70 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                >
+                  <div className="relative aspect-video overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
+                      alt={`${video.speaker}: ${video.topic}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#12173f]/40 group-hover:bg-[#12173f]/15 transition-colors">
+                      <div className="w-14 h-14 rounded-full bg-[#e2574c] shadow-lg shadow-black/40 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Play className="w-6 h-6 text-[#f2e9d8] ml-1" fill="#f2e9d8" />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="p-5 flex-1 flex flex-col">
-                <p className="font-bold text-[#f2e9d8] leading-snug">{video.topic}</p>
-                <p className="text-sm text-[#83d3c4] font-bold mt-2">{video.speaker}</p>
-              </div>
-            </motion.a>
-          ))}
+                  <div className="p-5 flex-1 flex flex-col">
+                    <p className="font-bold text-[#f2e9d8] leading-snug">{video.topic}</p>
+                    <p className="text-sm text-[#83d3c4] font-bold mt-2">{video.speaker}</p>
+                  </div>
+                </a>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }} className="mt-12 flex justify-center">
