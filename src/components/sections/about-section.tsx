@@ -4,10 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const statsData = [
-  { value: "500+", title: "PARTICIPANTS", description: "" },
-  { value: "50+",  title: "JUDGES",       description: "" },
-  { value: "10+",  title: "SPONSORS",     description: "" },
-  { value: "$5K+", title: "PRIZE POOL",   description: "" },
+  { value: "1300+", title: "PAST COMPETITORS", description: "" },
+  { value: "70+",   title: "COUNTRIES",        description: "" },
+  { value: "$30K+", title: "PRIZES DISTRIBUTED", description: "" },
+  { value: "10+",   title: "SPONSORS",         description: "" },
 ];
 
 const StatCard = ({
@@ -39,7 +39,7 @@ const StatCard = ({
   const formattedValue = `${prefix}${displayValue}${suffix}`;
 
   return (
-    <div className="bg-[#0f1e38] rounded-lg p-8 text-center">
+    <div className="bg-[#f4f5fb] rounded-lg p-8 text-center">
       <div className="text-4xl sm:text-5xl font-bold mb-4">{formattedValue}</div>
       <div className="text-xl font-semibold mb-2">{title}</div>
       <div className="text-sm opacity-80 leading-relaxed">{description}</div>
@@ -61,27 +61,27 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section id="about" className="bg-[#03091a] text-white py-16 sm:py-24">
+    <section id="about" className="bg-white text-[#26262e] py-16 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
           <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#0ea5e9] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">1</div>
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">1</div>
             <h2 className="text-5xl font-light tracking-tight sm:text-7xl">About</h2>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.2 }} className="mt-10 max-w-6xl">
           <p className="mb-6 text-xl leading-relaxed sm:text-2xl">
-            DSH Hacks V1 is a global student competition open to students aged 13+, hosted collaboratively by three youth-led organizations:{" "}
-            <span className="text-[#38bdf8] font-semibold">DeltaForge Hacks</span>,{" "}
-            <span className="text-[#38bdf8] font-semibold">NXTHorizon</span>, and{" "}
-            <span className="text-[#38bdf8] font-semibold">STEMise</span>.
+            DSH Hacks V2 is a free, global, online hackathon open to students aged 13+, hosted collaboratively by three youth-led organizations:{" "}
+            <span className="text-[#4046d4] font-semibold">DeltaForge Hacks</span>,{" "}
+            <span className="text-[#4046d4] font-semibold">NXTHorizon</span>, and{" "}
+            <span className="text-[#4046d4] font-semibold">STEMise</span>.
           </p>
-          <p className="text-lg sm:text-xl text-white/80 leading-relaxed mb-4">
-            Theme: <span className="text-white font-semibold">AI × STEM Education</span>
+          <p className="text-lg sm:text-xl text-[#4a4a55] leading-relaxed mb-4">
+            Theme: <span className="text-[#26262e] font-semibold">AI × Healthcare — Transforming Healthcare Access through AI</span>
           </p>
-          <p className="text-lg sm:text-xl text-white/70 leading-relaxed">
-            This event brings together young innovators from around the world to reimagine the future of STEM education through artificial intelligence. Participants will work individually or in teams to design and develop a meaningful technical product that leverages AI to improve, enhance, or expand STEM education.
+          <p className="text-lg sm:text-xl text-[#5a5a66] leading-relaxed">
+            Identify a real healthcare problem and build an AI-powered app, website, or system that tackles it — any skill level welcome. From diagnostic tools tackling global disease burdens, to patient-care platforms improving access and outcomes, to AI-powered systems reimagining how we detect, treat, and manage illness. Work solo or in a team, and use AI to lower the barrier for ambitious ideas — low/no-code welcome.
           </p>
         </motion.div>
 

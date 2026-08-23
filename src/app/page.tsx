@@ -3,18 +3,20 @@ import AboutSection from "@/components/sections/about-section";
 import InfoCarousel from "@/components/sections/info-section";
 import SponsorsSection from "@/components/sections/sponsors-section";
 import JudgesSection from "@/components/sections/judges-section";
+import WorkshopsSection from "@/components/sections/workshops-section";
 import TeamSection from "@/components/sections/team-section";
 import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#03091a]">
+    <div className="min-h-screen bg-white">
       <HeroSection />
       <AboutSection />
       <InfoCarousel />
       <SponsorsSection />
       <JudgesSection />
+      <WorkshopsSection />
       <TeamSection />
       <FaqSection />
       <FooterSection />

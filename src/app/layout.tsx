@@ -3,9 +3,9 @@ import "./globals.css";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "DSH Hacks V1",
+  title: "DSH Hacks V2",
   description:
-    "DSH Hacks V1 – a global student hackathon focused on AI x STEM Education, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
+    "DSH Hacks V2 – a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
   icons: {
     icon: "/logo.png",
   },

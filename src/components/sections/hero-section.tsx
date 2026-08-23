@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { ArrowRight, ExternalLink, ChevronRight, X } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Aurora from "@/components/sections/aurora";
 
 interface TimeLeft {
   days: number;
@@ -15,8 +14,8 @@ interface TimeLeft {
 
 const CountdownTimer = () => {
   const calculateTimeLeft = (): TimeLeft | {} => {
-    // Count down to submission deadline: June 2, 2026 12:45am EDT
-    const difference = +new Date("2026-06-02T04:45:00Z") - +new Date();
+    // Count down to submission deadline: November 7, 2026 11:45pm PST
+    const difference = +new Date("2026-11-08T07:45:00Z") - +new Date();
     let timeLeft: TimeLeft | {} = {};
 
     if (difference > 0) {
@@ -50,21 +49,21 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      <h3 className="text-lg font-light text-white/80 mb-1">
-        Submission Deadline – June 2, 2026
+      <h3 className="text-lg font-light text-[#4a4a55] mb-1">
+        Submission Deadline – November 7, 2026
       </h3>
       <div className="flex gap-3 sm:gap-4 justify-center">
         {timeUnits.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center">
             <div className="relative text-white rounded-lg p-3 sm:p-4 min-w-[60px] sm:min-w-[70px] text-center overflow-hidden">
-              <div className="absolute inset-0 bg-[#0ea5e9] rounded-lg"></div>
+              <div className="absolute inset-0 bg-[#4f56e5] rounded-lg"></div>
               <div className="relative z-10">
                 <div className="text-2xl sm:text-3xl font-thin leading-none text-white">
                   {label !== "Days" ? String(value).padStart(2, "0") : value}
                 </div>
               </div>
             </div>
-            <span className="text-xs font-bold text-gray-300 mt-2 uppercase tracking-wide">
+            <span className="text-xs font-bold text-gray-600 mt-2 uppercase tracking-wide">
               {label}
             </span>
           </div>
@@ -82,19 +81,20 @@ const Navbar = () => {
     { href: "#info", label: "Info" },
     { href: "#sponsors", label: "Sponsors" },
     { href: "#judges", label: "Professionals" },
+    { href: "#workshops", label: "Workshops" },
     { href: "#register", label: "Register" },
     { href: "#faq", label: "FAQ" },
   ];
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/65 backdrop-blur-lg transition-colors">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-lg border-b border-[#e3e5f2] transition-colors">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
           <div className="relative flex items-center justify-between py-4 h-16">
             <a href="#" className="flex items-center gap-3">
               <Image src="/dsh-hacks-logo.png" alt="DSH Hacks" width={40} height={40} className="object-contain" />
-              <span className="text-xl font-bold text-white tracking-tight">
-                DSH <span className="text-[#0ea5e9]">Hacks</span>
+              <span className="text-xl font-bold text-[#26262e] tracking-tight">
+                DSH <span className="text-[#4f56e5]">Hacks</span>
               </span>
             </a>
 
@@ -103,7 +103,7 @@ const Navbar = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="relative text-white font-medium tracking-wide transition-all duration-200 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-white"
+                  className="relative text-[#26262e] font-medium tracking-wide transition-all duration-200 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-[#4f56e5]"
                 >
                   {link.label}
                 </a>
@@ -112,13 +112,13 @@ const Navbar = () => {
 
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="lg:hidden inline-flex h-12 w-12 items-center justify-center rounded-xl text-white hover:bg-white/30 transition-all"
+              className="lg:hidden inline-flex h-12 w-12 items-center justify-center rounded-xl text-[#26262e] hover:bg-[#e0e3f4] transition-all"
               aria-label="Open menu"
             >
               <div className="relative w-6 h-6 flex flex-col justify-center items-center">
-                <span className="block w-6 h-0.5 bg-white transition-all duration-300"></span>
-                <span className="block w-6 h-0.5 bg-white mt-1 transition-all duration-300"></span>
-                <span className="block w-6 h-0.5 bg-white mt-1 transition-all duration-300"></span>
+                <span className="block w-6 h-0.5 bg-[#26262e] transition-all duration-300"></span>
+                <span className="block w-6 h-0.5 bg-[#26262e] mt-1 transition-all duration-300"></span>
+                <span className="block w-6 h-0.5 bg-[#26262e] mt-1 transition-all duration-300"></span>
               </div>
             </button>
           </div>
@@ -129,24 +129,24 @@ const Navbar = () => {
         initial={{ x: "-100%" }}
         animate={isMenuOpen ? { x: 0 } : { x: "-100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col"
+        className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md flex flex-col"
       >
         <div className="flex justify-end p-6">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="w-10 h-10 rounded-full bg-sky-800 flex items-center justify-center hover:bg-sky-700 transition-colors"
+            className="w-10 h-10 rounded-full bg-[#4f56e5] flex items-center justify-center hover:bg-[#3a41cc] transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5 text-white" />
           </button>
         </div>
-        <nav className="flex-1 flex flex-col justify-center items-center gap-8 text-white text-2xl">
+        <nav className="flex-1 flex flex-col justify-center items-center gap-8 text-[#26262e] text-2xl">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="hover:text-gray-300 transition-colors"
+              className="hover:text-[#4f56e5] transition-colors"
             >
               {link.label}
             </a>
@@ -159,15 +159,25 @@ const Navbar = () => {
 
 export default function HeroSection() {
   return (
-    <div className="antialiased bg-[#03091a] min-h-screen">
+    <div className="antialiased bg-white min-h-screen">
       <Navbar />
-      <main className="min-h-[70vh] bg-[#03091a]">
+      <main className="min-h-[70vh] bg-white">
         <section id="hero" className="min-h-screen relative overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "radial-gradient(#dfe1f5 1.5px, transparent 1.5px)",
+              backgroundSize: "22px 22px",
+              maskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 45%, black 100%)",
+              WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 45%, black 100%)",
+            }}
+          />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="rounded-2xl mx-4 mt-4 mb-4 min-h-[calc(100vh-32px)] pt-16 text-white"
+            className="rounded-2xl mx-4 mt-4 mb-4 min-h-[calc(100vh-32px)] pt-16 text-[#26262e]"
           >
             <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
               <div className="flex flex-col items-center justify-center min-h-[calc(100vh-96px)] gap-8 py-16">
@@ -178,10 +188,10 @@ export default function HeroSection() {
                   className="text-center flex flex-col items-center max-w-4xl"
                 >
                   <a
-                    href="https://dsh-hacks-v1.devpost.com/"
+                    href="https://dsh-hacks-v2.devpost.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-full font-normal text-sm transition-all duration-200 border border-white/20"
+                    className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-[#eef0f9] hover:bg-[#e6e9f6] text-[#4a4a55] hover:text-[#26262e] rounded-full font-normal text-sm transition-all duration-200 border border-[#d8dbee]"
                   >
                     <ChevronRight className="w-3 h-3" />
                     Hosted by DeltaForge Hacks, NXTHorizon & STEMise
@@ -189,25 +199,25 @@ export default function HeroSection() {
                   </a>
 
                   <div className="relative inline-block mb-6">
-                    <h1 className="text-[48px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-light tracking-tight text-white leading-none">
-                      DSH HACKS V1
+                    <h1 className="text-[48px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-light tracking-tight text-[#26262e] leading-none">
+                      DSH HACKS V2
                     </h1>
-                    <div className="absolute -bottom-3 left-0 w-full h-1 bg-[#0ea5e9] opacity-75"></div>
+                    <div className="absolute -bottom-3 left-0 w-full h-1 bg-[#4f56e5] opacity-75"></div>
                   </div>
 
-                  <p className="text-[#38bdf8] text-2xl font-semibold mb-3 mt-6">
-                    AI × STEM Education
+                  <p className="text-[#4046d4] text-2xl font-semibold mb-3 mt-6">
+                    AI × Healthcare — Transforming Healthcare Access through AI
                   </p>
-                  <p className="text-white/90 text-xl mb-8">
-                    Submission Deadline – June 2, 2026 &nbsp;|&nbsp; Online &nbsp;|&nbsp; Ages 13+
+                  <p className="text-[#3a3a44] text-xl mb-8">
+                    Submission Deadline – November 7, 2026 &nbsp;|&nbsp; Online &nbsp;|&nbsp; Ages 13+ &nbsp;|&nbsp; 100% Free
                   </p>
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
                     <a
-                      href="https://dsh-hacks-v1.devpost.com/"
+                      href="https://dsh-hacks-v2.devpost.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#0ea5e9] text-white px-10 py-4 rounded-md text-lg font-medium hover:bg-[#0369a1] transition-colors inline-flex items-center gap-2 shadow-lg hover:shadow-sky-500/50"
+                      className="bg-[#4f56e5] text-white px-10 py-4 rounded-md text-lg font-medium hover:bg-[#3a41cc] transition-colors inline-flex items-center gap-2 shadow-lg hover:shadow-indigo-500/40"
                     >
                       Register on Devpost
                       <ArrowRight className="w-5 h-5" />
@@ -216,9 +226,18 @@ export default function HeroSection() {
                       href="https://discord.gg/3HgSzbYPx5"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="border-2 border-[#0ea5e9] text-white px-10 py-4 rounded-md text-lg font-medium hover:bg-[#0369a1] hover:border-[#0369a1] hover:text-white transition-all inline-flex items-center gap-2"
+                      className="border-2 border-[#4f56e5] text-[#4f56e5] px-10 py-4 rounded-md text-lg font-medium hover:bg-[#3a41cc] hover:border-[#3a41cc] hover:text-white transition-all inline-flex items-center gap-2"
                     >
                       Join Discord
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                    <a
+                      href="/dsh-hacks-v2-flyer.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-2 border-[#c3c7e6] text-[#26262e] px-10 py-4 rounded-md text-lg font-medium hover:bg-[#eef0f9] hover:border-[#4f56e5] transition-all inline-flex items-center gap-2"
+                    >
+                      View Flyer
                       <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>
@@ -237,13 +256,6 @@ export default function HeroSection() {
           </motion.div>
         </section>
       </main>
-      <Aurora
-        colorStops={["#00e5ff", "#0066cc", "#0ea5e9"]}
-        blend={0.4}
-        amplitude={1.8}
-        speed={0.4}
-        className="absolute top-0 left-0 w-full h-full z-50 pointer-events-none"
-      />
     </div>
   );
 }

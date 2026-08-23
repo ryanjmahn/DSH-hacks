@@ -30,16 +30,16 @@ const judges = [
 
 const JudgesSection = () => {
   return (
-    <section id="judges" className="bg-[#03091a] text-white py-16 sm:py-24">
+    <section id="judges" className="bg-white text-[#26262e] py-16 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
           <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#0ea5e9] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">4</div>
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">4</div>
             <h2 className="text-5xl font-light tracking-tight sm:text-7xl">Industry Professionals</h2>
           </div>
         </motion.div>
 
-        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-8 text-lg sm:text-xl text-white/70 max-w-3xl">
+        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-8 text-lg sm:text-xl text-[#5a5a66] max-w-3xl">
           Meet the 21 industry professionals we're collaborating with.
         </motion.p>
 
@@ -51,20 +51,20 @@ const JudgesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.4, delay: index * 0.04 }}
-              className="bg-[#0b1628] border border-white/10 rounded-xl p-5 flex items-start gap-4 hover:border-[#0ea5e9]/40 transition-colors"
+              className="bg-[#f4f5fb] border border-[#e3e5f2] rounded-xl p-5 flex items-start gap-4 hover:border-[#4f56e5]/40 transition-colors"
             >
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#0ea5e9]/20 border border-[#0ea5e9]/40 flex items-center justify-center overflow-hidden">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#4f56e5]/20 border border-[#4f56e5]/40 flex items-center justify-center overflow-hidden">
                 {judge.photo ? (
                   <Image src={judge.photo} alt={judge.name} width={40} height={40} className="object-cover w-full h-full" />
                 ) : (
-                  <span className="text-[#38bdf8] font-bold text-sm">
+                  <span className="text-[#4046d4] font-bold text-sm">
                     {judge.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
                   </span>
                 )}
               </div>
               <div>
-                <p className="font-semibold text-white leading-tight">{judge.name}</p>
-                <p className="text-sm text-white/50 mt-1 leading-snug">{judge.title}</p>
+                <p className="font-semibold text-[#26262e] leading-tight">{judge.name}</p>
+                <p className="text-sm text-[#84848f] mt-1 leading-snug">{judge.title}</p>
               </div>
             </motion.div>
           ))}

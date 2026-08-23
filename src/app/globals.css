@@ -5,69 +5,69 @@
 
 @theme {
   /* Midnight Electric — Dark Theme */
-  --color-background: #03091a;
-  --color-foreground: #e0f2fe;
+  --color-background: #ffffff;
+  --color-foreground: #26262e;
 
-  --color-card: #0b1628;
-  --color-card-foreground: #e0f2fe;
+  --color-card: #f4f5fb;
+  --color-card-foreground: #26262e;
 
-  --color-popover: #03091a;
-  --color-popover-foreground: #e0f2fe;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #26262e;
 
-  --color-primary: #0ea5e9;
-  --color-primary-foreground: #03091a;
+  --color-primary: #4f56e5;
+  --color-primary-foreground: #ffffff;
 
-  --color-secondary: #0d1a30;
-  --color-secondary-foreground: #e0f2fe;
+  --color-secondary: #eceef8;
+  --color-secondary-foreground: #26262e;
 
-  --color-muted: #0d1a30;
+  --color-muted: #eceef8;
   --color-muted-foreground: #64748b;
 
-  --color-accent: #0d1a30;
-  --color-accent-foreground: #e0f2fe;
+  --color-accent: #eceef8;
+  --color-accent-foreground: #26262e;
 
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
 
-  --color-border: #1e3a5f;
-  --color-input: #1e3a5f;
-  --color-ring: #0ea5e9;
+  --color-border: #dfe2f0;
+  --color-input: #dfe2f0;
+  --color-ring: #4f56e5;
 
-  --color-chart-1: #0ea5e9;
+  --color-chart-1: #4f56e5;
   --color-chart-2: #6366f1;
-  --color-chart-3: #22d3ee;
-  --color-chart-4: #38bdf8;
+  --color-chart-3: #6f76ee;
+  --color-chart-4: #6a70f0;
   --color-chart-5: #818cf8;
 
-  --color-sidebar: #0b1628;
-  --color-sidebar-foreground: #e0f2fe;
-  --color-sidebar-primary: #0ea5e9;
-  --color-sidebar-primary-foreground: #03091a;
-  --color-sidebar-accent: #0d1a30;
-  --color-sidebar-accent-foreground: #e0f2fe;
-  --color-sidebar-border: #1e3a5f;
-  --color-sidebar-ring: #0ea5e9;
+  --color-sidebar: #f4f5fb;
+  --color-sidebar-foreground: #26262e;
+  --color-sidebar-primary: #4f56e5;
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: #eceef8;
+  --color-sidebar-accent-foreground: #26262e;
+  --color-sidebar-border: #dfe2f0;
+  --color-sidebar-ring: #4f56e5;
 
   /* Midnight Electric Design System */
-  --color-background-primary: #03091a;
-  --color-background-secondary: #0b1628;
-  --color-text-primary: #e0f2fe;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f4f5fb;
+  --color-text-primary: #26262e;
   --color-text-secondary: #64748b;
-  --color-accent-electric: #00e5ff;
-  --color-accent-cyan: #22d3ee;
-  --color-accent-blue: #0ea5e9;
+  --color-accent-electric: #7a80f2;
+  --color-accent-cyan: #6f76ee;
+  --color-accent-blue: #4f56e5;
   --color-accent-indigo: #6366f1;
-  --color-accent-glow: #38bdf8;
-  --color-button-primary: #0ea5e9;
-  --color-button-primary-foreground: #03091a;
-  --color-button-electric: #0ea5e9;
+  --color-accent-glow: #6a70f0;
+  --color-button-primary: #4f56e5;
+  --color-button-primary-foreground: #ffffff;
+  --color-button-electric: #4f56e5;
   --color-button-electric-foreground: #ffffff;
-  --color-countdown-background: #0d1a30;
-  --color-countdown-foreground: #e0f2fe;
-  --color-sponsor-card-background: #0b1628;
-  --color-faq-border: #1e3a5f;
-  --color-hero-background: #03091a;
-  --color-hero-foreground: #e0f2fe;
+  --color-countdown-background: #eceef8;
+  --color-countdown-foreground: #26262e;
+  --color-sponsor-card-background: #f4f5fb;
+  --color-faq-border: #dfe2f0;
+  --color-hero-background: #ffffff;
+  --color-hero-foreground: #26262e;
 
   /* Typography */
   --font-sans: "Space Grotesk", sans-serif;
