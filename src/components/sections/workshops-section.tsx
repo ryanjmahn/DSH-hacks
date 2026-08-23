@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Play, ExternalLink } from "lucide-react";
+import { MuralHeading, Clouds, Sparkle } from "@/components/sections/mural-art";
 
 const workshops = [
   { id: "v_6Beq5OL5o", speaker: "Maulik Bhatt",            topic: "Search to Intelligence, RAG Driven Agents" },
@@ -19,19 +20,18 @@ const workshops = [
 
 const WorkshopsSection = () => {
   return (
-    <section id="workshops" className="bg-[#f8f9fe] text-[#26262e] py-16 sm:py-24">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">04 · Workshops</p>
-            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Workshops</h2>
-            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
-          </div>
+    <section id="workshops" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28">
+      <Sparkle className="absolute left-[10%] top-16 w-5 animate-twinkle pointer-events-none" />
+      <Sparkle className="absolute right-[14%] top-24 w-4 animate-twinkle pointer-events-none" color="#f2e9d8" />
+
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
+          <MuralHeading title="Workshops" />
         </motion.div>
 
-        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-8 text-lg sm:text-xl text-[#5a5a66] max-w-3xl">
+        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-8 text-lg sm:text-xl text-[#f2e9d8]/75 max-w-3xl leading-relaxed">
           Learn from industry professionals through our recorded workshop series covering AI, product thinking, finance, data, and more. Watch them all on the{" "}
-          <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="text-[#4046d4] hover:underline font-semibold">
+          <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="text-[#eecd7f] font-bold hover:underline">
             DSH Hacks YouTube channel
           </a>.
         </motion.p>
@@ -47,7 +47,7 @@ const WorkshopsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group bg-white border border-[#e3e5f2] rounded-3xl overflow-hidden hover:border-[#4f56e5]/40 hover:-translate-y-1 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+              className="group bg-[#222a63] border-2 border-[#f2e9d8]/15 rounded-3xl overflow-hidden hover:border-[#eecd7f]/70 hover:-translate-y-1 transition-all duration-300 flex flex-col"
             >
               <div className="relative aspect-video overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -57,32 +57,34 @@ const WorkshopsSection = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#4f56e5] to-[#7c3aed] shadow-lg shadow-indigo-500/40 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play className="w-6 h-6 text-white ml-1" fill="white" />
+                <div className="absolute inset-0 flex items-center justify-center bg-[#12173f]/40 group-hover:bg-[#12173f]/15 transition-colors">
+                  <div className="w-14 h-14 rounded-full bg-[#e2574c] shadow-lg shadow-black/40 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Play className="w-6 h-6 text-[#f2e9d8] ml-1" fill="#f2e9d8" />
                   </div>
                 </div>
               </div>
               <div className="p-5 flex-1 flex flex-col">
-                <p className="font-semibold text-[#26262e] leading-snug">{video.topic}</p>
-                <p className="text-sm text-[#4046d4] mt-2">{video.speaker}</p>
+                <p className="font-bold text-[#f2e9d8] leading-snug">{video.topic}</p>
+                <p className="text-sm text-[#83d3c4] font-bold mt-2">{video.speaker}</p>
               </div>
             </motion.a>
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }} className="mt-10 flex justify-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5 }} className="mt-12 flex justify-center">
           <a
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="border-2 border-[#4f56e5] text-[#4f56e5] px-8 py-3 rounded-full text-lg font-bold hover:bg-[#4f56e5] hover:text-white hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
+            className="border-2 border-[#e2574c] text-[#e8836f] px-8 py-3 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#e2574c] hover:text-[#f2e9d8] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
           >
             Subscribe on YouTube
             <ExternalLink className="w-4 h-4" />
           </a>
         </motion.div>
       </div>
+
+      <Clouds className="absolute inset-x-0 -bottom-1 w-full h-28 pointer-events-none" color="#222a63" />
     </section>
   );
 };

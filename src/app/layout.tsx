@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Ubuntu } from "next/font/google";
+import { Amarante } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
-const ubuntu = Ubuntu({
+const amarante = Amarante({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  style: ["normal", "italic"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
-  title: "DSH Hacks V2",
+  title: "DSH Hacks",
   description:
     "DSH Hacks V2: a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
   icons: {
@@ -24,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={ubuntu.className}>
+    <html lang="en" className={amarante.className}>
       <body className="antialiased">
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"

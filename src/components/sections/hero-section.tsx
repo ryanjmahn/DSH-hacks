@@ -1,108 +1,46 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ArrowRight, ExternalLink, ChevronRight, X } from "lucide-react";
+import React, { useState } from "react";
+import { ArrowRight, ExternalLink, X } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { EKGLine, Swirl, PaperCard, PocketWatch, Sparkle, StarField } from "@/components/sections/mural-art";
 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-const CountdownTimer = () => {
-  const calculateTimeLeft = (): TimeLeft | {} => {
-    // Count down to submission deadline: November 7, 2026 11:45pm PST
-    const difference = +new Date("2026-11-08T07:45:00Z") - +new Date();
-    let timeLeft: TimeLeft | {} = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-    return timeLeft;
-  };
-
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(
-    calculateTimeLeft() as TimeLeft
-  );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft() as TimeLeft);
-    }, 1000);
-    return () => clearTimeout(timer);
-  });
-
-  const timeUnits = [
-    { value: timeLeft.days || 0, label: "Days" },
-    { value: timeLeft.hours || 0, label: "Hours" },
-    { value: timeLeft.minutes || 0, label: "Minutes" },
-    { value: timeLeft.seconds || 0, label: "Seconds" },
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-[#84848f] mb-1">
-        Submissions close in
-      </h3>
-      <div className="flex gap-3 sm:gap-4 justify-center">
-        {timeUnits.map(({ value, label }) => (
-          <div key={label} className="flex flex-col items-center">
-            <div className="relative text-white rounded-2xl p-3 sm:p-5 min-w-[68px] sm:min-w-[84px] text-center overflow-hidden shadow-lg shadow-indigo-500/25">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4f56e5] to-[#7c3aed] rounded-2xl"></div>
-              <div className="relative z-10">
-                <div className="text-3xl sm:text-4xl font-bold leading-none text-white tabular-nums">
-                  {label !== "Days" ? String(value).padStart(2, "0") : value}
-                </div>
-              </div>
-            </div>
-            <span className="text-xs font-bold text-[#84848f] mt-2.5 uppercase tracking-widest">
-              {label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+const navLinks = [
+  { href: "#about", label: "About" },
+  { href: "#schedule", label: "Schedule" },
+  { href: "#prizes", label: "Prizes" },
+  { href: "#sponsors", label: "Sponsors" },
+  { href: "#workshops", label: "Workshops" },
+  { href: "#register", label: "Register" },
+  { href: "#faq", label: "FAQ" },
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navLinks = [
-    { href: "#about", label: "About" },
-    { href: "#info", label: "Info" },
-    { href: "#sponsors", label: "Sponsors" },
-    { href: "#workshops", label: "Workshops" },
-    { href: "#register", label: "Register" },
-    { href: "#faq", label: "FAQ" },
-  ];
-
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-lg border-b border-[#e3e5f2] transition-colors">
-        <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-          <div className="relative flex items-center justify-between py-4 h-16">
-            <a href="#" className="flex items-center gap-3">
-              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={40} height={40} className="object-contain" />
-              <span className="text-xl font-bold text-[#26262e] tracking-tight">
-                DSH <span className="text-[#4f56e5]">Hacks</span>
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="mx-auto w-full max-w-6xl px-4 pt-3">
+          {/* Painted ribbon banner */}
+          <div
+            className="relative flex items-center justify-between bg-[#f2e9d8] text-[#1a2153] shadow-lg shadow-black/30 px-5 sm:px-8 h-14"
+            style={{ clipPath: "polygon(0 0, 100% 0, calc(100% - 18px) 50%, 100% 100%, 0 100%, 18px 50%)" }}
+          >
+            <a href="#" className="flex items-center gap-2.5 pl-3">
+              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={34} height={34} className="object-contain" />
+              <span className="text-lg font-bold tracking-tight text-[#1a2153]">
+                DSH <span className="text-[#e2574c]">Hacks</span>
               </span>
             </a>
 
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-6 pr-3">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="relative text-[#26262e] font-medium tracking-wide transition-all duration-200 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-[#4f56e5]"
+                  className="text-sm font-bold uppercase tracking-wide text-[#1a2153] hover:text-[#e2574c] transition-colors"
                 >
                   {link.label}
                 </a>
@@ -111,13 +49,13 @@ const Navbar = () => {
 
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="lg:hidden inline-flex h-12 w-12 items-center justify-center rounded-xl text-[#26262e] hover:bg-[#e0e3f4] transition-all"
+              className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg text-[#1a2153] pr-3"
               aria-label="Open menu"
             >
               <div className="relative w-6 h-6 flex flex-col justify-center items-center">
-                <span className="block w-6 h-0.5 bg-[#26262e] transition-all duration-300"></span>
-                <span className="block w-6 h-0.5 bg-[#26262e] mt-1 transition-all duration-300"></span>
-                <span className="block w-6 h-0.5 bg-[#26262e] mt-1 transition-all duration-300"></span>
+                <span className="block w-6 h-0.5 bg-[#1a2153]"></span>
+                <span className="block w-6 h-0.5 bg-[#1a2153] mt-1"></span>
+                <span className="block w-6 h-0.5 bg-[#1a2153] mt-1"></span>
               </div>
             </button>
           </div>
@@ -128,24 +66,24 @@ const Navbar = () => {
         initial={{ x: "-100%" }}
         animate={isMenuOpen ? { x: 0 } : { x: "-100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md flex flex-col"
+        className="fixed inset-0 z-50 bg-[#12173f]/97 backdrop-blur-md flex flex-col"
       >
         <div className="flex justify-end p-6">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="w-10 h-10 rounded-full bg-[#4f56e5] flex items-center justify-center hover:bg-[#3a41cc] transition-colors"
+            className="w-10 h-10 rounded-full bg-[#e2574c] flex items-center justify-center hover:bg-[#e8836f] transition-colors"
             aria-label="Close menu"
           >
-            <X className="w-5 h-5 text-white" />
+            <X className="w-5 h-5 text-[#f2e9d8]" />
           </button>
         </div>
-        <nav className="flex-1 flex flex-col justify-center items-center gap-8 text-[#26262e] text-2xl">
+        <nav className="flex-1 flex flex-col justify-center items-center gap-8 text-[#f2e9d8] text-2xl font-bold uppercase tracking-wide">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="hover:text-[#4f56e5] transition-colors"
+              className="hover:text-[#eeda9f] transition-colors"
             >
               {link.label}
             </a>
@@ -158,116 +96,94 @@ const Navbar = () => {
 
 export default function HeroSection() {
   return (
-    <div className="antialiased bg-white min-h-screen">
+    <div className="antialiased bg-[#1a2153]">
       <Navbar />
-      <main className="min-h-[70vh] bg-white">
-        <section id="hero" className="min-h-screen relative overflow-hidden">
-          <div
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(#dfe1f5 1.5px, transparent 1.5px)",
-              backgroundSize: "22px 22px",
-              maskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 45%, black 100%)",
-              WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 45%, black 100%)",
-            }}
-          />
-          <div aria-hidden className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-[#4f56e5]/15 blur-3xl pointer-events-none" />
-          <div aria-hidden className="absolute top-1/3 -right-48 w-[620px] h-[620px] rounded-full bg-[#a855f7]/15 blur-3xl pointer-events-none" />
-          <div aria-hidden className="absolute -bottom-48 left-1/4 w-[480px] h-[480px] rounded-full bg-[#38bdf8]/10 blur-3xl pointer-events-none" />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="rounded-2xl mx-4 mt-4 mb-4 min-h-[calc(100vh-32px)] pt-16 text-[#26262e]"
-          >
-            <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-              <div className="flex flex-col items-center justify-center min-h-[calc(100vh-96px)] gap-8 py-16">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="text-center flex flex-col items-center max-w-4xl"
-                >
-                  <a
-                    href="https://dsh-hacks-v2.devpost.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/80 backdrop-blur hover:bg-white text-[#4a4a55] hover:text-[#26262e] rounded-full font-medium text-sm transition-all duration-200 border border-[#d8dbee] shadow-sm hover:shadow-md"
+      <section id="hero" className="min-h-screen relative overflow-hidden text-[#f2e9d8]">
+        <StarField className="absolute top-0 left-0 w-full h-64 pointer-events-none" />
+        <EKGLine className="absolute top-28 left-0 w-full h-10 pointer-events-none opacity-90" />
+
+        {/* Floating illustrated objects */}
+        <Swirl className="absolute -right-16 sm:right-[4%] top-[52%] w-52 sm:w-80 animate-bob pointer-events-none" />
+        <PaperCard className="absolute right-[16%] top-[20%] w-12 sm:w-16 animate-bob pointer-events-none hidden sm:block" />
+        <PaperCard className="absolute right-[8%] top-[30%] w-10 sm:w-14 rotate-12 animate-bob-slow pointer-events-none hidden sm:block" />
+        <PocketWatch className="absolute left-[6%] top-[62%] w-16 sm:w-24 animate-bob-slow pointer-events-none hidden md:block" />
+        <Sparkle className="absolute left-[12%] top-[26%] w-5 animate-twinkle pointer-events-none" />
+        <Sparkle className="absolute right-[28%] top-[64%] w-4 animate-twinkle pointer-events-none" color="#f2e9d8" />
+        <Sparkle className="absolute left-[30%] top-[78%] w-4 animate-twinkle pointer-events-none" />
+
+        <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
+          <div className="flex flex-col items-center justify-center min-h-screen gap-8 py-28 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="flex flex-col items-center max-w-4xl"
+            >
+              <a
+                href="https://dsh-hacks-v2.devpost.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2 mb-8 rounded-full border-2 border-[#eeda9f]/60 text-[#eeda9f] font-bold text-xs sm:text-sm uppercase tracking-widest hover:bg-[#eeda9f] hover:text-[#1a2153] transition-colors"
+              >
+                Hosted by DeltaForge Hacks, NXTHorizon & STEMise
+              </a>
+
+              <h1 className="text-[52px] sm:text-[72px] lg:text-[92px] font-bold uppercase tracking-tight leading-none text-[#f2e9d8]">
+                DSH <span className="text-[#eeda9f]">Hacks</span>
+              </h1>
+
+              <p className="text-xl sm:text-2xl font-bold mt-6 mb-3 text-[#83d3c4]">
+                AI × Healthcare: Transforming Healthcare Access through AI
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10 text-sm font-bold uppercase tracking-wide">
+                {["Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip, i) => (
+                  <span
+                    key={chip}
+                    className="px-4 py-1.5 rounded-full border-2"
+                    style={{
+                      borderColor: ["#e8836f", "#83d3c4", "#eecd7f", "#5a77e6"][i],
+                      color: ["#e8836f", "#83d3c4", "#eecd7f", "#8fa3f0"][i],
+                    }}
                   >
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4f56e5] opacity-60"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4f56e5]"></span>
-                    </span>
-                    Hosted by DeltaForge Hacks, NXTHorizon & STEMise
-                    <ChevronRight className="w-3 h-3" />
-                  </a>
-
-                  <div className="relative inline-block mb-6">
-                    <h1 className="text-[48px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-bold tracking-tight text-[#26262e] leading-none">
-                      DSH HACKS{" "}
-                      <span className="bg-gradient-to-r from-[#4f56e5] via-[#7c5ce8] to-[#a855f7] bg-clip-text text-transparent">
-                        V2
-                      </span>
-                    </h1>
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2/3 h-1.5 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7] opacity-80"></div>
-                  </div>
-
-                  <p className="text-2xl font-bold mb-3 mt-8 bg-gradient-to-r from-[#4046d4] to-[#7c3aed] bg-clip-text text-transparent">
-                    AI × Healthcare: Transforming Healthcare Access through AI
-                  </p>
-                  <div className="flex flex-wrap items-center justify-center gap-2 mb-10 text-sm font-medium">
-                    {["Deadline: Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip) => (
-                      <span key={chip} className="px-4 py-1.5 rounded-full bg-[#eef0f9] border border-[#e3e5f2] text-[#4a4a55]">
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                    <a
-                      href="https://dsh-hacks-v2.devpost.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-gradient-to-r from-[#4f56e5] to-[#7c3aed] text-white px-10 py-4 rounded-full text-lg font-bold transition-all inline-flex items-center gap-2 shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-0.5"
-                    >
-                      Register on Devpost
-                      <ArrowRight className="w-5 h-5" />
-                    </a>
-                    <a
-                      href="https://discord.gg/3HgSzbYPx5"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border-2 border-[#4f56e5] text-[#4f56e5] px-10 py-4 rounded-full text-lg font-bold hover:bg-[#4f56e5] hover:text-white transition-all inline-flex items-center gap-2 hover:-translate-y-0.5"
-                    >
-                      Join Discord
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="/dsh-hacks-v2-flyer.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border-2 border-[#c3c7e6] text-[#26262e] px-10 py-4 rounded-full text-lg font-bold hover:bg-white hover:border-[#4f56e5] hover:text-[#4f56e5] transition-all inline-flex items-center gap-2 hover:-translate-y-0.5"
-                    >
-                      View Flyer
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="flex justify-center w-full"
-                >
-                  <CountdownTimer />
-                </motion.div>
+                    {chip}
+                  </span>
+                ))}
               </div>
-            </div>
-          </motion.div>
-        </section>
-      </main>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="https://dsh-hacks-v2.devpost.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#e2574c] text-[#f2e9d8] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#e8836f] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2 shadow-lg shadow-black/30"
+                >
+                  Register on Devpost
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://discord.gg/3HgSzbYPx5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-[#f2e9d8] text-[#f2e9d8] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#f2e9d8] hover:text-[#1a2153] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
+                >
+                  Join Discord
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <a
+                  href="/dsh-hacks-v2-flyer.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-[#eeda9f]/60 text-[#eeda9f] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#eeda9f] hover:text-[#1a2153] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
+                >
+                  View Flyer
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

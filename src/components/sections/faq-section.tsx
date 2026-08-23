@@ -4,12 +4,13 @@ import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
+import { MuralHeading, Waves, StarField } from "@/components/sections/mural-art";
 
 const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-1",  question: "Who can participate?",
     answer: "All students aged 13+ are eligible to participate. The event is open to students from all countries and territories (excluding standard exceptions)." },
-  { id: "faq-2",  question: "Is DSH Hacks V2 free to enter?",
-    answer: "Yes! DSH Hacks V2 is 100% free for all competitors." },
+  { id: "faq-2",  question: "Is DSH Hacks free to enter?",
+    answer: "Yes! DSH Hacks is 100% free for all competitors." },
   { id: "faq-3",  question: "When does the hackathon take place?",
     answer: "The project submission deadline is November 7, 2026 at 11:45pm PST." },
   { id: "faq-4",  question: "Can I work solo or do I need a team?",
@@ -24,8 +25,8 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
     answer: "The winner receives $100 Cash + a $100 AoPS Gift Card. More prize announcements will be posted on Devpost and in the DSH Hacks Discord. Stay tuned!" },
   { id: "faq-9",  question: "How will projects be judged?",
     answer: "Projects are judged on four components: Idea, Implementation, Design, and Presentation." },
-  { id: "faq-10", question: "Who is hosting DSH Hacks V2?",
-    answer: "DSH Hacks V2 is hosted collaboratively by three youth-led organizations: DeltaForge Hacks, NXTHorizon, and STEMise." },
+  { id: "faq-10", question: "Who is hosting DSH Hacks?",
+    answer: "DSH Hacks is hosted collaboratively by three youth-led organizations: DeltaForge Hacks, NXTHorizon, and STEMise." },
   { id: "faq-11", question: "Where can I get updates and find teammates?",
     answer: "Join the DSH Hacks Discord. All announcements, workshop schedules, and community discussions will be posted there. Recorded workshops are available on the DSH Hacks YouTube channel." },
   { id: "faq-12", question: "I have another question.",
@@ -34,26 +35,24 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
 
 const FaqSection = () => {
   return (
-    <section id="faq" className="bg-[#f8f9fe] text-[#26262e] py-16 sm:py-24">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">06 · FAQ</p>
-            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Questions, Answered</h2>
-            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
-          </div>
+    <section id="faq" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28 pb-44">
+      <StarField className="absolute top-4 left-0 w-full h-40 pointer-events-none" />
+
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
+          <MuralHeading title="FAQ" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.2 }}>
           <Accordion type="single" collapsible className="w-full mt-12">
             {faqData.map((faq, index) => (
               <motion.div key={faq.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
-                <AccordionItem value={faq.id} className="group border-b border-border">
-                  <AccordionTrigger className="py-6 text-xl font-medium text-left transition-all hover:underline [&>svg:last-child]:hidden">
+                <AccordionItem value={faq.id} className="group border-b border-[#f2e9d8]/20">
+                  <AccordionTrigger className="py-6 text-xl font-bold text-left text-[#f2e9d8] transition-all hover:text-[#eeda9f] hover:no-underline [&>svg:last-child]:hidden">
                     {faq.question}
-                    <Plus  className="h-6 w-6 shrink-0 text-[#26262e] transition-transform duration-200 group-data-[state=open]:hidden" />
-                    <Minus className="h-6 w-6 shrink-0 text-[#26262e] transition-transform duration-200 hidden group-data-[state=open]:block" />
+                    <Plus  className="h-6 w-6 shrink-0 text-[#eecd7f] transition-transform duration-200 group-data-[state=open]:hidden" />
+                    <Minus className="h-6 w-6 shrink-0 text-[#eecd7f] transition-transform duration-200 hidden group-data-[state=open]:block" />
                   </AccordionTrigger>
-                  <AccordionContent className="pt-0 pb-4 text-base text-[#4a4a55] leading-relaxed">
+                  <AccordionContent className="pt-0 pb-4 text-base text-[#f2e9d8]/75 leading-relaxed">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -62,6 +61,8 @@ const FaqSection = () => {
           </Accordion>
         </motion.div>
       </div>
+
+      <Waves className="absolute inset-x-0 -bottom-1 w-full h-36 pointer-events-none" />
     </section>
   );
 };
