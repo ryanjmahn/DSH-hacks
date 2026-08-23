@@ -13,15 +13,15 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-3",  question: "When does the hackathon take place?",
     answer: "The project submission deadline is November 7, 2026 at 11:45pm PST." },
   { id: "faq-4",  question: "Can I work solo or do I need a team?",
-    answer: "You can work individually or in a team. We recommend finding like-minded individuals to collaborate with – check out the DSH Hacks Discord to find teammates!" },
+    answer: "You can work individually or in a team. We recommend finding like-minded individuals to collaborate with. Check out the DSH Hacks Discord to find teammates!" },
   { id: "faq-5",  question: "What is the theme?",
-    answer: "The theme is AI × Healthcare. You'll identify a real healthcare problem and build an AI-powered app, website, or system that tackles it — from diagnostic tools, to patient-care platforms, to systems that reimagine how we detect, treat, and manage illness." },
+    answer: "The theme is AI × Healthcare. You'll identify a real healthcare problem and build an AI-powered app, website, or system that tackles it: from diagnostic tools, to patient-care platforms, to systems that reimagine how we detect, treat, and manage illness." },
   { id: "faq-6",  question: "What do I need to submit?",
-    answer: "Your submission must include: (1) a Project – a website, app, or prototype with user interaction; (2) a Demo Video; (3) a One-Page Project Description in PDF; and (4) a GitHub Repository or Code PDF." },
+    answer: "Your submission must include: (1) a Project: a website, app, or prototype with user interaction; (2) a Demo Video; (3) a One-Page Project Description in PDF; and (4) a GitHub Repository or Code PDF." },
   { id: "faq-7",  question: "Can I use AI tools to help build my project?",
     answer: "Yes! Participants are allowed and encouraged to use AI tools to help build their solutions. The goal is to lower the technical barrier for beginners with ambitious ideas." },
   { id: "faq-8",  question: "What are the prizes?",
-    answer: "The winner receives $100 Cash + a $100 AoPS Gift Card. More prize announcements will be posted on Devpost and in the DSH Hacks Discord — stay tuned!" },
+    answer: "The winner receives $100 Cash + a $100 AoPS Gift Card. More prize announcements will be posted on Devpost and in the DSH Hacks Discord. Stay tuned!" },
   { id: "faq-9",  question: "How will projects be judged?",
     answer: "Projects are judged on four components: Idea, Implementation, Design, and Presentation." },
   { id: "faq-10", question: "Who is hosting DSH Hacks V2?",
@@ -29,17 +29,18 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-11", question: "Where can I get updates and find teammates?",
     answer: "Join the DSH Hacks Discord. All announcements, workshop schedules, and community discussions will be posted there. Recorded workshops are available on the DSH Hacks YouTube channel." },
   { id: "faq-12", question: "I have another question.",
-    answer: "Join the DSH Hacks Discord and make a ticket – we'll get back to you as soon as possible!" },
+    answer: "Join the DSH Hacks Discord and make a ticket and we'll get back to you as soon as possible!" },
 ];
 
 const FaqSection = () => {
   return (
-    <section id="faq" className="bg-white text-[#26262e] py-16 sm:py-24">
+    <section id="faq" className="bg-[#f8f9fe] text-[#26262e] py-16 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
-          <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 sm:h-24 sm:w-24 items-center justify-center rounded-full text-4xl sm:text-5xl font-bold bg-[#4f56e5] text-white">7</div>
-            <h2 className="text-5xl sm:text-7xl font-light tracking-tight">FAQ</h2>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">06 · FAQ</p>
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Questions, Answered</h2>
+            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.2 }}>

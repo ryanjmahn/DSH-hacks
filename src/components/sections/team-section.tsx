@@ -13,7 +13,7 @@ const RegisterNow = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="bg-[#f4f5fb] rounded-2xl shadow-2xl overflow-hidden border border-[#e3e5f2]"
+          className="bg-white rounded-3xl shadow-2xl shadow-indigo-500/10 overflow-hidden border border-[#e3e5f2]"
         >
           {/* Fake browser bar */}
           <div className="flex items-center justify-start px-4 py-3 bg-[#eceef8] border-b border-[#e3e5f2]">
@@ -31,9 +31,10 @@ const RegisterNow = () => {
 
           <div className="p-10 sm:p-16 text-center">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden flex justify-center items-center">
-              <div className="flex items-center gap-6">
-                <div className="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full text-4xl sm:text-5xl font-bold bg-[#4f56e5] text-white">6</div>
-                <h2 className="text-5xl font-light tracking-tight sm:text-7xl text-[#26262e]">REGISTER</h2>
+              <div className="flex flex-col items-center">
+                <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">05 · Register</p>
+                <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#26262e]">Ready to Build?</h2>
+                <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
               </div>
             </motion.div>
 
@@ -61,7 +62,7 @@ const RegisterNow = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 bg-[#4f56e5] text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-[#4046d4] transition mt-12"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-[#4f56e5] to-[#7c3aed] text-white px-10 py-4 rounded-full text-lg font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition mt-12"
             >
               Register Now! <ArrowRight className="w-5 h-5" />
             </motion.a>

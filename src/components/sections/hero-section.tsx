@@ -49,21 +49,21 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      <h3 className="text-lg font-light text-[#4a4a55] mb-1">
-        Submission Deadline – November 7, 2026
+      <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-[#84848f] mb-1">
+        Submissions close in
       </h3>
       <div className="flex gap-3 sm:gap-4 justify-center">
         {timeUnits.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center">
-            <div className="relative text-white rounded-lg p-3 sm:p-4 min-w-[60px] sm:min-w-[70px] text-center overflow-hidden">
-              <div className="absolute inset-0 bg-[#4f56e5] rounded-lg"></div>
+            <div className="relative text-white rounded-2xl p-3 sm:p-5 min-w-[68px] sm:min-w-[84px] text-center overflow-hidden shadow-lg shadow-indigo-500/25">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4f56e5] to-[#7c3aed] rounded-2xl"></div>
               <div className="relative z-10">
-                <div className="text-2xl sm:text-3xl font-thin leading-none text-white">
+                <div className="text-3xl sm:text-4xl font-bold leading-none text-white tabular-nums">
                   {label !== "Days" ? String(value).padStart(2, "0") : value}
                 </div>
               </div>
             </div>
-            <span className="text-xs font-bold text-gray-600 mt-2 uppercase tracking-wide">
+            <span className="text-xs font-bold text-[#84848f] mt-2.5 uppercase tracking-widest">
               {label}
             </span>
           </div>
@@ -80,7 +80,6 @@ const Navbar = () => {
     { href: "#about", label: "About" },
     { href: "#info", label: "Info" },
     { href: "#sponsors", label: "Sponsors" },
-    { href: "#judges", label: "Professionals" },
     { href: "#workshops", label: "Workshops" },
     { href: "#register", label: "Register" },
     { href: "#faq", label: "FAQ" },
@@ -92,7 +91,7 @@ const Navbar = () => {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
           <div className="relative flex items-center justify-between py-4 h-16">
             <a href="#" className="flex items-center gap-3">
-              <Image src="/dsh-hacks-logo.png" alt="DSH Hacks" width={40} height={40} className="object-contain" />
+              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={40} height={40} className="object-contain" />
               <span className="text-xl font-bold text-[#26262e] tracking-tight">
                 DSH <span className="text-[#4f56e5]">Hacks</span>
               </span>
@@ -173,6 +172,9 @@ export default function HeroSection() {
               WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 45%, black 100%)",
             }}
           />
+          <div aria-hidden className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-[#4f56e5]/15 blur-3xl pointer-events-none" />
+          <div aria-hidden className="absolute top-1/3 -right-48 w-[620px] h-[620px] rounded-full bg-[#a855f7]/15 blur-3xl pointer-events-none" />
+          <div aria-hidden className="absolute -bottom-48 left-1/4 w-[480px] h-[480px] rounded-full bg-[#38bdf8]/10 blur-3xl pointer-events-none" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -191,33 +193,43 @@ export default function HeroSection() {
                     href="https://dsh-hacks-v2.devpost.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-[#eef0f9] hover:bg-[#e6e9f6] text-[#4a4a55] hover:text-[#26262e] rounded-full font-normal text-sm transition-all duration-200 border border-[#d8dbee]"
+                    className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/80 backdrop-blur hover:bg-white text-[#4a4a55] hover:text-[#26262e] rounded-full font-medium text-sm transition-all duration-200 border border-[#d8dbee] shadow-sm hover:shadow-md"
                   >
-                    <ChevronRight className="w-3 h-3" />
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4f56e5] opacity-60"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4f56e5]"></span>
+                    </span>
                     Hosted by DeltaForge Hacks, NXTHorizon & STEMise
                     <ChevronRight className="w-3 h-3" />
                   </a>
 
                   <div className="relative inline-block mb-6">
-                    <h1 className="text-[48px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-light tracking-tight text-[#26262e] leading-none">
-                      DSH HACKS V2
+                    <h1 className="text-[48px] sm:text-[64px] lg:text-[80px] xl:text-[96px] font-bold tracking-tight text-[#26262e] leading-none">
+                      DSH HACKS{" "}
+                      <span className="bg-gradient-to-r from-[#4f56e5] via-[#7c5ce8] to-[#a855f7] bg-clip-text text-transparent">
+                        V2
+                      </span>
                     </h1>
-                    <div className="absolute -bottom-3 left-0 w-full h-1 bg-[#4f56e5] opacity-75"></div>
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2/3 h-1.5 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7] opacity-80"></div>
                   </div>
 
-                  <p className="text-[#4046d4] text-2xl font-semibold mb-3 mt-6">
-                    AI × Healthcare — Transforming Healthcare Access through AI
+                  <p className="text-2xl font-bold mb-3 mt-8 bg-gradient-to-r from-[#4046d4] to-[#7c3aed] bg-clip-text text-transparent">
+                    AI × Healthcare: Transforming Healthcare Access through AI
                   </p>
-                  <p className="text-[#3a3a44] text-xl mb-8">
-                    Submission Deadline – November 7, 2026 &nbsp;|&nbsp; Online &nbsp;|&nbsp; Ages 13+ &nbsp;|&nbsp; 100% Free
-                  </p>
+                  <div className="flex flex-wrap items-center justify-center gap-2 mb-10 text-sm font-medium">
+                    {["Deadline: Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip) => (
+                      <span key={chip} className="px-4 py-1.5 rounded-full bg-[#eef0f9] border border-[#e3e5f2] text-[#4a4a55]">
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
                     <a
                       href="https://dsh-hacks-v2.devpost.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#4f56e5] text-white px-10 py-4 rounded-md text-lg font-medium hover:bg-[#3a41cc] transition-colors inline-flex items-center gap-2 shadow-lg hover:shadow-indigo-500/40"
+                      className="bg-gradient-to-r from-[#4f56e5] to-[#7c3aed] text-white px-10 py-4 rounded-full text-lg font-bold transition-all inline-flex items-center gap-2 shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-0.5"
                     >
                       Register on Devpost
                       <ArrowRight className="w-5 h-5" />
@@ -226,7 +238,7 @@ export default function HeroSection() {
                       href="https://discord.gg/3HgSzbYPx5"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="border-2 border-[#4f56e5] text-[#4f56e5] px-10 py-4 rounded-md text-lg font-medium hover:bg-[#3a41cc] hover:border-[#3a41cc] hover:text-white transition-all inline-flex items-center gap-2"
+                      className="border-2 border-[#4f56e5] text-[#4f56e5] px-10 py-4 rounded-full text-lg font-bold hover:bg-[#4f56e5] hover:text-white transition-all inline-flex items-center gap-2 hover:-translate-y-0.5"
                     >
                       Join Discord
                       <ExternalLink className="w-4 h-4" />
@@ -235,7 +247,7 @@ export default function HeroSection() {
                       href="/dsh-hacks-v2-flyer.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="border-2 border-[#c3c7e6] text-[#26262e] px-10 py-4 rounded-md text-lg font-medium hover:bg-[#eef0f9] hover:border-[#4f56e5] transition-all inline-flex items-center gap-2"
+                      className="border-2 border-[#c3c7e6] text-[#26262e] px-10 py-4 rounded-full text-lg font-bold hover:bg-white hover:border-[#4f56e5] hover:text-[#4f56e5] transition-all inline-flex items-center gap-2 hover:-translate-y-0.5"
                     >
                       View Flyer
                       <ExternalLink className="w-4 h-4" />

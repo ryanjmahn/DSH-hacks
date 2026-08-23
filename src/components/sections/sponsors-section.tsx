@@ -23,9 +23,10 @@ const SponsorsSection = () => {
     <section id="sponsors" className="bg-white py-16 text-[#26262e] sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
-          <div className="flex items-center gap-6 mb-10">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">3</div>
-            <h2 className="text-5xl font-light tracking-tight sm:text-7xl">Sponsors</h2>
+          <div className="mb-10">
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">03 · Sponsors</p>
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Our Sponsors</h2>
+            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
           </div>
         </motion.div>
 
@@ -45,7 +46,7 @@ const SponsorsSection = () => {
                 href={href}
                 target={href !== "#" ? "_blank" : undefined}
                 rel={href !== "#" ? "noopener noreferrer" : undefined}
-                className="flex items-center justify-center rounded-2xl bg-[#10112e] border border-[#e3e5f2] hover:border-[#4f56e5]/60 hover:bg-[#191a3e] transition-all py-8 px-6"
+                className="flex items-center justify-center rounded-3xl bg-[#10112e] border border-transparent hover:border-[#4f56e5]/60 hover:bg-[#191a3e] hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/15 transition-all duration-300 py-8 px-6"
               >
                 {logo ? (
                   <Image src={logo} alt={name} width={160} height={60} className="object-contain max-h-[60px] w-auto" />

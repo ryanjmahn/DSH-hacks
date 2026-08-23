@@ -19,17 +19,18 @@ const workshops = [
 
 const WorkshopsSection = () => {
   return (
-    <section id="workshops" className="bg-white text-[#26262e] py-16 sm:py-24">
+    <section id="workshops" className="bg-[#f8f9fe] text-[#26262e] py-16 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
-          <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">5</div>
-            <h2 className="text-5xl font-light tracking-tight sm:text-7xl">Workshops</h2>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">04 · Workshops</p>
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Workshops</h2>
+            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
           </div>
         </motion.div>
 
         <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-8 text-lg sm:text-xl text-[#5a5a66] max-w-3xl">
-          Learn from industry professionals through our recorded workshop series — covering AI, product thinking, finance, data, and more. Watch them all on the{" "}
+          Learn from industry professionals through our recorded workshop series covering AI, product thinking, finance, data, and more. Watch them all on the{" "}
           <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="text-[#4046d4] hover:underline font-semibold">
             DSH Hacks YouTube channel
           </a>.
@@ -46,7 +47,7 @@ const WorkshopsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group bg-[#f4f5fb] border border-[#e3e5f2] rounded-xl overflow-hidden hover:border-[#4f56e5]/40 transition-colors flex flex-col"
+              className="group bg-white border border-[#e3e5f2] rounded-3xl overflow-hidden hover:border-[#4f56e5]/40 hover:-translate-y-1 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
               <div className="relative aspect-video overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -57,7 +58,7 @@ const WorkshopsSection = () => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
-                  <div className="w-14 h-14 rounded-full bg-[#4f56e5]/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#4f56e5] to-[#7c3aed] shadow-lg shadow-indigo-500/40 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Play className="w-6 h-6 text-white ml-1" fill="white" />
                   </div>
                 </div>
@@ -75,7 +76,7 @@ const WorkshopsSection = () => {
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="border-2 border-[#4f56e5] text-[#4f56e5] px-8 py-3 rounded-md text-lg font-medium hover:bg-[#3a41cc] hover:border-[#3a41cc] hover:text-white transition-all inline-flex items-center gap-2"
+            className="border-2 border-[#4f56e5] text-[#4f56e5] px-8 py-3 rounded-full text-lg font-bold hover:bg-[#4f56e5] hover:text-white hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
           >
             Subscribe on YouTube
             <ExternalLink className="w-4 h-4" />

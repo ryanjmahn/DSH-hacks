@@ -39,9 +39,9 @@ const StatCard = ({
   const formattedValue = `${prefix}${displayValue}${suffix}`;
 
   return (
-    <div className="bg-[#f4f5fb] rounded-lg p-8 text-center">
-      <div className="text-4xl sm:text-5xl font-bold mb-4">{formattedValue}</div>
-      <div className="text-xl font-semibold mb-2">{title}</div>
+    <div className="rounded-3xl border border-[#e3e5f2] bg-gradient-to-b from-white to-[#f4f5fb] p-8 text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#4f56e5]/30 transition-all duration-300">
+      <div className="text-4xl sm:text-5xl font-bold mb-3 bg-gradient-to-r from-[#4f56e5] to-[#8b5cf6] bg-clip-text text-transparent tabular-nums">{formattedValue}</div>
+      <div className="text-sm font-bold uppercase tracking-widest text-[#5a5a66]">{title}</div>
       <div className="text-sm opacity-80 leading-relaxed">{description}</div>
     </div>
   );
@@ -64,9 +64,10 @@ const AboutSection = () => {
     <section id="about" className="bg-white text-[#26262e] py-16 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="overflow-hidden">
-          <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">1</div>
-            <h2 className="text-5xl font-light tracking-tight sm:text-7xl">About</h2>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">01 · About</p>
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">About the Hackathon</h2>
+            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
           </div>
         </motion.div>
 
@@ -78,10 +79,10 @@ const AboutSection = () => {
             <span className="text-[#4046d4] font-semibold">STEMise</span>.
           </p>
           <p className="text-lg sm:text-xl text-[#4a4a55] leading-relaxed mb-4">
-            Theme: <span className="text-[#26262e] font-semibold">AI × Healthcare — Transforming Healthcare Access through AI</span>
+            Theme: <span className="text-[#26262e] font-semibold">AI × Healthcare: Transforming Healthcare Access through AI</span>
           </p>
           <p className="text-lg sm:text-xl text-[#5a5a66] leading-relaxed">
-            Identify a real healthcare problem and build an AI-powered app, website, or system that tackles it — any skill level welcome. From diagnostic tools tackling global disease burdens, to patient-care platforms improving access and outcomes, to AI-powered systems reimagining how we detect, treat, and manage illness. Work solo or in a team, and use AI to lower the barrier for ambitious ideas — low/no-code welcome.
+            Identify a real healthcare problem and build an AI-powered app, website, or system that tackles it. Any skill level welcome. From diagnostic tools tackling global disease burdens, to patient-care platforms improving access and outcomes, to AI-powered systems reimagining how we detect, treat, and manage illness. Work solo or in a team, and use AI to lower the barrier for ambitious ideas. Low/no-code welcome.
           </p>
         </motion.div>
 

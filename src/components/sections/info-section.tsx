@@ -21,13 +21,13 @@ const infoCards = [
   },
   {
     title: "Prizes",
-    content: "🏆 Winner – $100 Cash + $100 AoPS Gift Card\n\nMore prize announcements will be posted on Devpost and in the DSH Hacks Discord — stay tuned!",
+    content: "🏆 Winner: $100 Cash + $100 AoPS Gift Card\n\nMore prize announcements will be posted on Devpost and in the DSH Hacks Discord. Stay tuned!",
     link: "https://dsh-hacks-v2.devpost.com/",
     linkLabel: "See prizes on Devpost",
   },
   {
     title: "Judging Criteria",
-    content: "Projects are judged on four components:\n\n1. Idea – Did the proposal address the theme? Was the idea innovative? Could it be deployed for real-world impact?\n\n2. Implementation – Does the solution work? How technically challenging was the implementation?\n\n3. Design – Did the team put thought into UX? How well designed is the interface?\n\n4. Presentation – Does the presentation clearly define and address the problem statement?",
+    content: "Projects are judged on four components:\n\n1. Idea: Did the proposal address the theme? Was the idea innovative? Could it be deployed for real-world impact?\n\n2. Implementation: Does the solution work? How technically challenging was the implementation?\n\n3. Design: Did the team put thought into UX? How well designed is the interface?\n\n4. Presentation: Does the presentation clearly define and address the problem statement?",
   },
   {
     title: "Submission Requirements",
@@ -61,25 +61,27 @@ const InfoCarousel = () => {
   const prev = () => setIndex((prev) => prev <= 0 ? infoCards.length - visibleCards : prev - 1);
 
   return (
-    <section id="info" className="bg-white text-[#26262e] py-16 sm:py-24 relative overflow-hidden">
+    <section id="info" className="bg-[#f8f9fe] text-[#26262e] py-16 sm:py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex items-center justify-between mb-10">
-          <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#4f56e5] text-4xl font-bold text-white sm:h-24 sm:w-24 sm:text-5xl">2</div>
-            <h2 className="text-5xl font-light tracking-tight sm:text-7xl">INFO</h2>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4f56e5] mb-4">02 · Info</p>
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight">Event Info</h2>
+            <div className="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7]"></div>
           </div>
           <div className="flex gap-3">
-            <button onClick={prev} className="p-3 bg-[#eef0f9] rounded-full hover:bg-[#e6e9f6] transition"><ChevronLeft className="w-6 h-6" /></button>
-            <button onClick={next} className="p-3 bg-[#eef0f9] rounded-full hover:bg-[#e6e9f6] transition"><ChevronRight className="w-6 h-6" /></button>
+            <button onClick={prev} className="p-3 bg-white border border-[#e3e5f2] rounded-full hover:border-[#4f56e5] hover:text-[#4f56e5] shadow-sm transition"><ChevronLeft className="w-6 h-6" /></button>
+            <button onClick={next} className="p-3 bg-white border border-[#e3e5f2] rounded-full hover:border-[#4f56e5] hover:text-[#4f56e5] shadow-sm transition"><ChevronRight className="w-6 h-6" /></button>
           </div>
         </div>
         <div ref={containerRef} className="relative overflow-hidden w-full">
           <motion.div className="flex" animate={{ x: -index * cardWidth }} transition={{ type: "spring", stiffness: 90, damping: 20 }}>
             {infoCards.map((card) => (
               <div key={card.title} style={{ minWidth: cardWidth }} className="p-4 sm:p-6">
-                <div className="bg-[#f4f5fb] p-8 rounded-2xl shadow-lg border border-[#e3e5f2] h-full flex flex-col justify-between">
+                <div className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl border border-[#e3e5f2] hover:border-[#4f56e5]/30 h-full flex flex-col justify-between transition-all duration-300">
                   <div>
-                    <h3 className="text-2xl font-semibold mb-4">{card.title}</h3>
+                    <div className="h-1 w-10 rounded-full bg-gradient-to-r from-[#4f56e5] to-[#a855f7] mb-5"></div>
+                    <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
                     <p className="text-base text-gray-600 whitespace-pre-line leading-relaxed">{card.content}</p>
                   </div>
                   {card.link && (

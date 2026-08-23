@@ -12,7 +12,7 @@ const FooterSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="flex flex-col items-center lg:items-start">
             <div className="mb-3 flex items-center gap-3">
-              <Image src="/dsh-hacks-logo.png" alt="DSH Hacks" width={36} height={36} className="object-contain" />
+              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={36} height={36} className="object-contain" />
               <span className="text-2xl font-bold tracking-tight">
                 DSH <span className="text-[#4f56e5]">Hacks</span>
               </span>
@@ -38,7 +38,6 @@ const FooterSection = () => {
                 <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#4046d4] transition-colors">Register on Devpost</a></li>
                 <li><a href="https://dsh-hacks-v2.devpost.com/rules" target="_blank" rel="noopener noreferrer" className="hover:text-[#4046d4] transition-colors">Rules</a></li>
                 <li><a href="/dsh-hacks-v2-flyer.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#4046d4] transition-colors">Event Flyer (PDF)</a></li>
-                <li><a href="#judges" className="hover:text-[#4046d4] transition-colors">Industry Professionals</a></li>
                 <li><a href="#sponsors" className="hover:text-[#4046d4] transition-colors">Sponsors</a></li>
               </ul>
             </div>

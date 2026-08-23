@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+});
 
 export const metadata: Metadata = {
   title: "DSH Hacks V2",
   description:
-    "DSH Hacks V2 – a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
+    "DSH Hacks V2: a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
   icons: {
-    icon: "/logo.png",
+    icon: "/favicon.png",
   },
 };
 
@@ -17,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={ubuntu.className}>
       <body className="antialiased">
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
