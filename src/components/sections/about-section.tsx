@@ -78,7 +78,7 @@ const AboutSection = () => {
           <p className="mb-6 text-xl leading-relaxed sm:text-2xl">
             DSH Hacks is a free, global, online hackathon open to students aged 13+, hosted collaboratively by three youth-led organizations:{" "}
             <span className="text-[#e8836f] font-bold">DeltaForge Hacks</span>,{" "}
-            <span className="text-[#83d3c4] font-bold">NXTHorizon</span>, and{" "}
+            <span className="text-[#83d3c4] font-bold">NXT Horizon</span>, and{" "}
             <span className="text-[#eecd7f] font-bold">STEMise</span>.
           </p>
           <p className="text-lg sm:text-xl text-[#f2e9d8]/80 leading-relaxed mb-4">

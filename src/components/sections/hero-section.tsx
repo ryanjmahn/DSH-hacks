@@ -145,7 +145,7 @@ export default function HeroSection() {
               className="flex flex-col items-center max-w-4xl"
             >
               <h1 className="text-[52px] sm:text-[72px] lg:text-[92px] font-bold uppercase tracking-tight leading-none text-[#f2e9d8]">
-                DSH <span className="text-[#eeda9f]">Hacks</span>
+                DSH <span className="text-[#eeda9f]">Hacks</span> <span className="text-[#e8836f]">V2</span>
               </h1>
 
               <p className="text-xl sm:text-2xl font-bold mt-6 mb-3 text-[#83d3c4]">

@@ -11,7 +11,7 @@ const amarante = Amarante({
 export const metadata: Metadata = {
   title: "DSH Hacks",
   description:
-    "DSH Hacks V2: a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXTHorizon, and STEMise.",
+    "DSH Hacks V2: a free, global, online student hackathon focused on AI x Healthcare, hosted by DeltaForge Hacks, NXT Horizon, and STEMise.",
   icons: {
     icon: "/favicon.png",
   },

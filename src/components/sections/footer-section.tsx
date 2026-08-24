@@ -19,7 +19,7 @@ const FooterSection = () => {
                 DSH <span className="text-[#e8836f]">Hacks</span>
               </span>
             </div>
-            <p className="text-[#f2e9d8]/50 text-sm mb-1">DeltaForge Hacks × NXTHorizon × STEMise</p>
+            <p className="text-[#f2e9d8]/50 text-sm mb-1">DeltaForge Hacks × NXT Horizon × STEMise</p>
             <p className="text-[#f2e9d8]/70 text-sm mb-4">
               <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors underline underline-offset-2">
                 dsh-hacks-v2.devpost.com
@@ -57,7 +57,7 @@ const FooterSection = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-[#f2e9d8]/15 text-center text-xs text-[#f2e9d8]/40">
-          © 2026 DSH Hacks. Hosted by DeltaForge Hacks, NXTHorizon & STEMise.
+          © 2026 DSH Hacks. Hosted by DeltaForge Hacks, NXT Horizon & STEMise.
         </div>
       </div>
     </footer>

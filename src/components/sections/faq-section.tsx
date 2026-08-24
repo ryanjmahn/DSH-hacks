@@ -26,7 +26,7 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-9",  question: "How will projects be judged?",
     answer: "Projects are judged on four components: Idea, Implementation, Design, and Presentation." },
   { id: "faq-10", question: "Who is hosting DSH Hacks?",
-    answer: "DSH Hacks is hosted collaboratively by three youth-led organizations: DeltaForge Hacks, NXTHorizon, and STEMise." },
+    answer: "DSH Hacks is hosted collaboratively by three youth-led organizations: DeltaForge Hacks, NXT Horizon, and STEMise." },
   { id: "faq-11", question: "Where can I get updates and find teammates?",
     answer: "Join the DSH Hacks Discord. All announcements, workshop schedules, and community discussions will be posted there. Recorded workshops are available on the DSH Hacks YouTube channel." },
   { id: "faq-12", question: "I have another question.",

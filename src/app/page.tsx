@@ -1,6 +1,7 @@
 import HeroSection from "@/components/sections/hero-section";
 import CountdownSection from "@/components/sections/countdown-section";
 import AboutSection from "@/components/sections/about-section";
+import V1Section from "@/components/sections/v1-section";
 import ScheduleSection from "@/components/sections/schedule-section";
 import PrizesSection from "@/components/sections/prizes-section";
 import SponsorsSection from "@/components/sections/sponsors-section";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <HeroSection />
       <CountdownSection />
       <AboutSection />
+      <V1Section />
       <ScheduleSection />
       <PrizesSection />
       <SponsorsSection />
