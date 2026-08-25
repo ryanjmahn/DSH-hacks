@@ -19,7 +19,7 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
       className={`min-w-0 py-7 sm:py-0 sm:px-8 first:sm:pl-0 last:sm:pr-0 ${isLast ? "" : "border-b sm:border-b-0 border-rule"}`}
     >
       <Numeral n={index + 1} />
-      <h3 className="type-title text-ink mt-3 break-words">{name}</h3>
+      <h3 className="font-display font-bold uppercase tracking-tight text-lg sm:text-xl text-ink mt-3 break-words">{name}</h3>
       <p className="type-body text-ink-muted mt-2 leading-relaxed">{detail}</p>
     </motion.div>
   );

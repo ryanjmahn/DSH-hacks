@@ -58,14 +58,15 @@ function ScheduleRow({
   return (
     <motion.div
       {...motionProps}
-      className={`relative grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
+      className={`relative grid grid-cols-[4rem_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
     >
-      {/* spine */}
+      {/* spine — centered under the fixed-width numeral column, so it always
+          lines up with the node marker regardless of digit width */}
       {!isLast && (
-        <span className="absolute left-[1.1rem] sm:left-[1.35rem] top-16 bottom-0 w-px bg-rule" aria-hidden="true" />
+        <span className="absolute left-8 top-16 bottom-0 w-px bg-rule" aria-hidden="true" />
       )}
 
-      <div className="flex flex-col items-center gap-3 pt-1">
+      <div className="w-16 shrink-0 flex flex-col items-center gap-3 pt-1">
         <Numeral n={index + 1} />
         <NodeMarker />
       </div>
