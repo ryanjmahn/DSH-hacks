@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, SpecimenKey, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, SpecimenKey, LeaderLine, useFadeRise } from "@/components/sections/design-system";
 
 const judgingCriteria = [
   { name: "Idea", detail: "Did the proposal address the theme? Was it innovative? Could it be deployed for real-world impact?" },
@@ -16,10 +16,11 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
   return (
     <motion.div
       {...motionProps}
-      className={`min-w-0 py-7 sm:py-0 sm:px-8 first:sm:pl-0 last:sm:pr-0 ${isLast ? "" : "border-b sm:border-b-0 border-rule"}`}
+      className={`group min-w-0 py-7 sm:py-0 sm:px-8 first:sm:pl-0 last:sm:pr-0 ${isLast ? "" : "border-b sm:border-b-0 border-rule"}`}
     >
       <SpecimenKey index={index} />
-      <h3 className="font-display font-bold uppercase tracking-tight text-lg sm:text-xl text-umber mt-3 break-words">{name}</h3>
+      <LeaderLine className="w-8 mt-2" />
+      <h3 className="font-display font-bold uppercase tracking-tight text-lg sm:text-xl text-umber mt-2 break-words">{name}</h3>
       <p className="type-body text-umber-soft mt-2 leading-relaxed">{detail}</p>
     </motion.div>
   );

@@ -81,9 +81,14 @@ export function SectionHeading({
  *  criteria, workshop rows. Used in at least three sections per the brief.
  *  Mono, ochre — lapis stays reserved for the primary CTA and one accent per
  *  section, never spent on a repeating list marker. */
+/** Effect 7: on hover of the row (the parent must carry `group`), the key
+ *  shifts to --lapis, 300ms. Fully legible without hover — this is a bonus
+ *  accent on an already-readable ochre marker, never the only way to read
+ *  it. Pair with LeaderLine in the row markup for the hairline that draws
+ *  toward the item. */
 export function Numeral({ n, className }: { n: number; className?: string }) {
   return (
-    <span className={cn("type-numeral select-none", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
       {String(n).padStart(2, "0")}/
     </span>
   );
@@ -95,9 +100,20 @@ export function Numeral({ n, className }: { n: number; className?: string }) {
 export function SpecimenKey({ index, className }: { index: number; className?: string }) {
   const letter = String.fromCharCode(97 + index); // 0 -> a, 1 -> b, ...
   return (
-    <span className={cn("type-numeral select-none", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
       {letter}.
     </span>
+  );
+}
+
+/** Hairline leader that draws from the key toward the item on row hover,
+ *  300ms — the other half of effect 7. Parent needs `group` + `relative`. */
+export function LeaderLine({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn("block h-px bg-lapis scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
+      aria-hidden="true"
+    />
   );
 }
 

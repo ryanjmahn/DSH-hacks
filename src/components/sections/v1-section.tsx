@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, StatNumeral, SpecimenKey, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, useFadeRise } from "@/components/sections/design-system";
 
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
@@ -23,10 +23,11 @@ function WinnerRow({ index, name, detail, isLast }: { index: number; name: strin
   return (
     <motion.div
       {...motionProps}
-      className={`grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-8 py-7 ${isLast ? "" : "border-b border-rule"}`}
+      className={`group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-8 py-7 ${isLast ? "" : "border-b border-rule"}`}
     >
       <SpecimenKey index={index} />
       <div>
+        <LeaderLine className="w-8 mb-2" />
         <h3 className="type-title text-umber">{name}</h3>
         <p className="type-body text-umber-soft mt-2 leading-relaxed">{detail}</p>
       </div>

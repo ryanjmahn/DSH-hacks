@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, Numeral, NodeMarker, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, Numeral, NodeMarker, LeaderLine, useFadeRise } from "@/components/sections/design-system";
 
 const linkClass = "text-sienna underline underline-offset-4 hover:text-umber transition-colors";
 
@@ -58,7 +58,7 @@ function ScheduleRow({
   return (
     <motion.div
       {...motionProps}
-      className={`relative grid grid-cols-[4rem_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
+      className={`group relative grid grid-cols-[4rem_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
     >
       {/* spine — centered under the fixed-width numeral column, so it always
           lines up with the node marker regardless of digit width */}
@@ -72,6 +72,7 @@ function ScheduleRow({
       </div>
 
       <div>
+        <LeaderLine className="w-8 mb-2" />
         <h3 className="type-title text-umber">{title}</h3>
         <p className="type-body text-umber-soft mt-3 leading-relaxed">{detail}</p>
       </div>
