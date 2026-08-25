@@ -10,21 +10,34 @@ import WorkshopsSection from "@/components/sections/workshops-section";
 import RegisterSection from "@/components/sections/team-section";
 import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
+import { SpringingLine } from "@/components/sections/design-system";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-paper">
       <FrontispieceSection />
+      {/* no divider here — Beat 1/Beat 2 are explicitly one continuous
+          space per the brief, not a bay boundary */}
       <HeroSection />
+      <SpringingLine />
       <CountdownSection />
+      <SpringingLine />
       <AboutSection />
+      <SpringingLine />
       <V1Section />
+      <SpringingLine />
       <ScheduleSection />
+      <SpringingLine />
       <PrizesSection />
+      <SpringingLine />
       <SponsorsSection />
+      <SpringingLine />
       <WorkshopsSection />
+      <SpringingLine />
       <RegisterSection />
+      <SpringingLine />
       <FaqSection />
+      <SpringingLine />
       <FooterSection />
     </div>
   );

@@ -303,6 +303,34 @@ export function EngravedLineDraw({
   );
 }
 
+/** Springing-line section divider (Part 4's "Bays" + Part 6 effect 6) — a
+ *  horizontal hairline that curves gently upward at both ends, suggesting
+ *  the base of a vault. Sits between every section. Draws outward from its
+ *  own center on scroll entry, 800ms — two halves sharing the center point,
+ *  same technique as the Frontispiece arch (effect 1), so both "read" as
+ *  the same architectural drawing gesture at different scales. pathLength
+ *  doesn't move the element's own box, so (unlike the heading reveal) a
+ *  plain whileInView on the paths themselves is safe here. */
+export function SpringingLine() {
+  const reduceMotion = useReducedMotion();
+  const half = reduceMotion
+    ? {}
+    : {
+        initial: { pathLength: 0 },
+        whileInView: { pathLength: 1 },
+        viewport: { once: true, amount: 0.8 },
+        transition: { duration: 0.8, ease: EASE_OUT },
+      };
+  return (
+    <div className="w-full h-6 sm:h-8 overflow-hidden" aria-hidden="true">
+      <svg viewBox="0 0 1000 24" className="w-full h-full" preserveAspectRatio="none">
+        <motion.path d="M 500 18 Q 250 10 0 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
+        <motion.path d="M 500 18 Q 750 10 1000 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
+      </svg>
+    </div>
+  );
+}
+
 /** Small ochre node marker for timeline-style lists — Schedule's spine markers,
  *  per the brief. Lapis is never spent here; it stays reserved for CTAs. */
 export function NodeMarker({ className }: { className?: string }) {
