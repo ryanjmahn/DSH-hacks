@@ -1,3 +1,4 @@
+import FrontispieceSection from "@/components/sections/frontispiece-section";
 import HeroSection from "@/components/sections/hero-section";
 import CountdownSection from "@/components/sections/countdown-section";
 import AboutSection from "@/components/sections/about-section";
@@ -13,6 +14,7 @@ import FooterSection from "@/components/sections/footer-section";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-paper">
+      <FrontispieceSection />
       <HeroSection />
       <CountdownSection />
       <AboutSection />
