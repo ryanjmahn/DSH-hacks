@@ -55,6 +55,18 @@ export function Numeral({ n, className }: { n: number; className?: string }) {
   );
 }
 
+/** "a." "b." "c." specimen key — a distinct marker from Numeral, for
+ *  catalogue/exhibit-style lists (V1 Recap's winning projects) rather than
+ *  sequential steps. Same mono/ochre treatment, letter instead of digit. */
+export function SpecimenKey({ index, className }: { index: number; className?: string }) {
+  const letter = String.fromCharCode(97 + index); // 0 -> a, 1 -> b, ...
+  return (
+    <span className={cn("type-numeral select-none", className)}>
+      {letter}.
+    </span>
+  );
+}
+
 /** Oversized statistic — the visual furniture of the site. */
 export function StatNumeral({
   value,
