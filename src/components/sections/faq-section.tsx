@@ -2,9 +2,8 @@
 
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
-import { MuralHeading, Waves, StarField } from "@/components/sections/mural-art";
+import { SectionHeading, useFadeRise } from "@/components/sections/design-system";
 
 const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-1",  question: "Who can participate?",
@@ -34,35 +33,28 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
 ];
 
 const FaqSection = () => {
-  return (
-    <section id="faq" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28 pb-44">
-      <StarField className="absolute top-4 left-0 w-full h-40 pointer-events-none" />
+  const accordionMotion = useFadeRise(0.1);
 
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
-          <MuralHeading title="FAQ" />
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6, delay: 0.2 }}>
-          <Accordion type="single" collapsible className="w-full mt-12">
-            {faqData.map((faq, index) => (
-              <motion.div key={faq.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
-                <AccordionItem value={faq.id} className="group border-b border-[#f2e9d8]/20">
-                  <AccordionTrigger className="py-6 text-xl font-bold text-left text-[#f2e9d8] transition-all hover:text-[#eeda9f] hover:no-underline [&>svg:last-child]:hidden">
-                    {faq.question}
-                    <Plus  className="h-6 w-6 shrink-0 text-[#eecd7f] transition-transform duration-200 group-data-[state=open]:hidden" />
-                    <Minus className="h-6 w-6 shrink-0 text-[#eecd7f] transition-transform duration-200 hidden group-data-[state=open]:block" />
-                  </AccordionTrigger>
-                  <AccordionContent className="pt-0 pb-4 text-base text-[#f2e9d8]/75 leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              </motion.div>
+  return (
+    <section id="faq" className="relative bg-paper text-ink py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+        <SectionHeading eyebrow="Good to know" title="FAQ" />
+
+        <motion.div {...accordionMotion}>
+          <Accordion type="single" collapsible className="w-full mt-14 sm:mt-16 max-w-3xl">
+            {faqData.map((faq) => (
+              <AccordionItem key={faq.id} value={faq.id} className="border-rule">
+                <AccordionTrigger className="type-title text-left text-ink py-6 hover:text-brand hover:no-underline [&>svg]:text-ink-muted [&>svg]:size-5">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="type-body text-ink-muted pt-0 pb-6 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
           </Accordion>
         </motion.div>
       </div>
-
-      <Waves className="absolute inset-x-0 -bottom-1 w-full h-36 pointer-events-none" />
     </section>
   );
 };
