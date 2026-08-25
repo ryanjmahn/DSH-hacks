@@ -41,10 +41,11 @@ function TimeSegment({
       {...motionProps}
       className={`flex-1 min-w-[6rem] flex flex-col items-center py-2 ${isLast ? "" : "sm:border-r sm:border-rule"}`}
     >
-      <span className="type-display text-ink tabular-nums">
+      {/* mono digits at display scale, ochre — "numerals" per the pigment table */}
+      <span className="font-mono font-medium text-ochre tabular-nums text-[clamp(2.5rem,6vw,5rem)] leading-none">
         {value === null ? "—" : label === "Days" ? value : String(value).padStart(2, "0")}
       </span>
-      <span className="type-meta text-ink-muted mt-3">{label}</span>
+      <span className="font-serif text-umber-soft mt-3 text-sm uppercase tracking-[0.15em]">{label}</span>
     </motion.div>
   );
 }
@@ -71,7 +72,7 @@ const CountdownSection = () => {
   ];
 
   return (
-    <section id="countdown" className="relative bg-paper text-ink py-24 sm:py-32">
+    <section id="countdown" className="relative bg-plaster text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Time remaining" title="Countdown" align="right" />
 
@@ -87,7 +88,7 @@ const CountdownSection = () => {
           ))}
         </div>
 
-        <p className="type-meta text-ink-muted text-center mt-8">
+        <p className="type-meta text-umber-soft text-center mt-8">
           Submissions close November 7, 2026
         </p>
       </div>
