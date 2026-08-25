@@ -16,7 +16,7 @@ export function useFadeRise(delay = 0) {
     initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.3 },
-    transition: { duration: 0.5, delay, ease: "easeOut" },
+    transition: { duration: 0.5, delay, ease: "easeOut" as const },
   };
 }
 
@@ -93,9 +93,14 @@ export function BleachedPlate({
   presence?: number;
   grain?: boolean;
 }) {
-  const mask = `radial-gradient(ellipse 68% 72% at ${maskPosition}, black 0%, black 22%, transparent 78%)`;
+  // Radii + transparent-stop are tuned so full transparency lands well inside
+  // the box on every axis (~30% margin) — otherwise the "stain" reads as a box.
+  const mask = `radial-gradient(ellipse 55% 55% at ${maskPosition}, black 0%, black 15%, transparent 62%)`;
   return (
     <div className={cn("relative overflow-hidden pointer-events-none", className)} aria-hidden={alt === ""}>
+      {/* grain lives inside the masked layer so it fades with the plate instead
+          of tinting the whole rectangular box — an unmasked sibling here is
+          what caused a faint but very real "box" around the feathered image. */}
       <div
         className="absolute inset-0"
         style={{ opacity: presence, WebkitMaskImage: mask, maskImage: mask }}
@@ -107,12 +112,12 @@ export function BleachedPlate({
             src={`${srcBase}.jpg`}
             alt={alt}
             loading="lazy"
-            className="w-full h-full object-cover grayscale"
-            style={{ filter: "contrast(0.82) brightness(1.3)" }}
+            className="w-full h-full object-cover"
+            style={{ filter: "grayscale(1) contrast(0.82) brightness(1.3)" }}
           />
         </picture>
+        {grain && <div className="grain-overlay" />}
       </div>
-      {grain && <div className="grain-overlay" />}
     </div>
   );
 }
