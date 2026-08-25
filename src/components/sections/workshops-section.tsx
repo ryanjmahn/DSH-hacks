@@ -28,20 +28,20 @@ const WorkshopsSection = () => {
   const ctaMotion = useFadeRise();
 
   return (
-    <section id="workshops" className="relative bg-paper text-ink py-24 sm:py-32">
+    <section id="workshops" className="relative bg-plaster text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Learn from professionals" title="Workshops" />
 
-        <motion.p {...introMotion} className="type-body text-ink-muted mt-8 max-w-2xl leading-relaxed">
+        <motion.p {...introMotion} className="type-body text-umber-soft mt-8 max-w-2xl leading-relaxed">
           Learn from industry professionals through our recorded workshop series covering AI,
           product thinking, finance, data, and more. Watch them all on the{" "}
-          <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-deep underline underline-offset-4">
+          <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="text-sienna hover:text-umber underline underline-offset-4">
             DSH Hacks YouTube channel
           </a>.
         </motion.p>
 
         <div className="mt-10 flex items-center justify-between sm:justify-end gap-4">
-          <span className="type-meta text-ink-muted tabular-nums order-2 sm:order-1 sm:mr-4">
+          <span className="type-meta text-umber-soft tabular-nums order-2 sm:order-1 sm:mr-4">
             {page + 1} / {pageCount}
           </span>
           <div className="flex items-center gap-2 order-1 sm:order-2">
@@ -49,7 +49,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
               aria-label="Previous workshops"
-              className="w-11 h-11 border border-ink text-ink flex items-center justify-center hover:border-brand hover:text-brand transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="w-11 h-11 border border-umber text-umber flex items-center justify-center hover:border-sienna hover:text-sienna transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -57,7 +57,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
               disabled={page === pageCount - 1}
               aria-label="Next workshops"
-              className="w-11 h-11 border border-ink text-ink flex items-center justify-center hover:border-brand hover:text-brand transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="w-11 h-11 border border-umber text-umber flex items-center justify-center hover:border-sienna hover:text-sienna transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -80,7 +80,7 @@ const WorkshopsSection = () => {
                   href={`https://www.youtube.com/watch?v=${video.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group border border-rule hover:border-ink transition-colors flex flex-col"
+                  className="group border border-rule hover:border-umber transition-colors flex flex-col"
                 >
                   <div className="relative aspect-video overflow-hidden border-b border-rule">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -90,15 +90,15 @@ const WorkshopsSection = () => {
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-ink/10 group-hover:bg-ink/25 transition-colors">
-                      <div className="w-12 h-12 bg-paper flex items-center justify-center">
-                        <Play className="w-5 h-5 text-ink ml-0.5" fill="currentColor" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-umber/10 group-hover:bg-umber/25 transition-colors">
+                      <div className="w-12 h-12 bg-plaster flex items-center justify-center">
+                        <Play className="w-5 h-5 text-umber ml-0.5" fill="currentColor" />
                       </div>
                     </div>
                   </div>
                   <div className="p-5 flex-1 flex flex-col">
-                    <p className="type-title text-ink text-lg leading-snug">{video.topic}</p>
-                    <p className="type-eyebrow text-ink-muted mt-2">{video.speaker}</p>
+                    <p className="type-title text-umber text-lg leading-snug">{video.topic}</p>
+                    <p className="type-eyebrow text-umber-soft mt-2">{video.speaker}</p>
                   </div>
                 </a>
               ))}
@@ -111,7 +111,7 @@ const WorkshopsSection = () => {
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-ink text-ink px-8 py-3.5 type-meta hover:border-brand hover:text-brand transition-colors inline-flex items-center gap-2"
+            className="border border-umber text-umber px-8 py-3.5 type-meta hover:border-sienna hover:text-sienna transition-colors inline-flex items-center gap-2"
           >
             Subscribe on YouTube
             <ExternalLink className="w-3.5 h-3.5" />
