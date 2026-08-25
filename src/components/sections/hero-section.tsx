@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, ExternalLink, Menu, X } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
 const navLinks = [
@@ -168,6 +168,36 @@ const DedicationPlates = () => (
   </div>
 );
 
+/** Faint receding arch outlines diminishing toward a horizon — Part 4 calls
+ *  for this on "the opening sections" (plural), and Beat 2 is the second.
+ *  Three nested arcs, fainter as they shrink, suggesting a hallway receding
+ *  into the distance. Scroll-linked drift (effect 2) scales the whole group
+ *  to 1.04 and fades it slightly across the section's own scroll range. */
+const RecedingArches = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.75]);
+
+  return (
+    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <motion.svg
+        viewBox="0 0 1000 700"
+        className="absolute inset-x-0 top-0 w-full h-full"
+        preserveAspectRatio="xMidYMid slice"
+        style={reduceMotion ? undefined : { scale, opacity }}
+      >
+        <g stroke="var(--color-ochre)" fill="none" strokeWidth="1.5">
+          <path d="M 120 500 A 380 380 0 0 1 880 500" opacity="0.22" />
+          <path d="M 230 500 A 270 270 0 0 1 770 500" opacity="0.16" />
+          <path d="M 340 500 A 160 160 0 0 1 660 500" opacity="0.1" />
+        </g>
+      </motion.svg>
+    </div>
+  );
+};
+
 export default function HeroSection() {
   const reduceMotion = useReducedMotion();
   const initial = reduceMotion ? undefined : { opacity: 0, y: 24 };
@@ -184,6 +214,7 @@ export default function HeroSection() {
           pilaster (~22% from edge) so the two beats read as one continuous
           space, not two unrelated sections. */}
       <section id="hero" className="relative min-h-screen overflow-hidden bg-plaster text-umber">
+        <RecedingArches />
         <DedicationPlates />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:pl-[14vw] sm:pr-8 min-h-screen flex flex-col justify-center pt-28 pb-16">
