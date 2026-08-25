@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { MuralHeading, Arcs } from "@/components/sections/mural-art";
+import { SectionHeading, useFadeRise } from "@/components/sections/design-system";
 
 const sponsors: { name: string; logo: string; href: string }[] = [
   { name: "CodeCrafters Forum",   logo: "/codecrafters-logo.png", href: "https://codecrafters.io/" },
@@ -22,42 +22,41 @@ const sponsors: { name: string; logo: string; href: string }[] = [
 ];
 
 const SponsorsSection = () => {
+  const introMotion = useFadeRise(0.1);
+  const gridMotion = useFadeRise(0.16);
+
   return (
-    <section id="sponsors" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28">
-      <Arcs className="absolute inset-x-0 bottom-0 w-full h-72 pointer-events-none" />
+    <section id="sponsors" className="relative bg-paper-alt text-ink py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+        <SectionHeading eyebrow="Who supports us" title="Sponsors" align="center" className="mx-auto" />
 
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="flex justify-center">
-          <MuralHeading title="Sponsors" center />
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-8 mb-12 mx-auto max-w-3xl text-center text-lg sm:text-xl text-[#f2e9d8]/75 leading-relaxed"
-        >
-          Interested in supporting DSH Hacks? Reach out to us on Discord or email the hackathon manager via{" "}
-          <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-[#eecd7f] font-bold hover:underline">Devpost</a>{" "}
+        <motion.p {...introMotion} className="type-body text-ink-muted mt-8 mb-14 sm:mb-16 mx-auto max-w-2xl text-center leading-relaxed">
+          Interested in supporting DSH Hacks? Reach out to us on Discord or email the hackathon
+          manager via{" "}
+          <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-deep underline underline-offset-4">
+            Devpost
+          </a>{" "}
           to learn about sponsorship opportunities.
         </motion.p>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.5 }}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {sponsors.map(({ name, logo, href }, i) => (
-              <a
-                key={name}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-3xl bg-[#f2e9d8] border-4 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/25 transition-all duration-300 py-8 px-6"
-                style={{ borderColor: ["#e8836f", "#83d3c4", "#eecd7f", "#5a77e6"][i % 4] }}
-              >
-                <Image src={logo} alt={name} width={160} height={60} className="object-contain max-h-[60px] w-auto" />
-              </a>
-            ))}
-          </div>
+        <motion.div {...gridMotion} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-rule">
+          {sponsors.map(({ name, logo, href }) => (
+            <a
+              key={name}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center border-r border-b border-rule py-10 px-6"
+            >
+              <Image
+                src={logo}
+                alt={name}
+                width={140}
+                height={48}
+                className="object-contain max-h-12 w-auto grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+              />
+            </a>
+          ))}
         </motion.div>
       </div>
     </section>
