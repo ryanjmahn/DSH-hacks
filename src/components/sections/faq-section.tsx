@@ -36,7 +36,7 @@ const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
 
   return (
-    <section id="faq" className="relative bg-paper text-ink py-24 sm:py-32">
+    <section id="faq" className="relative bg-plaster text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Good to know" title="FAQ" />
 
@@ -44,10 +44,10 @@ const FaqSection = () => {
           <Accordion type="single" collapsible className="w-full mt-14 sm:mt-16 max-w-3xl">
             {faqData.map((faq) => (
               <AccordionItem key={faq.id} value={faq.id} className="border-rule">
-                <AccordionTrigger className="type-title text-left text-ink py-6 hover:text-brand hover:no-underline [&>svg]:text-ink-muted [&>svg]:size-5">
+                <AccordionTrigger className="type-title text-left text-umber py-6 hover:text-sienna hover:no-underline [&>svg]:text-umber-soft [&>svg]:size-5">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="type-body text-ink-muted pt-0 pb-6 leading-relaxed">
+                <AccordionContent className="type-body text-umber-soft pt-0 pb-6 leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
