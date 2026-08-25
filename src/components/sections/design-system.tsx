@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils";
    its heading, numbered lists, and stat numerals from these so the site reads
    as one system rather than a collection of one-off sections. */
 
+/* Part 6's specified curve — used across every entry animation sitewide so
+   motion reads as one system. Nothing bouncy, no library-default easings. */
+export const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export function useFadeRise(delay = 0) {
   const reduceMotion = useReducedMotion();
   if (reduceMotion) return { initial: undefined, whileInView: undefined, viewport: undefined, transition: undefined };
@@ -16,7 +20,7 @@ export function useFadeRise(delay = 0) {
     initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.3 },
-    transition: { duration: 0.5, delay, ease: "easeOut" as const },
+    transition: { duration: 0.5, delay, ease: EASE_OUT },
   };
 }
 
