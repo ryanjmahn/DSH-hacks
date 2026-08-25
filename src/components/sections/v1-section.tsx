@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, CofferParallaxBg, useFadeRise } from "@/components/sections/design-system";
 
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
@@ -41,8 +41,12 @@ const V1Section = () => {
   const winnersLabelMotion = useFadeRise();
 
   return (
-    <section id="v1" className="relative bg-plaster-shade coffer-texture text-umber py-24 sm:py-32">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <section id="v1" className="relative bg-plaster-shade text-umber py-24 sm:py-32 overflow-hidden">
+      {/* effect 9: the one section on the site where the coffer background
+          runs at 0.92x scroll speed. Chosen over Sponsors, whose logo cells
+          are opaque and would hide all but a thin sliver of the pattern. */}
+      <CofferParallaxBg />
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
 
         <motion.p {...introMotion} className="type-body text-umber-soft mt-8 max-w-2xl leading-relaxed">

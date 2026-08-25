@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /* Shared building blocks for the sitewide redesign (hero excluded — it has its
@@ -316,6 +316,25 @@ export function EngravedLineDraw({
       aria-hidden="true"
       dangerouslySetInnerHTML={markup ? { __html: markup } : undefined}
     />
+  );
+}
+
+/** Coffer parallax (effect 9) — the coffer-texture background moves at 0.92x
+ *  scroll speed, one section maximum per the brief. Lives as its own
+ *  vertically-oversized layer (rather than the plain .coffer-texture class
+ *  applied directly to a section) so it can be transformed independently of
+ *  the section's own scroll-normal position without revealing empty edges
+ *  as it drifts. Use on at most one section; the brief explicitly says to
+ *  skip this one entirely if it reads as gimmicky rather than force it. */
+export function CofferParallaxBg() {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  return (
+    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <motion.div className="absolute -inset-y-16 inset-x-0 coffer-texture" style={reduceMotion ? undefined : { y }} />
+    </div>
   );
 }
 
