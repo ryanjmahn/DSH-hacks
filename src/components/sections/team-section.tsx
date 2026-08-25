@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import { SectionHeading, BleachedPlate, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, EngravedLineDraw, useFadeRise } from "@/components/sections/design-system";
 
 const RegisterNow = () => {
   const copyMotion = useFadeRise(0.15);
@@ -10,13 +10,10 @@ const RegisterNow = () => {
   return (
     <section id="register" className="relative bg-plaster text-umber py-24 sm:py-32 overflow-hidden">
       {/* the Colosseum in ruin (B3 in CREDITS.md) — a literal gathering place,
-          for the section that's asking people to join */}
-      <BleachedPlate
-        srcBase="/plates/register-desktop"
-        className="absolute inset-0"
-        presence={0.22}
-        maskPosition="50% 48%"
-      />
+          for the section that's asking people to join. Traced to an ochre
+          line-draw (effect 4) rather than the raster BleachedPlate treatment
+          used elsewhere — the second and last instance of this effect. */}
+      <EngravedLineDraw src="/artwork/traced/register-line.svg" className="absolute inset-0" durationMs={1700} />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 text-center">
         <SectionHeading eyebrow="Join us" title="Register" align="center" className="mx-auto" />

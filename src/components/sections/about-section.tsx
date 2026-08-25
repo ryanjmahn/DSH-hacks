@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, StatNumeral, BleachedPlate, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, EngravedLineDraw, useFadeRise } from "@/components/sections/design-system";
 
 const statsData = [
   { value: "1300+", label: "Past competitors" },
@@ -42,14 +42,12 @@ const AboutSection = () => {
           </div>
 
           {/* the skeleton leaning on a classical tomb — anatomy posed against
-              architecture in one plate, the redesign's whole thesis in one image */}
-          <BleachedPlate
-            srcBase="/plates/about-desktop"
-            alt=""
-            className="aspect-[3/4] lg:h-full lg:min-h-[520px]"
-            presence={0.35}
-            maskPosition="50% 38%"
-          />
+              architecture in one plate, the redesign's whole thesis in one
+              image. Traced to an ochre line-draw (effect 4) rather than the
+              raster BleachedPlate treatment used elsewhere on the site. */}
+          <div className="aspect-[3/4] lg:h-full lg:min-h-[520px] flex items-center justify-center">
+            <EngravedLineDraw src="/artwork/traced/about-line.svg" className="w-full h-full" />
+          </div>
         </div>
 
         <div className="mt-20 sm:mt-28 grid grid-cols-2 sm:grid-cols-4 border-t border-b border-rule">

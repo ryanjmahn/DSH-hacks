@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -172,6 +172,91 @@ export function BleachedPlate({
         )}
       </div>
     </div>
+  );
+}
+
+/** Engraved line-draw (Part 6, effect 4) — About and Register only, two
+ *  instances, per the brief. Fetches a potrace-traced, svgo-optimized SVG
+ *  (see public/artwork/traced/, CREDITS.md for provenance), strips potrace's
+ *  default fill in favor of an ochre stroke, then measures each top-level
+ *  path's own length and animates stroke-dashoffset from full to zero on
+ *  entry — staggered per path so the engraving visibly builds rather than
+ *  snapping in at once. Replaces the raster BleachedPlate for these two
+ *  sections specifically; every other plate on the site stays photographic. */
+export function EngravedLineDraw({
+  src,
+  className,
+  durationMs = 1500,
+  staggerMs = 90,
+}: {
+  src: string;
+  className?: string;
+  durationMs?: number;
+  staggerMs?: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [markup, setMarkup] = useState<string | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(src)
+      .then((r) => r.text())
+      .then((text) => { if (!cancelled) setMarkup(text); });
+    return () => { cancelled = true; };
+  }, [src]);
+
+  // Everything below lives in ONE effect, deliberately not driven by any
+  // state that changes on scroll (like framer-motion's useInView would).
+  // An earlier version split "prime the paths" and "trigger the reveal"
+  // across two effects, the second gated on a useInView boolean — but that
+  // boolean flipping re-renders this component, and dangerouslySetInnerHTML
+  // re-injects the raw markup on that re-render, wiping every style the
+  // first effect had set. The IntersectionObserver here is plain DOM API,
+  // not React state, so it can fire without ever causing a re-render.
+  useEffect(() => {
+    if (!markup || !containerRef.current) return;
+    const root = containerRef.current;
+    const svgEl = root.querySelector("svg");
+    svgEl?.setAttribute("preserveAspectRatio", "xMidYMid slice");
+
+    const paths = Array.from(root.querySelectorAll("path"));
+    paths.forEach((p) => {
+      const el = p as SVGPathElement;
+      const len = el.getTotalLength();
+      el.style.fill = "none";
+      el.style.stroke = "var(--color-ochre)";
+      el.style.strokeWidth = "1";
+      el.style.strokeOpacity = "0.6";
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = reduceMotion ? "0" : `${len}`;
+    });
+
+    if (reduceMotion) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        paths.forEach((p, i) => {
+          const el = p as SVGPathElement;
+          el.style.transition = `stroke-dashoffset ${durationMs}ms cubic-bezier(0.16,1,0.3,1) ${i * staggerMs}ms`;
+          el.style.strokeDashoffset = "0";
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [markup, reduceMotion, durationMs, staggerMs]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn("pointer-events-none [&_svg]:w-full [&_svg]:h-full", className)}
+      aria-hidden="true"
+      dangerouslySetInnerHTML={markup ? { __html: markup } : undefined}
+    />
   );
 }
 
