@@ -76,9 +76,10 @@ export function StatNumeral({
   );
 }
 
-/** Bleached anatomical/botanical plate — same treatment as the hero, scaled
- *  down: desaturated, feathered radial mask, no bounding box, fine grain.
- *  Never sits directly behind body copy at a density that hurts contrast. */
+/** Bleached anatomical/architectural plate — same treatment as Beat 2, scaled
+ *  down: desaturated, feathered radial mask, no bounding box, plaster mottling
+ *  (not uniform grain — Part 1's processing pipeline). Never sits directly
+ *  behind body copy at a density that hurts contrast. */
 export function BleachedPlate({
   srcBase,
   alt = "",
@@ -117,7 +118,12 @@ export function BleachedPlate({
             style={{ filter: "grayscale(1) contrast(0.82) brightness(1.3)" }}
           />
         </picture>
-        {grain && <div className="grain-overlay" />}
+        {grain && (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundImage: "var(--plaster-texture-svg)", mixBlendMode: "multiply", opacity: Math.min(1, 0.16 / presence) }}
+          />
+        )}
       </div>
     </div>
   );

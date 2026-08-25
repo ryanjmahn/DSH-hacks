@@ -16,23 +16,23 @@ const AboutSection = () => {
   const quoteMotion = useFadeRise(0.18);
 
   return (
-    <section id="about" className="relative bg-paper text-ink py-24 sm:py-32">
+    <section id="about" className="relative bg-plaster text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who we are" title="About" />
 
         <div className="mt-14 sm:mt-20 grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <div>
-            <motion.p {...copyMotion} className="type-body text-ink leading-relaxed">
+            <motion.p {...copyMotion} className="type-body text-umber leading-relaxed">
               DSH Hacks is a free, global, online hackathon open to students aged 13+, hosted
-              collaboratively by three youth-led organizations: <span className="text-brand font-medium">DeltaForge Hacks</span>,{" "}
-              <span className="text-brand font-medium">NXT Horizon</span>, and <span className="text-brand font-medium">STEMise</span>.
+              collaboratively by three youth-led organizations: <span className="text-sienna font-medium">DeltaForge Hacks</span>,{" "}
+              <span className="text-sienna font-medium">NXT Horizon</span>, and <span className="text-sienna font-medium">STEMise</span>.
             </motion.p>
 
-            <motion.blockquote {...quoteMotion} className="type-quote text-ink border-t border-b border-rule py-7 my-10">
+            <motion.blockquote {...quoteMotion} className="type-quote text-umber border-t border-b border-rule py-7 my-10">
               AI × Healthcare: transforming healthcare access through AI.
             </motion.blockquote>
 
-            <motion.p {...copyMotion} className="type-body text-ink-muted leading-relaxed">
+            <motion.p {...copyMotion} className="type-body text-umber-soft leading-relaxed">
               Identify a real healthcare problem and build an AI-powered app, website, or system
               that tackles it. Any skill level welcome. From diagnostic tools tackling global
               disease burdens, to patient-care platforms improving access and outcomes, to
@@ -41,8 +41,11 @@ const AboutSection = () => {
             </motion.p>
           </div>
 
+          {/* the skeleton leaning on a classical tomb — anatomy posed against
+              architecture in one plate, the redesign's whole thesis in one image */}
           <BleachedPlate
             srcBase="/plates/about-desktop"
+            alt=""
             className="aspect-[3/4] lg:h-full lg:min-h-[520px]"
             presence={0.35}
             maskPosition="50% 38%"
