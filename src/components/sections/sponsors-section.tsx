@@ -26,14 +26,14 @@ const SponsorsSection = () => {
   const gridMotion = useFadeRise(0.16);
 
   return (
-    <section id="sponsors" className="relative bg-paper-alt text-ink py-24 sm:py-32">
+    <section id="sponsors" className="relative bg-plaster-shade coffer-texture text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who supports us" title="Sponsors" align="center" className="mx-auto" />
 
-        <motion.p {...introMotion} className="type-body text-ink-muted mt-8 mb-14 sm:mb-16 mx-auto max-w-2xl text-center leading-relaxed">
+        <motion.p {...introMotion} className="type-body text-umber-soft mt-8 mb-14 sm:mb-16 mx-auto max-w-2xl text-center leading-relaxed">
           Interested in supporting DSH Hacks? Reach out to us on Discord or email the hackathon
           manager via{" "}
-          <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-deep underline underline-offset-4">
+          <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-sienna hover:text-umber underline underline-offset-4">
             Devpost
           </a>{" "}
           to learn about sponsorship opportunities.
@@ -46,7 +46,7 @@ const SponsorsSection = () => {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center border-r border-b border-rule py-10 px-6"
+              className="group relative flex items-center justify-center border-r border-b border-rule py-10 px-6 bg-plaster"
             >
               <Image
                 src={logo}
@@ -55,6 +55,9 @@ const SponsorsSection = () => {
                 height={48}
                 className="object-contain max-h-12 w-auto grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
               />
+              {/* ochre hairline beneath — wipes in on hover once the motion
+                  pass lands; static color/opacity transition for now */}
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-ochre scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" aria-hidden="true" />
             </a>
           ))}
         </motion.div>

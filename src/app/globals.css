@@ -104,6 +104,14 @@
        photographic grain. Low baseFrequency for big soft blotches, referenced
        by .plaster-texture-overlay. This is the fresco-atlas plate treatment. */
     --plaster-texture-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+
+    /* Coffers — the barrel vault's receding grid of sunken squares, per
+       Part 4. patternTransform skews the tile itself (background-image
+       can't take a CSS transform and tile correctly), suggesting recession
+       without needing a wrapper element. Hex is --color-ochre's literal
+       value: a data-URI SVG is an isolated document and can't read the
+       page's CSS custom properties. */
+    --coffer-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cdefs%3E%3Cpattern id='c' width='84' height='84' patternUnits='userSpaceOnUse' patternTransform='skewX(-10)'%3E%3Crect x='6' y='6' width='72' height='72' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.3'/%3E%3Crect x='20' y='20' width='44' height='44' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.18'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23c)'/%3E%3C/svg%3E");
   }
 
   html { scroll-behavior: smooth; }
@@ -268,6 +276,13 @@
     mix-blend-mode: multiply;
     opacity: 0.14;
     pointer-events: none;
+  }
+
+  /* Coffered-vault background for --plaster-shade sections. Density is low
+     enough that body text laid directly over it stays fully legible. */
+  .coffer-texture {
+    background-image: var(--coffer-svg);
+    background-repeat: repeat;
   }
 
   @keyframes bob {

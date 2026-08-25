@@ -40,7 +40,7 @@ const V1Section = () => {
   const winnersLabelMotion = useFadeRise();
 
   return (
-    <section id="v1" className="relative bg-plaster-shade text-umber py-24 sm:py-32">
+    <section id="v1" className="relative bg-plaster-shade coffer-texture text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
 
