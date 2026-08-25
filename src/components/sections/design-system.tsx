@@ -37,19 +37,20 @@ export function SectionHeading({
   const alignClass = align === "right" ? "text-right items-end" : align === "center" ? "text-center items-center" : "text-left items-start";
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", alignClass, className)}>
-      <p className="type-eyebrow text-brand">{eyebrow}</p>
+      <p className="type-eyebrow text-sienna">{eyebrow}</p>
       <h2 className="type-display text-ink mt-1">{title}</h2>
     </motion.div>
   );
 }
 
 /** "01/" style numeral prefix for sequential content — schedule steps, judging
- *  criteria, workshop rows. Used in at least three sections per the brief. */
+ *  criteria, workshop rows. Used in at least three sections per the brief.
+ *  Mono, ochre — lapis stays reserved for the primary CTA and one accent per
+ *  section, never spent on a repeating list marker. */
 export function Numeral({ n, className }: { n: number; className?: string }) {
   return (
     <span className={cn("type-numeral select-none", className)}>
-      {String(n).padStart(2, "0")}
-      <span className="text-brand">/</span>
+      {String(n).padStart(2, "0")}/
     </span>
   );
 }
@@ -122,12 +123,12 @@ export function BleachedPlate({
   );
 }
 
-/** Small indigo node marker for timeline-style lists. Rationed — one accent
- *  device per section, alongside at most one CTA. */
+/** Small ochre node marker for timeline-style lists — Schedule's spine markers,
+ *  per the brief. Lapis is never spent here; it stays reserved for CTAs. */
 export function NodeMarker({ className }: { className?: string }) {
   return (
     <span
-      className={cn("block w-2.5 h-2.5 rounded-full bg-brand ring-4 ring-paper", className)}
+      className={cn("block w-2.5 h-2.5 rounded-full bg-ochre ring-4 ring-paper", className)}
       aria-hidden="true"
     />
   );

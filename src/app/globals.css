@@ -3,46 +3,61 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Brand tokens — reference these everywhere; no hardcoded hex in components.
-     Three main colors sitewide: two indigos + standard black. */
-  --color-brand: #3336d4;
-  --color-brand-deep: #2e2ed6;
+  /* Fresco pigments — reference these everywhere; no hardcoded hex in components.
+     Names kept as the literal pigments so the palette stays legible on its own. */
+  --color-plaster: #f4f0e6;       /* fresco intonaco — page background */
+  --color-plaster-shade: #eae3d4; /* aged plaster — alternating sections */
+  --color-ochre: #c9a227;         /* yellow ochre — hairlines, keys, ornament, numerals */
+  --color-sienna: #a6572f;        /* burnt sienna — secondary accent, warm hovers */
+  --color-umber: #3d3226;         /* raw umber — body text, display headings */
+  --color-umber-soft: #6e6152;    /* diluted umber — secondary text, captions */
+  --color-lapis: #3636d3;         /* ultramarine — the brand indigo, rationed */
+  --color-lapis-deep: #2a2aa8;    /* ultramarine, shadowed — lapis hover states */
 
-  --color-ink: #000000;
-  --color-ink-muted: #6b6b78;
-  --color-paper: #f5f4f1;
-  --color-paper-alt: #edece8;
-  --color-rule: #d8d6d0;
+  /* diluted-ochre hairline: the pigment-mixing metaphor, literally */
+  --color-rule: color-mix(in srgb, var(--color-ochre) 32%, var(--color-plaster) 68%);
 
-  /* Legacy alias — the hero's approved markup references `text-brand-ink`.
-     Collapsed to equal --brand so the hero still resolves without a fourth shade. */
-  --color-brand-ink: #3336d4;
+  /* Legacy aliases — the approved hero references these names directly and is
+     out of scope until the Frontispiece/Beat 2 gates land. Lapis === the old
+     brand indigo exactly, so the CTA/accent don't shift; ink/paper warm toward
+     the fresco palette gracefully in the meantime. */
+  --color-ink: var(--color-umber);
+  --color-ink-muted: var(--color-umber-soft);
+  --color-paper: var(--color-plaster);
+  --color-paper-alt: var(--color-plaster-shade);
+  --color-brand: var(--color-lapis);
+  --color-brand-deep: var(--color-lapis-deep);
+  --color-brand-ink: var(--color-lapis);
 
   /* shadcn/radix primitives kept for the accordion + any future ui/ components */
-  --color-background: var(--color-paper);
-  --color-foreground: var(--color-ink);
-  --color-card: var(--color-paper);
-  --color-card-foreground: var(--color-ink);
-  --color-popover: var(--color-paper);
-  --color-popover-foreground: var(--color-ink);
-  --color-primary: var(--color-brand);
-  --color-primary-foreground: var(--color-paper);
-  --color-secondary: var(--color-paper-alt);
-  --color-secondary-foreground: var(--color-ink);
-  --color-muted: var(--color-paper-alt);
-  --color-muted-foreground: var(--color-ink-muted);
-  --color-accent: var(--color-paper-alt);
-  --color-accent-foreground: var(--color-ink);
+  --color-background: var(--color-plaster);
+  --color-foreground: var(--color-umber);
+  --color-card: var(--color-plaster);
+  --color-card-foreground: var(--color-umber);
+  --color-popover: var(--color-plaster);
+  --color-popover-foreground: var(--color-umber);
+  --color-primary: var(--color-lapis);
+  --color-primary-foreground: var(--color-plaster);
+  --color-secondary: var(--color-plaster-shade);
+  --color-secondary-foreground: var(--color-umber);
+  --color-muted: var(--color-plaster-shade);
+  --color-muted-foreground: var(--color-umber-soft);
+  --color-accent: var(--color-plaster-shade);
+  --color-accent-foreground: var(--color-umber);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
   --color-border: var(--color-rule);
   --color-input: var(--color-rule);
-  --color-ring: var(--color-brand);
+  --color-ring: var(--color-lapis);
 
-  /* Typography families */
-  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  /* Typography families — display carries humanist warmth in a grotesque
+     (closest free equivalent to Söhne Breit/Founders Grotesk); serif is the
+     literal typeface family of the Renaissance printing era; mono is reserved
+     for numerals and metadata only, never body copy or headings. */
+  --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-garamond), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), "SF Mono", Menlo, monospace;
 
   --radius-lg: 0.5rem;
   --radius-md: calc(0.5rem - 2px);
@@ -224,11 +239,11 @@
     font-size: var(--type-meta);
   }
   .type-numeral {
-    font-family: var(--font-display);
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
-    font-size: clamp(1.75rem, 3vw, 2.125rem);
-    color: var(--color-ink-muted);
+    font-size: clamp(1.5rem, 2.6vw, 1.875rem);
+    color: var(--color-ochre);
   }
 
   .grain-overlay {

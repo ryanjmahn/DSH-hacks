@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { SectionHeading, Numeral, NodeMarker, useFadeRise } from "@/components/sections/design-system";
 
-const linkClass = "text-brand underline underline-offset-4 hover:text-brand-deep transition-colors";
+const linkClass = "text-sienna underline underline-offset-4 hover:text-umber transition-colors";
 
 const scheduleItems: { title: string; detail: React.ReactNode }[] = [
   {
@@ -72,8 +72,8 @@ function ScheduleRow({
       </div>
 
       <div>
-        <h3 className="type-title text-ink">{title}</h3>
-        <p className="type-body text-ink-muted mt-3 leading-relaxed">{detail}</p>
+        <h3 className="type-title text-umber">{title}</h3>
+        <p className="type-body text-umber-soft mt-3 leading-relaxed">{detail}</p>
       </div>
     </motion.div>
   );
@@ -83,7 +83,7 @@ const ScheduleSection = () => {
   const ctaMotion = useFadeRise(0.1);
 
   return (
-    <section id="schedule" className="relative bg-paper text-ink py-24 sm:py-32">
+    <section id="schedule" className="relative bg-plaster text-umber py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What to expect" title="Schedule" />
 
@@ -104,7 +104,7 @@ const ScheduleSection = () => {
           href="https://dsh-hacks-v2.devpost.com/rules"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex mt-14 sm:ml-[6vw] items-center gap-2 border border-ink text-ink px-8 py-3.5 type-meta hover:border-brand hover:text-brand transition-colors"
+          className="inline-flex mt-14 sm:ml-[6vw] items-center gap-2 border border-umber text-umber px-8 py-3.5 type-meta hover:border-sienna hover:text-sienna transition-colors"
         >
           View Full Rules
           <ExternalLink className="w-3.5 h-3.5" />
