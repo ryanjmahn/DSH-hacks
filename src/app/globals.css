@@ -1,85 +1,53 @@
-@import url("https://fonts.googleapis.com/css2?family=Amarante&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Indigo Light Theme */
-  --color-background: #ffffff;
-  --color-foreground: #26262e;
+  /* Brand tokens — reference these everywhere; no hardcoded hex in components.
+     Three main colors sitewide: two indigos + standard black. */
+  --color-brand: #3336d4;
+  --color-brand-deep: #2e2ed6;
 
-  --color-card: #f4f5fb;
-  --color-card-foreground: #26262e;
+  --color-ink: #000000;
+  --color-ink-muted: #6b6b78;
+  --color-paper: #f5f4f1;
+  --color-paper-alt: #edece8;
+  --color-rule: #d8d6d0;
 
-  --color-popover: #ffffff;
-  --color-popover-foreground: #26262e;
+  /* Legacy alias — the hero's approved markup references `text-brand-ink`.
+     Collapsed to equal --brand so the hero still resolves without a fourth shade. */
+  --color-brand-ink: #3336d4;
 
-  --color-primary: #4f56e5;
-  --color-primary-foreground: #ffffff;
-
-  --color-secondary: #eceef8;
-  --color-secondary-foreground: #26262e;
-
-  --color-muted: #eceef8;
-  --color-muted-foreground: #64748b;
-
-  --color-accent: #eceef8;
-  --color-accent-foreground: #26262e;
-
+  /* shadcn/radix primitives kept for the accordion + any future ui/ components */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-paper);
+  --color-secondary: var(--color-paper-alt);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-paper-alt);
+  --color-muted-foreground: var(--color-ink-muted);
+  --color-accent: var(--color-paper-alt);
+  --color-accent-foreground: var(--color-ink);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
+  --color-border: var(--color-rule);
+  --color-input: var(--color-rule);
+  --color-ring: var(--color-brand);
 
-  --color-border: #dfe2f0;
-  --color-input: #dfe2f0;
-  --color-ring: #4f56e5;
+  /* Typography families */
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
 
-  --color-chart-1: #4f56e5;
-  --color-chart-2: #6366f1;
-  --color-chart-3: #6f76ee;
-  --color-chart-4: #6a70f0;
-  --color-chart-5: #818cf8;
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
 
-  --color-sidebar: #f4f5fb;
-  --color-sidebar-foreground: #26262e;
-  --color-sidebar-primary: #4f56e5;
-  --color-sidebar-primary-foreground: #ffffff;
-  --color-sidebar-accent: #eceef8;
-  --color-sidebar-accent-foreground: #26262e;
-  --color-sidebar-border: #dfe2f0;
-  --color-sidebar-ring: #4f56e5;
-
-  /* Mural Design System */
-  --color-background-primary: #1a2153;
-  --color-background-secondary: #12173f;
-  --color-text-primary: #f2e9d8;
-  --color-text-secondary: #64748b;
-  --color-accent-electric: #7a80f2;
-  --color-accent-cyan: #6f76ee;
-  --color-accent-blue: #4f56e5;
-  --color-accent-indigo: #6366f1;
-  --color-accent-glow: #6a70f0;
-  --color-button-primary: #4f56e5;
-  --color-button-primary-foreground: #ffffff;
-  --color-button-electric: #4f56e5;
-  --color-button-electric-foreground: #ffffff;
-  --color-countdown-background: #eceef8;
-  --color-countdown-foreground: #26262e;
-  --color-sponsor-card-background: #f4f5fb;
-  --color-faq-border: #dfe2f0;
-  --color-hero-background: #ffffff;
-  --color-hero-foreground: #26262e;
-
-  /* Typography */
-  --font-sans: "Amarante", serif;
-  --font-display: "Amarante", serif;
-  --font-body: "Amarante", serif;
-
-  /* Radii */
-  --radius-lg: 0.75rem;
-  --radius-md: calc(0.75rem - 2px);
-  --radius-sm: calc(0.75rem - 4px);
-
-  /* Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
@@ -95,78 +63,72 @@
 
 @layer base {
   *, ::after, ::before, ::backdrop, ::file-selector-button {
-    border-color: var(--color-border);
+    border-color: var(--color-rule);
   }
 }
 
 @layer base {
   :root {
-    --background: var(--color-background);
-    --foreground: var(--color-foreground);
-    --card: var(--color-card);
-    --card-foreground: var(--color-card-foreground);
-    --popover: var(--color-popover);
-    --popover-foreground: var(--color-popover-foreground);
-    --primary: var(--color-primary);
-    --primary-foreground: var(--color-primary-foreground);
-    --secondary: var(--color-secondary);
-    --secondary-foreground: var(--color-secondary-foreground);
-    --muted: var(--color-muted);
-    --muted-foreground: var(--color-muted-foreground);
-    --accent: var(--color-accent);
-    --accent-foreground: var(--color-accent-foreground);
-    --destructive: var(--color-destructive);
-    --destructive-foreground: var(--color-destructive-foreground);
-    --border: var(--color-border);
-    --input: var(--color-input);
-    --ring: var(--color-ring);
-    --chart-1: var(--color-chart-1);
-    --chart-2: var(--color-chart-2);
-    --chart-3: var(--color-chart-3);
-    --chart-4: var(--color-chart-4);
-    --chart-5: var(--color-chart-5);
     --radius: var(--radius-lg);
-    --sidebar-background: var(--color-sidebar);
-    --sidebar-foreground: var(--color-sidebar-foreground);
-    --sidebar-primary: var(--color-sidebar-primary);
-    --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
-    --sidebar-accent: var(--color-sidebar-accent);
-    --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
-    --sidebar-border: var(--color-sidebar-border);
-    --sidebar-ring: var(--color-sidebar-ring);
+
+    /* Type scale — the ~1:8 jump between --type-eyebrow and --type-mega is the
+       system's defining trait. Preserve it; don't flatten it in a section. */
+    --type-mega: clamp(4rem, 12vw, 11rem);      /* hero only */
+    --type-display: clamp(2.5rem, 6vw, 5rem);   /* section headings, stat numerals */
+    --type-title: clamp(1.5rem, 2.5vw, 2.25rem); /* card / row titles */
+    --type-eyebrow: 1rem;                        /* eyebrows, small labels */
+    --type-quote: clamp(1.25rem, 2vw, 1.75rem);  /* pull quotes */
+    --type-body: 1.0625rem;                      /* paragraphs */
+    --type-meta: 0.8125rem;                      /* metadata, nav, buttons, labels */
+
+    /* Inline SVG grain — fine film noise, referenced by .grain-overlay */
+    --grain-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   html { scroll-behavior: smooth; }
 
   ::selection {
-    background-color: #e2574c;
-    color: #f2e9d8;
+    background-color: var(--color-brand);
+    color: var(--color-paper);
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-background-primary);
-    color: var(--color-text-primary);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    color: var(--color-text-primary);
-    line-height: 1.1;
+    color: var(--color-ink);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
   }
 
-  h1 { font-size: 4rem; font-weight: 700; letter-spacing: -0.02em; text-transform: uppercase; }
-  h2 { font-size: 2.5rem; font-weight: 600; line-height: 1.2; text-transform: uppercase; }
-  h3 { font-size: 1.75rem; font-weight: 500; line-height: 1.3; }
-  p  { font-size: 1.125rem; font-weight: 400; line-height: 1.6; color: var(--color-text-primary); }
-  a  { color: var(--color-text-primary); text-decoration: none; }
-  a:hover { text-decoration: none; }
+  h1 { font-size: 4rem; font-weight: 800; }
+  h2 { font-size: 2.5rem; font-weight: 800; }
+  h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-ink); }
+  a  { color: inherit; text-decoration: none; }
 
-  .text-body-large   { font-size: 1.25rem; font-weight: 400; line-height: 1.6; }
-  .text-body-default { font-size: 1.125rem; font-weight: 400; line-height: 1.6; }
-  .text-body-small   { font-size: 1rem; font-weight: 400; line-height: 1.5; }
-  .text-label { font-size: 0.875rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.05em; text-transform: uppercase; }
+  /* Hero legacy classes — kept verbatim so the approved hero renders unchanged.
+     New sections use the .type-* system below instead. */
+  .font-serif-eyebrow {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .text-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
 
   .container {
     max-width: 1400px;
@@ -183,12 +145,96 @@
   @media (min-width: 1024px) {
     h1 { font-size: 6rem; }
     h2 { font-size: 3rem; }
-    h3 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+  }
+
+  /* Visible focus ring on every interactive element — brand outline, no exceptions */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
+/* The formal type system — one class per role, used sitewide (hero excluded).
+   Tailwind v4's `@import "tailwindcss"` only declares theme/base/utilities
+   layers (no `components`), so these live in `utilities` alongside the rest
+   of the hand-authored CSS below — a separate `@layer components` block gets
+   silently dropped since nothing declares that layer. */
 @layer utilities {
-  body { font-family: var(--font-body); }
+  .type-mega {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.85;
+    font-size: var(--type-mega);
+  }
+  .type-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.88;
+    font-size: var(--type-display);
+  }
+  .type-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    font-size: var(--type-title);
+  }
+  .type-eyebrow {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    font-size: var(--type-eyebrow);
+  }
+  .type-quote {
+    font-family: var(--font-serif);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.45;
+    font-size: var(--type-quote);
+  }
+  .type-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: var(--type-body);
+  }
+  .type-meta {
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    font-size: var(--type-meta);
+  }
+  .type-numeral {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.75rem, 3vw, 2.125rem);
+    color: var(--color-ink-muted);
+  }
+
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain-svg);
+    mix-blend-mode: multiply;
+    opacity: 0.05;
+    pointer-events: none;
+  }
 
   @keyframes bob {
     0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -202,8 +248,14 @@
   .animate-bob-slow { animation: bob 9s ease-in-out infinite; }
   .animate-twinkle { animation: twinkle 3.5s ease-in-out infinite; }
 
-  .ribbon-nav a tspan { fill: #f2e9d8; }
-  .ribbon-nav a:hover tspan { fill: #1a2153; }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-bob, .animate-bob-slow, .animate-twinkle {
+      animation: none !important;
+    }
+  }
+
+  .ribbon-nav a tspan { fill: var(--color-ink); }
+  .ribbon-nav a:hover tspan { fill: var(--color-brand); }
 }
 
 /* Hide Next.js error overlay portal */

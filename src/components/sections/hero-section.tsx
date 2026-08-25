@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { ArrowRight, ExternalLink, X } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { ArrowRight, ExternalLink, Menu, X } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { EKGLine, Swirl, PaperCard, PocketWatch, Sparkle, StarField } from "@/components/sections/mural-art";
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -16,99 +15,79 @@ const navLinks = [
   { href: "#faq", label: "FAQ" },
 ];
 
-const RibbonNav = () => (
-  <svg viewBox="0 0 900 160" className="ribbon-nav w-full h-auto drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)]" aria-label="Site navigation">
-    <defs>
-      <path id="ribbon-seg-a" d="M 10 56 C 160 68 320 78 448 84" />
-      <path id="ribbon-seg-b" d="M 462 84 C 590 88 750 68 884 48" />
-    </defs>
-
-    {/* left tip fold, tucked under the start of segment A */}
-    <polygon points="10,87 44,91 10,108" fill="#a63b31" />
-
-    {/* segment A */}
-    <use href="#ribbon-seg-a" fill="none" stroke="#e2574c" strokeWidth="64" />
-
-    {/* folded seam: dark parallelogram where the ribbon changes angle */}
-    <polygon points="444,52 468,46 468,112 444,118" fill="#a63b31" />
-
-    {/* segment B, laid over the fold */}
-    <use href="#ribbon-seg-b" fill="none" stroke="#e2574c" strokeWidth="64" />
-
-    {/* swallowtail notch cut into the right end */}
-    <polygon points="886,14 886,82 850,48" fill="#1a2153" />
-
-    <text fontSize="20" letterSpacing="1.4" wordSpacing="17" textAnchor="middle" dominantBaseline="central">
-      <textPath href="#ribbon-seg-a" startOffset="52%">
-        <a href="#about"><tspan>ABOUT</tspan></a> <a href="#schedule"><tspan>SCHEDULE</tspan></a>{" "}
-        <a href="#prizes"><tspan>PRIZES</tspan></a> <a href="#sponsors"><tspan>SPONSORS</tspan></a>
-      </textPath>
-    </text>
-    <text fontSize="20" letterSpacing="1.8" wordSpacing="46" textAnchor="middle" dominantBaseline="central">
-      <textPath href="#ribbon-seg-b" startOffset="47%">
-        <a href="#workshops"><tspan>WORKSHOPS</tspan></a> <a href="#register"><tspan>REGISTER</tspan></a>{" "}
-        <a href="#faq"><tspan>FAQ</tspan></a>
-      </textPath>
-    </text>
-  </svg>
-);
+const metaItems = ["Deadline Nov 7, 2026", "Online", "Ages 13+", "100% Free"];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="flex items-start justify-between px-4 sm:px-6 pt-3">
-          {/* Floating logo, separate from the ribbon */}
-          <a href="#" className="pointer-events-auto flex items-center gap-2.5 mt-1">
-            <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={40} height={40} className="object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]" />
-            <span className="text-lg font-bold tracking-tight text-[#f2e9d8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-              DSH <span className="text-[#eeda9f]">Hacks</span>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "bg-paper/90 backdrop-blur-md border-b border-rule shadow-[0_1px_12px_rgba(20,20,32,0.06)]" : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto max-w-7xl flex items-center justify-between px-6 sm:px-8 py-5">
+          <a href="#hero" className="flex items-center gap-2.5">
+            <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={30} height={30} className="object-contain" />
+            <span className="font-display text-base font-extrabold uppercase tracking-tight text-ink">
+              DSH Hacks
             </span>
           </a>
 
-          {/* Curved two-segment ribbon, top-right, desktop only */}
-          <div className="pointer-events-auto hidden lg:block w-[660px] xl:w-[780px] -mt-1 -mr-2">
-            <RibbonNav />
-          </div>
+          <nav className="hidden lg:flex items-center gap-7">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-label text-ink-muted hover:text-brand transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
 
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="pointer-events-auto lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#e2574c] shadow-lg shadow-black/30 mt-1"
             aria-label="Open menu"
+            className="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-rule text-ink hover:border-brand hover:text-brand transition-colors"
           >
-            <div className="relative w-5 h-5 flex flex-col justify-center items-center">
-              <span className="block w-5 h-0.5 bg-[#f2e9d8]"></span>
-              <span className="block w-5 h-0.5 bg-[#f2e9d8] mt-1"></span>
-              <span className="block w-5 h-0.5 bg-[#f2e9d8] mt-1"></span>
-            </div>
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </header>
 
       <motion.div
-        initial={{ x: "-100%" }}
-        animate={isMenuOpen ? { x: 0 } : { x: "-100%" }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed inset-0 z-50 bg-[#12173f]/97 backdrop-blur-md flex flex-col"
+        initial={false}
+        animate={isMenuOpen ? { x: 0 } : { x: "100%" }}
+        transition={{ type: "spring", stiffness: 320, damping: 32 }}
+        className="fixed inset-0 z-50 bg-paper flex flex-col lg:hidden"
+        aria-hidden={!isMenuOpen}
       >
         <div className="flex justify-end p-6">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="w-10 h-10 rounded-full bg-[#e2574c] flex items-center justify-center hover:bg-[#e8836f] transition-colors"
             aria-label="Close menu"
+            className="w-10 h-10 flex items-center justify-center border border-rule text-ink hover:border-brand hover:text-brand transition-colors"
           >
-            <X className="w-5 h-5 text-[#f2e9d8]" />
+            <X className="w-5 h-5" />
           </button>
         </div>
-        <nav className="flex-1 flex flex-col justify-center items-center gap-8 text-[#f2e9d8] text-2xl font-bold uppercase tracking-wide">
+        <nav className="flex-1 flex flex-col justify-center items-center gap-7">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="hover:text-[#eeda9f] transition-colors"
+              className="font-display text-3xl font-extrabold uppercase tracking-tight text-ink hover:text-brand transition-colors"
             >
               {link.label}
             </a>
@@ -119,85 +98,150 @@ const Navbar = () => {
   );
 };
 
+const HeroPlates = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    {/* secondary collage layer — branching nerve-tree plate, upper right */}
+    <div
+      className="absolute -right-[10%] -top-[6%] w-[62%] max-w-xl aspect-[3/4] opacity-[0.16]"
+      style={{
+        WebkitMaskImage: "radial-gradient(ellipse 62% 62% at 58% 32%, black 0%, transparent 72%)",
+        maskImage: "radial-gradient(ellipse 62% 62% at 58% 32%, black 0%, transparent 72%)",
+      }}
+    >
+      <picture>
+        <source srcSet="/plates/hero-accent.webp" type="image/webp" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/plates/hero-accent.jpg"
+          alt=""
+          className="w-full h-full object-cover grayscale"
+          style={{ filter: "contrast(0.8) brightness(1.4)" }}
+        />
+      </picture>
+    </div>
+
+    {/* primary plate — full anatomical figure */}
+    <div
+      className="absolute inset-0 opacity-[0.45]"
+      style={{
+        WebkitMaskImage: "radial-gradient(ellipse 62% 76% at 50% 40%, black 0%, black 28%, transparent 76%)",
+        maskImage: "radial-gradient(ellipse 62% 76% at 50% 40%, black 0%, black 28%, transparent 76%)",
+      }}
+    >
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/plates/hero-desktop.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/plates/hero-desktop.jpg" />
+        <source srcSet="/plates/hero-mobile.webp" type="image/webp" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/plates/hero-mobile.jpg"
+          alt=""
+          fetchPriority="high"
+          className="w-full h-full object-cover grayscale"
+          style={{ objectPosition: "50% 18%", filter: "contrast(0.82) brightness(1.32)" }}
+        />
+      </picture>
+    </div>
+
+    {/* faint periwinkle cast — never full saturation */}
+    <div className="absolute inset-0 bg-brand mix-blend-color opacity-[0.05]" />
+
+    <div className="grain-overlay" />
+  </div>
+);
+
 export default function HeroSection() {
+  const reduceMotion = useReducedMotion();
+  const initial = reduceMotion ? undefined : { opacity: 0, y: 24 };
+  const animate = reduceMotion ? undefined : { opacity: 1, y: 0 };
+
   return (
-    <div className="antialiased bg-[#1a2153]">
+    <div className="bg-paper">
+      <link rel="preload" as="image" href="/plates/hero-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
+      <link rel="preload" as="image" href="/plates/hero-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
+
       <Navbar />
-      <section id="hero" className="min-h-screen relative overflow-hidden text-[#f2e9d8]">
-        <StarField className="absolute top-0 left-0 w-full h-64 pointer-events-none" />
-        <EKGLine className="absolute top-28 left-0 w-full h-10 pointer-events-none opacity-90" />
 
-        {/* Floating illustrated objects */}
-        <Swirl className="absolute -right-16 sm:right-[4%] top-[52%] w-52 sm:w-80 animate-bob pointer-events-none" />
-        <PaperCard className="absolute right-[16%] top-[20%] w-12 sm:w-16 animate-bob pointer-events-none hidden sm:block" />
-        <PaperCard className="absolute right-[8%] top-[30%] w-10 sm:w-14 rotate-12 animate-bob-slow pointer-events-none hidden sm:block" />
-        <PocketWatch className="absolute left-[6%] top-[62%] w-16 sm:w-24 animate-bob-slow pointer-events-none hidden md:block" />
-        <Sparkle className="absolute left-[12%] top-[26%] w-5 animate-twinkle pointer-events-none" />
-        <Sparkle className="absolute right-[28%] top-[64%] w-4 animate-twinkle pointer-events-none" color="#f2e9d8" />
-        <Sparkle className="absolute left-[30%] top-[78%] w-4 animate-twinkle pointer-events-none" />
+      <section id="hero" className="relative min-h-screen overflow-hidden bg-paper text-ink">
+        <HeroPlates />
 
-        <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
-          <div className="flex flex-col items-center justify-center min-h-screen gap-8 py-28 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="flex flex-col items-center max-w-4xl"
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 min-h-screen flex flex-col justify-center pt-28 pb-16">
+          <motion.p
+            initial={initial}
+            animate={animate}
+            transition={{ duration: 0.6 }}
+            className="font-serif-eyebrow text-lg sm:text-xl text-brand-ink"
+          >
+            AI × Healthcare
+          </motion.p>
+
+          <motion.h1
+            initial={initial}
+            animate={animate}
+            transition={{ duration: 0.7, delay: 0.08 }}
+            className="font-display font-black uppercase leading-[0.82] tracking-[-0.03em] mt-3"
+          >
+            <span className="block text-[clamp(3.25rem,11vw,9rem)] text-ink">DSH Hacks</span>
+            <span className="block text-[clamp(3.25rem,11vw,9rem)] text-brand-ink pl-[6vw] sm:pl-[10vw]">V2</span>
+          </motion.h1>
+
+          <motion.p
+            initial={initial}
+            animate={animate}
+            transition={{ duration: 0.6, delay: 0.16 }}
+            className="font-serif-eyebrow text-lg sm:text-xl text-ink-muted mt-7 max-w-sm sm:ml-[12vw]"
+          >
+            Transforming healthcare access through AI
+          </motion.p>
+
+          <motion.div
+            initial={initial}
+            animate={animate}
+            transition={{ duration: 0.6, delay: 0.24 }}
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-10 text-label text-ink-muted"
+          >
+            {metaItems.map((item, i) => (
+              <React.Fragment key={item}>
+                {i > 0 && <span className="hidden sm:block w-px h-3 bg-rule" aria-hidden="true" />}
+                <span>{item}</span>
+              </React.Fragment>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={initial}
+            animate={animate}
+            transition={{ duration: 0.6, delay: 0.32 }}
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 mt-10"
+          >
+            <a
+              href="https://dsh-hacks-v2.devpost.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-brand text-paper px-8 py-3.5 text-label inline-flex items-center gap-2 hover:bg-brand-deep transition-colors"
             >
-              <h1 className="text-[52px] sm:text-[72px] lg:text-[92px] font-bold uppercase tracking-tight leading-none text-[#f2e9d8]">
-                DSH <span className="text-[#eeda9f]">Hacks</span> <span className="text-[#e8836f]">V2</span>
-              </h1>
-
-              <p className="text-xl sm:text-2xl font-bold mt-6 mb-3 text-[#83d3c4]">
-                AI × Healthcare: Transforming Healthcare Access through AI
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10 text-sm font-bold uppercase tracking-wide">
-                {["Deadline Nov 7, 2026", "Online", "Ages 13+", "100% Free"].map((chip, i) => (
-                  <span
-                    key={chip}
-                    className="px-4 py-1.5 rounded-full border-2"
-                    style={{
-                      borderColor: ["#e8836f", "#83d3c4", "#eecd7f", "#5a77e6"][i],
-                      color: ["#e8836f", "#83d3c4", "#eecd7f", "#8fa3f0"][i],
-                    }}
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
-                  href="https://dsh-hacks-v2.devpost.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#e2574c] text-[#f2e9d8] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#e8836f] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2 shadow-lg shadow-black/30"
-                >
-                  Register on Devpost
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://discord.gg/3HgSzbYPx5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-2 border-[#f2e9d8] text-[#f2e9d8] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#f2e9d8] hover:text-[#1a2153] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
-                >
-                  Join Discord
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-                <a
-                  href="/dsh-hacks-v2-flyer.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-2 border-[#eeda9f]/60 text-[#eeda9f] px-10 py-4 rounded-full text-lg font-bold uppercase tracking-wide hover:bg-[#eeda9f] hover:text-[#1a2153] hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
-                >
-                  View Flyer
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-          </div>
+              Register on Devpost
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a
+              href="https://discord.gg/3HgSzbYPx5"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-ink text-ink px-8 py-3.5 text-label inline-flex items-center gap-2 hover:border-brand hover:text-brand transition-colors"
+            >
+              Join Discord
+              <ExternalLink className="w-4 h-4" />
+            </a>
+            <a
+              href="/dsh-hacks-v2-flyer.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-label text-ink-muted inline-flex items-center gap-1.5 underline underline-offset-4 decoration-rule hover:text-brand hover:decoration-brand transition-colors px-1 py-3.5"
+            >
+              View Flyer
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </motion.div>
         </div>
       </section>
     </div>

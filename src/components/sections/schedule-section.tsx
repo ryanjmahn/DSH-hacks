@@ -2,11 +2,12 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { MuralHeading, DNAHelix, Diamonds } from "@/components/sections/mural-art";
+import { ExternalLink } from "lucide-react";
+import { SectionHeading, Numeral, NodeMarker, useFadeRise } from "@/components/sections/design-system";
 
-const linkClass = "text-[#eeda9f] font-bold underline underline-offset-4 hover:text-[#f2e9d8] transition-colors";
+const linkClass = "text-brand underline underline-offset-4 hover:text-brand-deep transition-colors";
 
-const scheduleItems: { title: string; detail: React.ReactNode; color: string }[] = [
+const scheduleItems: { title: string; detail: React.ReactNode }[] = [
   {
     title: "Registration Open",
     detail: (
@@ -18,7 +19,6 @@ const scheduleItems: { title: string; detail: React.ReactNode; color: string }[]
         to find teammates.
       </>
     ),
-    color: "#83d3c4",
   },
   {
     title: "Workshops",
@@ -28,73 +28,85 @@ const scheduleItems: { title: string; detail: React.ReactNode; color: string }[]
         <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className={linkClass}>YouTube channel</a>.
       </>
     ),
-    color: "#eecd7f",
   },
   {
     title: "Hacking Period",
     detail: "Build your AI × Healthcare project solo or with your team. Projects must be original and built during the hackathon period.",
-    color: "#e8836f",
   },
   {
     title: "Submission Deadline",
     detail: "November 7, 2026 at 11:45pm PST. Submit your prototype, demo video, one-page description, and code on Devpost.",
-    color: "#8fa3f0",
   },
   {
     title: "Judging & Winners",
     detail: "Projects are judged on Idea, Implementation, Design, and Presentation. Winners are announced on Devpost.",
-    color: "#f2e9d8",
   },
 ];
 
-const ScheduleSection = () => {
+function ScheduleRow({
+  index,
+  title,
+  detail,
+  isLast,
+}: {
+  index: number;
+  title: string;
+  detail: React.ReactNode;
+  isLast: boolean;
+}) {
+  const motionProps = useFadeRise(index * 0.06);
   return (
-    <section id="schedule" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28">
-      <DNAHelix className="absolute right-[2%] top-1/2 -translate-y-1/2 w-24 sm:w-32 pointer-events-none opacity-90" />
-      <Diamonds className="absolute -right-2 top-4 w-16 pointer-events-none opacity-40 hidden lg:block" />
+    <motion.div
+      {...motionProps}
+      className={`relative grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
+    >
+      {/* spine */}
+      {!isLast && (
+        <span className="absolute left-[1.1rem] sm:left-[1.35rem] top-16 bottom-0 w-px bg-rule" aria-hidden="true" />
+      )}
 
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
-          <MuralHeading title="Schedule" />
-        </motion.div>
+      <div className="flex flex-col items-center gap-3 pt-1">
+        <Numeral n={index + 1} />
+        <NodeMarker />
+      </div>
 
-        <div className="mt-14 max-w-3xl">
+      <div>
+        <h3 className="type-title text-ink">{title}</h3>
+        <p className="type-body text-ink-muted mt-3 leading-relaxed">{detail}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+const ScheduleSection = () => {
+  const ctaMotion = useFadeRise(0.1);
+
+  return (
+    <section id="schedule" className="relative bg-paper text-ink py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+        <SectionHeading eyebrow="What to expect" title="Schedule" />
+
+        <div className="mt-16 sm:mt-20 max-w-3xl sm:ml-[6vw]">
           {scheduleItems.map((item, i) => (
-            <motion.div
+            <ScheduleRow
               key={item.title}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative pl-10 pb-10 last:pb-0"
-            >
-              {/* timeline rail */}
-              {i < scheduleItems.length - 1 && (
-                <span className="absolute left-[9px] top-6 bottom-0 w-0.5 bg-[#f2e9d8]/20" />
-              )}
-              <span
-                className="absolute left-0 top-1.5 w-5 h-5 rounded-full border-4 border-[#1a2153]"
-                style={{ backgroundColor: item.color, boxShadow: `0 0 0 2px ${item.color}` }}
-              />
-              <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-wide" style={{ color: item.color }}>
-                {item.title}
-              </h3>
-              <p className="mt-2 text-base sm:text-lg text-[#f2e9d8]/75 leading-relaxed">{item.detail}</p>
-            </motion.div>
+              index={i}
+              title={item.title}
+              detail={item.detail}
+              isLast={i === scheduleItems.length - 1}
+            />
           ))}
         </div>
 
         <motion.a
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
+          {...ctaMotion}
           href="https://dsh-hacks-v2.devpost.com/rules"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex mt-10 items-center gap-2 border-2 border-[#83d3c4] text-[#83d3c4] px-8 py-3 rounded-full font-bold uppercase tracking-wide hover:bg-[#83d3c4] hover:text-[#1a2153] transition-all"
+          className="inline-flex mt-14 sm:ml-[6vw] items-center gap-2 border border-ink text-ink px-8 py-3.5 type-meta hover:border-brand hover:text-brand transition-colors"
         >
           View Full Rules
+          <ExternalLink className="w-3.5 h-3.5" />
         </motion.a>
       </div>
     </section>
