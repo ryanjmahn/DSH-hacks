@@ -87,6 +87,10 @@
 
   html { scroll-behavior: smooth; }
 
+  /* Clears the fixed nav when jumping to a section via anchor link or
+     scrollIntoView — without this the heading renders right under the header. */
+  section[id] { scroll-margin-top: 88px; }
+
   ::selection {
     background-color: var(--color-brand);
     color: var(--color-paper);

@@ -12,7 +12,7 @@ import FooterSection from "@/components/sections/footer-section";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#1a2153]">
+    <div className="min-h-screen bg-paper">
       <HeroSection />
       <CountdownSection />
       <AboutSection />
