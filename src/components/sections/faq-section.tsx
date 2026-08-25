@@ -43,7 +43,12 @@ const FaqSection = () => {
         <motion.div {...accordionMotion}>
           <Accordion type="single" collapsible className="w-full mt-14 sm:mt-16 max-w-3xl">
             {faqData.map((faq) => (
-              <AccordionItem key={faq.id} value={faq.id} className="border-rule">
+              <AccordionItem key={faq.id} value={faq.id} className="group relative border-rule pl-4 -ml-4">
+                {/* effect 8: left hairline thickens to 2px ochre on row hover */}
+                <span
+                  className="absolute left-0 top-2 bottom-2 w-px bg-rule group-hover:w-0.5 group-hover:bg-ochre transition-all duration-300"
+                  aria-hidden="true"
+                />
                 <AccordionTrigger className="type-title text-left text-umber py-6 hover:text-sienna hover:no-underline [&>svg]:text-umber-soft [&>svg]:size-5">
                   {faq.question}
                 </AccordionTrigger>

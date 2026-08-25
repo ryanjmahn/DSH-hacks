@@ -38,7 +38,7 @@ const RegisterNow = () => {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-umber text-umber px-9 py-4 type-meta hover:border-sienna hover:text-sienna transition-colors"
+              className="btn-wipe inline-flex items-center gap-2 border border-umber text-umber px-9 py-4 type-meta"
             >
               Join the Discord
               <ExternalLink className="w-3.5 h-3.5" />

@@ -58,13 +58,19 @@ function ScheduleRow({
   return (
     <motion.div
       {...motionProps}
-      className={`group relative grid grid-cols-[4rem_1fr] gap-x-5 sm:gap-x-8 pb-10 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
+      className={`group relative grid grid-cols-[4rem_1fr] gap-x-5 sm:gap-x-8 pb-10 pl-3 -ml-3 ${isLast ? "" : "border-b border-rule"} pt-8 first:pt-0`}
     >
       {/* spine — centered under the fixed-width numeral column, so it always
           lines up with the node marker regardless of digit width */}
       {!isLast && (
-        <span className="absolute left-8 top-16 bottom-0 w-px bg-rule" aria-hidden="true" />
+        <span className="absolute left-11 top-16 bottom-0 w-px bg-rule" aria-hidden="true" />
       )}
+
+      {/* effect 8: left hairline thickens to 2px ochre on row hover */}
+      <span
+        className="absolute left-0 top-2 bottom-10 w-px bg-rule group-hover:w-0.5 group-hover:bg-ochre transition-all duration-300"
+        aria-hidden="true"
+      />
 
       <div className="w-16 shrink-0 flex flex-col items-center gap-3 pt-1">
         <Numeral n={index + 1} />
@@ -105,7 +111,7 @@ const ScheduleSection = () => {
           href="https://dsh-hacks-v2.devpost.com/rules"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex mt-14 sm:ml-[6vw] items-center gap-2 border border-umber text-umber px-8 py-3.5 type-meta hover:border-sienna hover:text-sienna transition-colors"
+          className="btn-wipe inline-flex mt-14 sm:ml-[6vw] items-center gap-2 border border-umber text-umber px-8 py-3.5 type-meta"
         >
           View Full Rules
           <ExternalLink className="w-3.5 h-3.5" />

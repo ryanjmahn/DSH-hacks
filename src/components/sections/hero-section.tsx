@@ -58,7 +58,7 @@ const Navbar = () => {
           <button
             onClick={() => setIsMenuOpen(true)}
             aria-label="Open menu"
-            className="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-rule text-umber hover:border-sienna hover:text-sienna transition-colors"
+            className="btn-wipe lg:hidden inline-flex h-10 w-10 items-center justify-center border border-rule text-umber"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -76,7 +76,7 @@ const Navbar = () => {
           <button
             onClick={() => setIsMenuOpen(false)}
             aria-label="Close menu"
-            className="w-10 h-10 flex items-center justify-center border border-rule text-umber hover:border-sienna hover:text-sienna transition-colors"
+            className="btn-wipe w-10 h-10 flex items-center justify-center border border-rule text-umber"
           >
             <X className="w-5 h-5" />
           </button>
@@ -279,7 +279,7 @@ export default function HeroSection() {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-umber text-umber px-8 py-3.5 type-meta inline-flex items-center gap-2 hover:border-sienna hover:text-sienna transition-colors"
+              className="btn-wipe border border-umber text-umber px-8 py-3.5 type-meta inline-flex items-center gap-2"
             >
               Join Discord
               <ExternalLink className="w-4 h-4" />

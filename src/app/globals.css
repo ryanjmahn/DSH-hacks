@@ -285,6 +285,33 @@
     background-repeat: repeat;
   }
 
+  /* Effect 8 (part 2): secondary/outline buttons fill via a left-to-right
+     wipe on hover, not a color fade. One shared class, applied on top of
+     each button's existing border/text/padding classes. */
+  .btn-wipe {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-wipe::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-sienna);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .btn-wipe:hover {
+    color: var(--color-plaster);
+    border-color: var(--color-sienna);
+  }
+  .btn-wipe:hover::before {
+    transform: scaleX(1);
+  }
+
   @keyframes bob {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-10px) rotate(1.5deg); }

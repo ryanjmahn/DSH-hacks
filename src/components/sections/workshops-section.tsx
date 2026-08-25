@@ -49,7 +49,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
               aria-label="Previous workshops"
-              className="w-11 h-11 border border-umber text-umber flex items-center justify-center hover:border-sienna hover:text-sienna transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="btn-wipe w-11 h-11 border border-umber text-umber flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -57,7 +57,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
               disabled={page === pageCount - 1}
               aria-label="Next workshops"
-              className="w-11 h-11 border border-umber text-umber flex items-center justify-center hover:border-sienna hover:text-sienna transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="btn-wipe w-11 h-11 border border-umber text-umber flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -111,7 +111,7 @@ const WorkshopsSection = () => {
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-umber text-umber px-8 py-3.5 type-meta hover:border-sienna hover:text-sienna transition-colors inline-flex items-center gap-2"
+            className="btn-wipe border border-umber text-umber px-8 py-3.5 type-meta inline-flex items-center gap-2"
           >
             Subscribe on YouTube
             <ExternalLink className="w-3.5 h-3.5" />

@@ -76,7 +76,7 @@ const V1Section = () => {
             href="https://dsh-hacks-v1.devpost.com/project-gallery"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 border border-umber text-umber px-8 py-3.5 type-meta hover:border-sienna hover:text-sienna transition-colors"
+            className="btn-wipe inline-flex items-center justify-center gap-2 border border-umber text-umber px-8 py-3.5 type-meta"
           >
             Browse all 283 projects
             <ExternalLink className="w-3.5 h-3.5" />
