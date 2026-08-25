@@ -102,6 +102,21 @@ export function SpecimenKey({ index, className }: { index: number; className?: s
 }
 
 /** Oversized statistic — the visual furniture of the site. */
+/** Splits "$30K+" into {prefix:"$", target:30, suffix:"K+", hasComma:false},
+ *  "1,294" into {prefix:"", target:1294, suffix:"", hasComma:true}, etc. —
+ *  the digits run is what animates; everything else is fixed decoration
+ *  reapplied around it every frame. Comma formatting only applies to
+ *  intermediate frames if the *original* string used one, so a target like
+ *  "1300+" (no comma) never briefly grows one mid-count. */
+function parseStatValue(value: string) {
+  const match = value.match(/^(\D*)([\d,]+)(.*)$/);
+  if (!match) return null;
+  const [, prefix, numStr, suffix] = match;
+  return { prefix, suffix, hasComma: numStr.includes(","), target: parseInt(numStr.replace(/,/g, ""), 10) };
+}
+
+const COUNT_UP_MS = 1200;
+
 export function StatNumeral({
   value,
   label,
@@ -114,9 +129,37 @@ export function StatNumeral({
   delay?: number;
 }) {
   const motionProps = useFadeRise(delay);
+  const reduceMotion = useReducedMotion();
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.4 });
+  // Server-rendered value is the real, final string from the start — this is
+  // the bug fix the brief calls for. The count-up below only ever plays
+  // AFTER that correct value has already painted; it's a bonus flourish on
+  // top of already-correct markup, never the thing standing in for it.
+  const [display, setDisplay] = useState(value);
+  const parsed = parseStatValue(value);
+
+  useEffect(() => {
+    if (!inView || reduceMotion || !parsed) return;
+    let raf: number;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / COUNT_UP_MS);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      const current = Math.floor(eased * parsed.target);
+      const numStr = parsed.hasComma ? current.toLocaleString("en-US") : String(current);
+      setDisplay(`${parsed.prefix}${numStr}${parsed.suffix}`);
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setDisplay(value); // land on the exact original string, no rounding drift
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, reduceMotion]);
+
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", className)}>
-      <span className="type-display text-ink tabular-nums">{value}</span>
+      <span ref={ref} className="type-display text-ink tabular-nums">{display}</span>
       <span className="type-meta text-ink-muted mt-2">{label}</span>
     </motion.div>
   );
