@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /* Shared building blocks for the sitewide redesign (hero excluded — it has its
@@ -25,7 +25,11 @@ export function useFadeRise(delay = 0) {
 }
 
 /** Eyebrow (serif italic) + display-caps heading. The recurring pattern that
- *  makes every section read as the same designed system. */
+ *  makes every section read as the same designed system.
+ *
+ *  Motion (Part 6, effect 3 — "sets the page rhythm"): the eyebrow fades in
+ *  first; 150ms later the heading slides up from behind a clip mask rather
+ *  than just fading, so it reads as being revealed, not appearing. */
 export function SectionHeading({
   eyebrow,
   title,
@@ -37,13 +41,39 @@ export function SectionHeading({
   align?: "left" | "right" | "center";
   className?: string;
 }) {
-  const motionProps = useFadeRise();
+  const reduceMotion = useReducedMotion();
   const alignClass = align === "right" ? "text-right items-end" : align === "center" ? "text-center items-center" : "text-left items-start";
+
+  // Observed on the wrapper, not the heading itself: the heading's own
+  // *hidden* state is translated 110% out of place, which can itself drop
+  // its visible ratio below the trigger threshold — a chicken-and-egg loop
+  // where the transform meant to reveal it stops it from ever being seen.
+  // The wrapper's geometry is untouched by the child's transform, so it's
+  // a stable, predictable trigger.
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+
   return (
-    <motion.div {...motionProps} className={cn("flex flex-col", alignClass, className)}>
-      <p className="type-eyebrow text-sienna">{eyebrow}</p>
-      <h2 className="type-display text-ink mt-1">{title}</h2>
-    </motion.div>
+    <div ref={ref} className={cn("flex flex-col", alignClass, className)}>
+      <motion.p
+        initial={reduceMotion ? undefined : { opacity: 0 }}
+        animate={reduceMotion ? undefined : { opacity: inView ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: EASE_OUT }}
+        className="type-eyebrow text-sienna"
+      >
+        {eyebrow}
+      </motion.p>
+      <div className="overflow-hidden">
+        <motion.h2
+          initial={reduceMotion ? undefined : { y: "110%" }}
+          animate={reduceMotion ? undefined : { y: inView ? "0%" : "110%" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: EASE_OUT }}
+          className="type-display text-ink mt-1"
+        >
+          {title}
+        </motion.h2>
+      </div>
+    </div>
   );
 }
 
