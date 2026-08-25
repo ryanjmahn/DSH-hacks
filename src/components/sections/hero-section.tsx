@@ -32,13 +32,13 @@ const Navbar = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-paper/90 backdrop-blur-md border-b border-rule shadow-[0_1px_12px_rgba(20,20,32,0.06)]" : "bg-transparent"
+          scrolled ? "bg-plaster/90 backdrop-blur-md border-b border-rule shadow-[0_1px_12px_rgba(61,50,38,0.08)]" : "bg-transparent"
         }`}
       >
         <div className="mx-auto max-w-7xl flex items-center justify-between px-6 sm:px-8 py-5">
-          <a href="#hero" className="flex items-center gap-2.5">
+          <a href="#frontispiece" className="flex items-center gap-2.5">
             <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={30} height={30} className="object-contain" />
-            <span className="font-display text-base font-extrabold uppercase tracking-tight text-ink">
+            <span className="font-display text-base font-extrabold uppercase tracking-tight text-umber">
               DSH Hacks
             </span>
           </a>
@@ -48,7 +48,7 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-label text-ink-muted hover:text-brand transition-colors"
+                className="type-meta text-umber-soft hover:text-sienna transition-colors"
               >
                 {link.label}
               </a>
@@ -58,7 +58,7 @@ const Navbar = () => {
           <button
             onClick={() => setIsMenuOpen(true)}
             aria-label="Open menu"
-            className="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-rule text-ink hover:border-brand hover:text-brand transition-colors"
+            className="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-rule text-umber hover:border-sienna hover:text-sienna transition-colors"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -69,14 +69,14 @@ const Navbar = () => {
         initial={false}
         animate={isMenuOpen ? { x: 0 } : { x: "100%" }}
         transition={{ type: "spring", stiffness: 320, damping: 32 }}
-        className="fixed inset-0 z-50 bg-paper flex flex-col lg:hidden"
+        className="fixed inset-0 z-50 bg-plaster flex flex-col lg:hidden"
         aria-hidden={!isMenuOpen}
       >
         <div className="flex justify-end p-6">
           <button
             onClick={() => setIsMenuOpen(false)}
             aria-label="Close menu"
-            className="w-10 h-10 flex items-center justify-center border border-rule text-ink hover:border-brand hover:text-brand transition-colors"
+            className="w-10 h-10 flex items-center justify-center border border-rule text-umber hover:border-sienna hover:text-sienna transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -87,7 +87,7 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="font-display text-3xl font-extrabold uppercase tracking-tight text-ink hover:text-brand transition-colors"
+              className="font-display text-3xl font-extrabold uppercase tracking-tight text-umber hover:text-sienna transition-colors"
             >
               {link.label}
             </a>
@@ -98,7 +98,7 @@ const Navbar = () => {
   );
 };
 
-const HeroPlates = () => (
+const DedicationPlates = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
     {/* secondary collage layer — branching nerve-tree plate, upper right */}
     <div
@@ -114,39 +114,57 @@ const HeroPlates = () => (
         <img
           src="/plates/hero-accent.jpg"
           alt=""
-          className="w-full h-full object-cover grayscale"
-          style={{ filter: "contrast(0.8) brightness(1.4)" }}
+          className="w-full h-full object-cover"
+          style={{ filter: "grayscale(1) contrast(0.8) brightness(1.4)" }}
         />
       </picture>
     </div>
 
-    {/* primary plate — full anatomical figure */}
+    {/* primary plate — the walking écorché figure (Vesalius tradition, 1568).
+        Mask center sits low (65%) with a wide vertical radius so presence is
+        essentially zero across the top ~20% of this section — reading as a
+        gradual reveal continuing from Beat 1's clean plaster rather than a
+        hard seam, per the brief: "Beat 2's plate begins fading in near the
+        bottom of Beat 1." A literal cross-section bleed was considered but
+        would need dropping overflow-hidden on the section (horizontal-scroll
+        risk) and could paint over the Frontispiece's own footer content.
+
+        The ochre wash and plaster texture live INSIDE this same masked box —
+        the first version had them as unmasked siblings covering the full
+        rectangle, which produced the exact "box" bug found earlier in
+        BleachedPlate: a uniform tint/texture starting abruptly at the section
+        edge regardless of how softly the image itself faded in. */}
     <div
-      className="absolute inset-0 opacity-[0.45]"
+      className="absolute inset-0 opacity-[0.42]"
       style={{
-        WebkitMaskImage: "radial-gradient(ellipse 62% 76% at 50% 40%, black 0%, black 28%, transparent 76%)",
-        maskImage: "radial-gradient(ellipse 62% 76% at 50% 40%, black 0%, black 28%, transparent 76%)",
+        WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 50% 65%, black 0%, black 20%, transparent 68%)",
+        maskImage: "radial-gradient(ellipse 62% 70% at 50% 65%, black 0%, black 20%, transparent 68%)",
       }}
     >
       <picture>
-        <source media="(min-width: 768px)" srcSet="/plates/hero-desktop.webp" type="image/webp" />
-        <source media="(min-width: 768px)" srcSet="/plates/hero-desktop.jpg" />
-        <source srcSet="/plates/hero-mobile.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/plates/beat2-desktop.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/plates/beat2-desktop.jpg" />
+        <source srcSet="/plates/beat2-mobile.webp" type="image/webp" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/plates/hero-mobile.jpg"
+          src="/plates/beat2-mobile.jpg"
           alt=""
           fetchPriority="high"
-          className="w-full h-full object-cover grayscale"
-          style={{ objectPosition: "50% 18%", filter: "contrast(0.82) brightness(1.32)" }}
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "50% 30%", filter: "grayscale(1) contrast(0.8) brightness(1.34)" }}
         />
       </picture>
+
+      {/* warm ochre wash — aged-plaster cast, never a cool tint */}
+      <div className="absolute inset-0 bg-ochre mix-blend-color opacity-[0.14]" />
+
+      {/* nested inside the 0.42-opacity plate wrapper, so its own opacity is
+          boosted to keep the mottling legible at its actual painted weight */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundImage: "var(--plaster-texture-svg)", mixBlendMode: "multiply", opacity: 0.4 }}
+      />
     </div>
-
-    {/* faint periwinkle cast — never full saturation */}
-    <div className="absolute inset-0 bg-brand mix-blend-color opacity-[0.05]" />
-
-    <div className="grain-overlay" />
   </div>
 );
 
@@ -156,49 +174,52 @@ export default function HeroSection() {
   const animate = reduceMotion ? undefined : { opacity: 1, y: 0 };
 
   return (
-    <div className="bg-paper">
-      <link rel="preload" as="image" href="/plates/hero-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
-      <link rel="preload" as="image" href="/plates/hero-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
+    <div className="bg-plaster">
+      <link rel="preload" as="image" href="/plates/beat2-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
+      <link rel="preload" as="image" href="/plates/beat2-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
 
       <Navbar />
 
-      <section id="hero" className="relative min-h-screen overflow-hidden bg-paper text-ink">
-        <HeroPlates />
+      {/* Beat 2 — The Dedication. Left margin echoes the Frontispiece's left
+          pilaster (~22% from edge) so the two beats read as one continuous
+          space, not two unrelated sections. */}
+      <section id="hero" className="relative min-h-screen overflow-hidden bg-plaster text-umber">
+        <DedicationPlates />
 
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 min-h-screen flex flex-col justify-center pt-28 pb-16">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:pl-[14vw] sm:pr-8 min-h-screen flex flex-col justify-center pt-28 pb-16">
           <motion.p
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6 }}
-            className="font-serif-eyebrow text-lg sm:text-xl text-brand-ink"
+            className="type-eyebrow text-sienna text-lg sm:text-xl"
           >
-            AI × Healthcare
+            a global
           </motion.p>
 
-          <motion.h1
+          <motion.h2
             initial={initial}
             animate={animate}
             transition={{ duration: 0.7, delay: 0.08 }}
-            className="font-display font-black uppercase leading-[0.82] tracking-[-0.03em] mt-3"
+            className="font-display font-extrabold uppercase leading-[0.85] tracking-[-0.03em] mt-3"
           >
-            <span className="block text-[clamp(3.25rem,11vw,9rem)] text-ink">DSH Hacks</span>
-            <span className="block text-[clamp(3.25rem,11vw,9rem)] text-brand-ink pl-[6vw] sm:pl-[10vw]">V2</span>
-          </motion.h1>
+            <span className="block text-[clamp(3.25rem,11vw,10rem)] text-umber">Gathering</span>
+            <span className="block text-[clamp(3.25rem,11vw,10rem)] text-umber pl-[6vw] sm:pl-[9vw]">of builders</span>
+          </motion.h2>
 
           <motion.p
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6, delay: 0.16 }}
-            className="font-serif-eyebrow text-lg sm:text-xl text-ink-muted mt-7 max-w-sm sm:ml-[12vw]"
+            className="type-eyebrow text-umber-soft text-lg sm:text-xl mt-7 max-w-md sm:ml-[9vw]"
           >
-            Transforming healthcare access through AI
+            1,294 hackers. 70+ countries. One question.
           </motion.p>
 
           <motion.div
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6, delay: 0.24 }}
-            className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-10 text-label text-ink-muted"
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-10 type-meta text-umber-soft"
           >
             {metaItems.map((item, i) => (
               <React.Fragment key={item}>
@@ -218,7 +239,7 @@ export default function HeroSection() {
               href="https://dsh-hacks-v2.devpost.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-brand text-paper px-8 py-3.5 text-label inline-flex items-center gap-2 hover:bg-brand-deep transition-colors"
+              className="bg-lapis text-plaster px-8 py-3.5 type-meta inline-flex items-center gap-2 hover:bg-lapis-deep transition-colors"
             >
               Register on Devpost
               <ArrowRight className="w-4 h-4" />
@@ -227,7 +248,7 @@ export default function HeroSection() {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-ink text-ink px-8 py-3.5 text-label inline-flex items-center gap-2 hover:border-brand hover:text-brand transition-colors"
+              className="border border-umber text-umber px-8 py-3.5 type-meta inline-flex items-center gap-2 hover:border-sienna hover:text-sienna transition-colors"
             >
               Join Discord
               <ExternalLink className="w-4 h-4" />
@@ -236,7 +257,7 @@ export default function HeroSection() {
               href="/dsh-hacks-v2-flyer.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-label text-ink-muted inline-flex items-center gap-1.5 underline underline-offset-4 decoration-rule hover:text-brand hover:decoration-brand transition-colors px-1 py-3.5"
+              className="type-meta text-umber-soft inline-flex items-center gap-1.5 underline underline-offset-4 decoration-rule hover:text-sienna hover:decoration-sienna transition-colors px-1 py-3.5"
             >
               View Flyer
               <ExternalLink className="w-3.5 h-3.5" />
