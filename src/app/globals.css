@@ -3,18 +3,25 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* The folio palette — an engraved scientific folio: black ink on white
-     paper, blue as the second (rubrication) ink. Reference these everywhere;
-     no hardcoded hex in components. */
-  --color-paper: #fcfcfa;         /* page ground — plate paper, not screen white */
-  --color-paper-alt: #f1f1ee;     /* alternating light sections */
-  --color-ink: #0b0b0f;           /* text on light grounds; ground for inverted sections */
-  --color-ink-soft: #57575f;      /* secondary text, captions */
-  --color-rubric: #3636d3;        /* the second ink — rationed, max two per viewport */
+  /* The folio palette — INVERTED. The engraved folio now runs dark grounds
+     with white and blue type; three light sections (About, V1 Recap,
+     Sponsors) give relief. Token names are unchanged; values and roles
+     flip. Reference these everywhere; no hardcoded hex in components. */
+  --color-ink: #0b0b0f;           /* PRIMARY PAGE GROUND (was: dark type) */
+  --color-ink-alt: #15151c;       /* adjacent dark sections needing separation */
+  --color-paper: #fcfcfa;         /* PRIMARY TYPE COLOR (was: page ground) */
+  --color-paper-dim: #c4c4cc;     /* secondary text on dark grounds */
+  --color-paper-alt: #f1f1ee;     /* the light relief sections' alt ground */
+  --color-ink-soft: #57575f;      /* secondary text on the light sections */
+  --color-rubric: #3636d3;        /* blue as fill only on dark (CTA); text/line-art on light */
   --color-rubric-deep: #2a2aa8;   /* rubric hover states */
-  --color-rubric-pale: #b9b9ee;   /* rubric on --ink grounds, where full saturation fails contrast */
-  --color-rule: #d6d6dc;          /* hairlines + line art on light grounds */
-  --color-rule-inverse: #2a2a33;  /* hairlines + line art on --ink grounds */
+  --color-rubric-light: #9c9cf2;  /* blue for text + line art on dark grounds (rubric fails AA there) */
+  --color-rubric-pale: var(--color-rubric-light); /* legacy alias */
+  --color-rule: #31313c;          /* default hairline — dark grounds (dark is primary now) */
+  --color-rule-dark: #31313c;     /* hairlines on dark */
+  --color-rule-light: #d6d6dc;    /* hairlines on light */
+  --color-rule-inverse: #d6d6dc;  /* legacy: now the LIGHT-ground hairline */
+  --color-line-dark: #4a4a58;     /* line-art graphics on dark — brighter than a hairline so engraving stays readable */
 
   /* Legacy aliases — every component still written against the previous
      fresco-pigment names resolves through here, so this one file is the
@@ -40,25 +47,25 @@
   --color-brand-ink: var(--color-rubric);
 
   /* shadcn/radix primitives kept for the accordion + any future ui/ components */
-  --color-background: var(--color-paper);
-  --color-foreground: var(--color-ink);
-  --color-card: var(--color-paper);
-  --color-card-foreground: var(--color-ink);
-  --color-popover: var(--color-paper);
-  --color-popover-foreground: var(--color-ink);
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-paper);
+  --color-card: var(--color-ink-alt);
+  --color-card-foreground: var(--color-paper);
+  --color-popover: var(--color-ink-alt);
+  --color-popover-foreground: var(--color-paper);
   --color-primary: var(--color-rubric);
   --color-primary-foreground: var(--color-paper);
-  --color-secondary: var(--color-paper-alt);
-  --color-secondary-foreground: var(--color-ink);
-  --color-muted: var(--color-paper-alt);
-  --color-muted-foreground: var(--color-ink-soft);
-  --color-accent: var(--color-paper-alt);
-  --color-accent-foreground: var(--color-ink);
+  --color-secondary: var(--color-ink-alt);
+  --color-secondary-foreground: var(--color-paper);
+  --color-muted: var(--color-ink-alt);
+  --color-muted-foreground: var(--color-paper-dim);
+  --color-accent: var(--color-ink-alt);
+  --color-accent-foreground: var(--color-paper);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
   --color-border: var(--color-rule);
   --color-input: var(--color-rule);
-  --color-ring: var(--color-rubric);
+  --color-ring: var(--color-rubric-light);
 
   /* Typography families (§3). Display + body: Archivo, a humanist grotesque in
      the Akzidenz lineage (free stand-in for Söhne Breit / Founders Grotesk),
@@ -133,20 +140,20 @@
   section[id] { scroll-margin-top: 88px; }
 
   ::selection {
-    background-color: var(--color-brand);
+    background-color: var(--color-rubric);
     color: var(--color-paper);
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
     line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    color: var(--color-ink);
+    color: var(--color-paper);
     line-height: 0.9;
     text-transform: uppercase;
     letter-spacing: -0.025em;
@@ -155,7 +162,7 @@
   h1 { font-size: 4rem; font-weight: 800; }
   h2 { font-size: 2.5rem; font-weight: 800; }
   h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
-  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-ink); }
+  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-paper); }
   a  { color: inherit; text-decoration: none; }
 
   /* Hero legacy classes — kept verbatim so the approved hero renders unchanged.
@@ -193,15 +200,24 @@
     h3 { font-size: 1.75rem; }
   }
 
-  /* Visible focus ring on every interactive element — brand outline, no exceptions */
+  /* Visible focus ring — --rubric-light on the dark grounds (primary), no
+     transition. The three light relief sections carry bg-paper / bg-paper-alt
+     on the section element, so scope a --rubric ring inside them. */
   a:focus-visible,
   button:focus-visible,
   [role="button"]:focus-visible,
   input:focus-visible,
   summary:focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-rubric-light);
     outline-offset: 3px;
     border-radius: 2px;
+  }
+  [class*="bg-paper"] a:focus-visible,
+  [class*="bg-paper"] button:focus-visible,
+  [class*="bg-paper"] [role="button"]:focus-visible,
+  [class*="bg-paper"] input:focus-visible,
+  [class*="bg-paper"] summary:focus-visible {
+    outline-color: var(--color-rubric);
   }
 }
 
@@ -270,7 +286,7 @@
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     font-size: clamp(1.5rem, 2.6vw, 1.875rem);
-    color: var(--color-ink-soft);
+    color: var(--color-paper-dim); /* dark-ground default; light sections override with text-ink-soft */
   }
 
   .grain-overlay {

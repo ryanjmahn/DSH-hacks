@@ -28,7 +28,7 @@ const SponsorsSection = () => {
   return (
     <section id="sponsors" className="relative bg-paper-alt coffer-texture py-24 text-ink sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <SectionHeading eyebrow="Who supports us" title="Sponsors" align="center" className="mx-auto" />
+        <SectionHeading eyebrow="Who supports us" title="Sponsors" align="center" tone="ink" className="mx-auto" />
 
         <motion.p
           {...introMotion}

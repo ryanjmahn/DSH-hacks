@@ -52,7 +52,7 @@ const Vault = ({ scale }: { scale: ReturnType<typeof useTransform> | undefined }
 const Ornament = () => (
   <div className="relative flex w-full max-w-[16rem] items-center justify-center" aria-hidden="true">
     <span className="h-px w-full bg-rule" />
-    <span className="absolute h-2 w-2 rotate-45 bg-ink" />
+    <span className="absolute h-2 w-2 rotate-45 bg-paper-dim" />
   </div>
 );
 
@@ -75,17 +75,17 @@ export default function FrontispieceSection() {
     <section
       ref={sectionRef}
       id="frontispiece"
-      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-paper px-6 py-20 text-ink sm:px-8"
+      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-paper px-6 py-20 text-paper sm:px-8"
     >
       <Vault scale={reduceMotion ? undefined : vaultScale} />
       <div className="grain-overlay" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        <motion.p {...up(0.35)} className="type-meta text-ink-soft !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
+        <motion.p {...up(0.35)} className="type-meta text-paper-dim !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
           DeltaForge Hacks &times; NXT Horizon &times; STEMise
         </motion.p>
 
-        <motion.h1 {...up(0.43)} className="type-display mt-3 text-ink !text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
+        <motion.h1 {...up(0.43)} className="type-display mt-3 text-paper !text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
           DSH Hacks
           <br />
           V2
@@ -95,18 +95,18 @@ export default function FrontispieceSection() {
           <Ornament />
         </motion.div>
 
-        <motion.p {...up(0.59)} className="type-eyebrow mt-3 text-ink !text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
+        <motion.p {...up(0.59)} className="type-eyebrow mt-3 text-rubric-light !text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
           AI &times; Healthcare
         </motion.p>
 
-        <motion.p {...up(0.67)} className="type-mega mt-3 text-ink !text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
+        <motion.p {...up(0.67)} className="type-mega mt-3 text-paper !text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
           Nov 7 2026
         </motion.p>
 
         <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
           <motion.div
             {...up(0.75)}
-            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-ink-soft !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-paper-dim !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
           >
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
@@ -126,7 +126,7 @@ export default function FrontispieceSection() {
             Register on Devpost
           </motion.a>
 
-          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-ink-soft !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
+          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-paper-dim !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
             Submissions close November 7
           </motion.p>
 

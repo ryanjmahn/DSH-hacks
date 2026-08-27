@@ -12,32 +12,34 @@ import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
 import { SpringingLine } from "@/components/sections/design-system";
 
+/* Inverted color system: dark grounds are primary, three light relief
+   sections (About, V1 Recap, Sponsors). Each SpringingLine carries the
+   ground of its own gap so there's never a stripe of the opposite tone. */
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen bg-ink">
       <FrontispieceSection />
-      {/* no divider here — Beat 1/Beat 2 are explicitly one continuous
-          space per the brief, not a bay boundary */}
+      {/* no divider — Beat 1/Beat 2 are one continuous space */}
       <HeroSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <CountdownSection />
-      <SpringingLine />
+      <SpringingLine ground="light" />
       <AboutSection />
-      <SpringingLine />
+      <SpringingLine ground="light" />
       <V1Section />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <ScheduleSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <PrizesSection />
-      <SpringingLine />
+      <SpringingLine ground="light" />
       <SponsorsSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <WorkshopsSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <RegisterSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <FaqSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <FooterSection />
     </div>
   );

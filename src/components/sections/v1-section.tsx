@@ -70,7 +70,7 @@ function WinnerRow({ index, name, detail, isLast }: { index: number; name: strin
       {...motionProps}
       className={`group grid grid-cols-[auto_1fr] gap-x-5 py-7 sm:gap-x-8 ${isLast ? "" : "border-b border-rule"}`}
     >
-      <SpecimenKey index={index} />
+      <SpecimenKey index={index} className="text-ink-soft" />
       <div>
         <LeaderLine className="mb-2 w-8" />
         <h3 className="type-title text-ink">{name}</h3>
@@ -89,7 +89,7 @@ const V1Section = () => {
   return (
     <section id="v1" className="relative bg-paper py-24 text-ink sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
+        <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" tone="ink" />
 
         <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-ink-soft">
           Our first hackathon brought together students from around the world to build AI

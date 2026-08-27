@@ -151,7 +151,7 @@ function gearTeeth(cx: number, cy: number, r: number, n: number, depth: number) 
 
 export function GearTrain({
   className,
-  stroke = "var(--color-rule)",
+  stroke = "var(--color-line-dark)",
 }: {
   className?: string;
   stroke?: string;
@@ -199,7 +199,7 @@ function spiralPath(cx: number, cy: number, turns: number, a: number, b: number,
 
 export function VortexStudy({
   className,
-  stroke = "var(--color-rule)",
+  stroke = "var(--color-line-dark)",
 }: {
   className?: string;
   stroke?: string;
@@ -223,7 +223,7 @@ export function VortexStudy({
 
 export function GoldenSection({
   className,
-  stroke = "var(--color-rule)",
+  stroke = "var(--color-line-dark)",
 }: {
   className?: string;
   stroke?: string;
@@ -258,7 +258,7 @@ export function Polyhedron({
   kind = "rhombicuboctahedron",
   size = 140,
   className,
-  stroke = "var(--color-rule)",
+  stroke = "var(--color-line-dark)",
 }: {
   kind?: PolyhedronKind;
   size?: number;

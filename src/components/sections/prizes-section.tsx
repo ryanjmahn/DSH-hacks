@@ -23,8 +23,8 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
     >
       <SpecimenKey index={index} />
       <LeaderLine className="mt-2 w-8" />
-      <h3 className="type-title mt-2 break-words text-ink">{name}</h3>
-      <p className="type-body mt-2 leading-relaxed text-ink-soft">{detail}</p>
+      <h3 className="type-title mt-2 break-words text-paper">{name}</h3>
+      <p className="type-body mt-2 leading-relaxed text-paper-dim">{detail}</p>
     </motion.div>
   );
 }
@@ -34,7 +34,7 @@ const PrizesSection = () => {
   const labelMotion = useFadeRise();
 
   return (
-    <section id="prizes" className="relative bg-paper-alt py-24 text-ink sm:py-32">
+    <section id="prizes" className="relative bg-ink py-24 text-paper sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What you can win" title="Prizes" align="right" />
 
@@ -44,9 +44,9 @@ const PrizesSection = () => {
         >
           {/* Leonardo / Pacioli wireframe polyhedron — one per tier, static (§5D) */}
           <Polyhedron kind="rhombicuboctahedron" size={132} className="mb-6" />
-          <p className="type-eyebrow text-ink-soft">Winner</p>
-          <p className="type-display mt-2 text-ink">$100 + $100 AoPS</p>
-          <p className="type-body mx-auto mt-4 max-w-xl leading-relaxed text-ink-soft">
+          <p className="type-eyebrow text-paper-dim">Winner</p>
+          <p className="type-display mt-2 text-paper">$100 + $100 AoPS</p>
+          <p className="type-body mx-auto mt-4 max-w-xl leading-relaxed text-paper-dim">
             $100 cash plus a $100 AoPS gift card. More prize announcements will be posted on
             Devpost and in the DSH Hacks Discord. Stay tuned!
           </p>
@@ -60,7 +60,7 @@ const PrizesSection = () => {
           </a>
         </motion.div>
 
-        <motion.p {...labelMotion} className="type-meta mt-16 text-ink-soft sm:mt-20">
+        <motion.p {...labelMotion} className="type-meta mt-16 text-paper-dim sm:mt-20">
           Judged on four components
         </motion.p>
         <div className="mt-6 grid grid-cols-1 border-t border-rule sm:grid-cols-4 sm:divide-x sm:divide-rule">

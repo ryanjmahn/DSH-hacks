@@ -8,13 +8,13 @@ const RegisterNow = () => {
   const copyMotion = useFadeRise(0.15);
 
   return (
-    <section id="register" className="relative overflow-hidden bg-paper py-24 text-ink sm:py-32">
+    <section id="register" className="relative overflow-hidden bg-paper py-24 text-paper sm:py-32">
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 text-center sm:px-8">
-        <SectionHeading eyebrow="Join us" title="Register" align="center" className="mx-auto" />
+        <SectionHeading eyebrow="Join us" title="Register" align="center" eyebrowAccent={false} className="mx-auto" />
 
         <motion.div {...copyMotion} className="mx-auto mt-10 max-w-2xl">
-          <p className="type-body leading-relaxed text-ink-soft">
-            <span className="font-medium text-ink">DSH Hacks</span> is an online event open to
+          <p className="type-body leading-relaxed text-paper-dim">
+            <span className="font-medium text-rubric-light">DSH Hacks</span> is an online event open to
             students aged 13+. Whether you want to compete for prizes or just explore workshops
             and connect with the community, everyone is welcome!
           </p>
@@ -32,7 +32,7 @@ const RegisterNow = () => {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-wipe inline-flex items-center gap-2 border border-ink px-9 py-4 type-meta text-ink"
+              className="btn-wipe inline-flex items-center gap-2 border border-paper px-9 py-4 type-meta text-paper"
             >
               Join the Discord
               <ExternalLink className="h-3.5 w-3.5" />

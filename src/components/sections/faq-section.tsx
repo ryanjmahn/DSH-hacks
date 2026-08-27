@@ -37,7 +37,7 @@ const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-paper py-24 text-ink sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-paper py-24 text-paper sm:py-32">
       {/* Leonardo water-turbulence study in the margin — static (§5B) */}
       <VortexStudy className="pointer-events-none absolute right-4 top-28 hidden opacity-70 lg:block" />
 
@@ -50,13 +50,13 @@ const FaqSection = () => {
               <AccordionItem key={faq.id} value={faq.id} className="group relative -ml-4 border-rule pl-4">
                 {/* §8: left hairline thickens to 2px --rubric on hover */}
                 <span
-                  className="absolute bottom-2 left-0 top-2 w-px bg-rule transition-all duration-300 group-hover:w-0.5 group-hover:bg-rubric"
+                  className="absolute bottom-2 left-0 top-2 w-px bg-rule transition-all duration-300 group-hover:w-0.5 group-hover:bg-rubric-light"
                   aria-hidden="true"
                 />
-                <AccordionTrigger className="type-title py-6 text-left text-ink hover:text-ink-soft hover:no-underline [&>svg]:size-5 [&>svg]:text-ink-soft">
+                <AccordionTrigger className="type-title py-6 text-left text-paper hover:text-paper-dim hover:no-underline [&>svg]:size-5 [&>svg]:text-paper-dim">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="type-body pb-6 pt-0 leading-relaxed text-ink-soft">
+                <AccordionContent className="type-body pb-6 pt-0 leading-relaxed text-paper-dim">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

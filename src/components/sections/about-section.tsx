@@ -18,7 +18,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="relative bg-paper py-24 text-ink sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <SectionHeading eyebrow="Who we are" title="About" />
+        <SectionHeading eyebrow="Who we are" title="About" tone="ink" />
 
         <div className="mt-14 grid items-start gap-12 sm:mt-20 lg:grid-cols-2 lg:gap-20">
           <div>

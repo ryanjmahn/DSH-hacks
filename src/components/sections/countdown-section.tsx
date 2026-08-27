@@ -53,13 +53,13 @@ function TimeSegment({
   return (
     <div
       className={`flex min-w-[6rem] flex-1 flex-col items-center py-2 ${
-        isLast ? "" : "sm:border-r sm:border-rule-inverse"
+        isLast ? "" : "sm:border-r sm:border-rule"
       }`}
     >
       <span className="font-mono font-medium tabular-nums leading-none text-paper text-[length:var(--type-display)]">
         {value === null ? "—" : label === "Days" ? value : String(value).padStart(2, "0")}
       </span>
-      <span className="mt-3 font-serif text-sm uppercase tracking-[0.15em] text-paper/55">
+      <span className="mt-3 font-serif text-sm uppercase tracking-[0.15em] text-paper-dim">
         {label}
       </span>
     </div>
@@ -93,7 +93,7 @@ const CountdownSection = () => {
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Time remaining" title="Countdown" align="right" tone="paper" />
 
-        <div className="mt-16 flex flex-wrap border-t border-b border-rule-inverse sm:mt-20 sm:flex-nowrap">
+        <div className="mt-16 flex flex-wrap border-t border-b border-rule sm:mt-20 sm:flex-nowrap">
           {timeUnits.map((unit, i) => (
             <TimeSegment
               key={unit.label}
@@ -104,7 +104,7 @@ const CountdownSection = () => {
           ))}
         </div>
 
-        <p className="type-meta mt-8 text-center text-paper/55">
+        <p className="type-meta mt-8 text-center text-paper-dim">
           Submissions close November 7, 2026
         </p>
       </div>

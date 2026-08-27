@@ -34,18 +34,24 @@ export function SectionHeading({
   eyebrow,
   title,
   align = "left",
-  tone = "ink",
+  tone = "paper",
+  eyebrowAccent = true,
   className,
 }: {
   eyebrow: string;
   title: string;
   align?: "left" | "right" | "center";
   tone?: "ink" | "paper";
+  eyebrowAccent?: boolean;
   className?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const alignClass = align === "right" ? "text-right items-end" : align === "center" ? "text-center items-center" : "text-left items-start";
-  const eyebrowTone = tone === "paper" ? "text-paper/70" : "text-ink-soft";
+  // On dark grounds the serif eyebrow is the section heading's one blue accent
+  // (§ rubrication). eyebrowAccent=false where the section already spends its
+  // two blue slots elsewhere (e.g. Register: CTA + ECG spike).
+  const eyebrowTone =
+    tone === "paper" ? (eyebrowAccent ? "text-rubric-light" : "text-paper-dim") : "text-ink-soft";
   const titleTone = tone === "paper" ? "text-paper" : "text-ink";
 
   // Observed on the wrapper, not the heading itself: the heading's own
@@ -350,7 +356,7 @@ export function CofferParallaxBg() {
  *  the same architectural drawing gesture at different scales. pathLength
  *  doesn't move the element's own box, so (unlike the heading reveal) a
  *  plain whileInView on the paths themselves is safe here. */
-export function SpringingLine() {
+export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }) {
   const reduceMotion = useReducedMotion();
   const half = reduceMotion
     ? {}
@@ -360,11 +366,15 @@ export function SpringingLine() {
         viewport: { once: true, amount: 0.8 },
         transition: { duration: 0.8, ease: EASE_OUT },
       };
+  // the divider carries the ground of its own gap so it never shows a stripe
+  // of the opposite tone between two same-ground sections
+  const bg = ground === "light" ? "bg-paper" : "bg-ink";
+  const stroke = ground === "light" ? "var(--color-rule-light)" : "var(--color-line-dark)";
   return (
-    <div className="w-full h-6 sm:h-8 overflow-hidden" aria-hidden="true">
+    <div className={cn("w-full h-6 sm:h-8 overflow-hidden", bg)} aria-hidden="true">
       <svg viewBox="0 0 1000 24" className="w-full h-full" preserveAspectRatio="none">
-        <motion.path d="M 500 18 Q 250 10 0 4" stroke="var(--color-rule)" strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
-        <motion.path d="M 500 18 Q 750 10 1000 4" stroke="var(--color-rule)" strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
+        <motion.path d="M 500 18 Q 250 10 0 4" stroke={stroke} strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
+        <motion.path d="M 500 18 Q 750 10 1000 4" stroke={stroke} strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
       </svg>
     </div>
   );
@@ -421,11 +431,11 @@ export function ECGPulse({ className }: { className?: string }) {
       fill="none"
     >
       {/* lead-in + P wave */}
-      <path d="M0 60 H430 c 8 -13 20 -13 28 0 h 26" stroke="var(--color-rule)" strokeWidth="1.5" />
+      <path d="M0 60 H430 c 8 -13 20 -13 28 0 h 26" stroke="var(--color-line-dark)" strokeWidth="1.5" />
       {/* QRS complex — the one rubric mark */}
-      <path d="M484 60 l 10 9 l 13 -52 l 13 60 l 10 -17" stroke="var(--color-rubric)" strokeWidth="1.5" />
+      <path d="M484 60 l 10 9 l 13 -52 l 13 60 l 10 -17" stroke="var(--color-rubric-light)" strokeWidth="1.5" />
       {/* T wave + tail */}
-      <path d="M530 60 c 14 -21 40 -21 54 0 H1000" stroke="var(--color-rule)" strokeWidth="1.5" />
+      <path d="M530 60 c 14 -21 40 -21 54 0 H1000" stroke="var(--color-line-dark)" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -454,8 +464,8 @@ function HelixNode({ progress, frac, cx, cy }: { progress: MotionValue<number>; 
   const lit = useTransform(progress, [frac - w, frac - w * 0.4, frac + w * 0.4, frac + w], [0, 1, 1, 0]);
   return (
     <>
-      <circle cx={cx} cy={cy} r={3.5} fill="var(--color-rule)" stroke="var(--color-paper)" strokeWidth="3" />
-      <motion.circle cx={cx} cy={cy} r={3.5} fill="var(--color-rubric)" stroke="var(--color-paper)" strokeWidth="3" style={{ opacity: lit }} />
+      <circle cx={cx} cy={cy} r={3.5} fill="var(--color-line-dark)" stroke="var(--color-ink)" strokeWidth="3" />
+      <motion.circle cx={cx} cy={cy} r={3.5} fill="var(--color-rubric-light)" stroke="var(--color-ink)" strokeWidth="3" style={{ opacity: lit }} />
     </>
   );
 }
@@ -513,9 +523,9 @@ export function Helix({ targetRef, count = 5 }: { targetRef: React.RefObject<HTM
   return (
     <div className="pointer-events-none absolute left-0 top-0 bottom-0 hidden lg:block" style={{ width: W }} aria-hidden="true">
       <svg width={W} height={h || 1} viewBox={`0 0 ${W} ${h || 1}`} className="overflow-visible">
-        {/* the helix itself — always present, hairline --rule. Progress is never
-            carried by the strands changing colour. */}
-        <g stroke="var(--color-rule)" fill="none" strokeWidth="1.25">
+        {/* the helix itself — always present, --line-dark on the dark ground.
+            Progress is never carried by the strands changing colour. */}
+        <g stroke="var(--color-line-dark)" fill="none" strokeWidth="1.25">
           <path d={strand(0)} />
           <path d={strand(Math.PI)} />
         </g>
@@ -526,7 +536,7 @@ export function Helix({ targetRef, count = 5 }: { targetRef: React.RefObject<HTM
             <motion.rect x="0" y="0" width={W} height={reduceMotion ? h : revealH} />
           </clipPath>
         </defs>
-        <g clipPath="url(#helix-reveal)" stroke="var(--color-rule)" fill="none" strokeWidth="1">
+        <g clipPath="url(#helix-reveal)" stroke="var(--color-line-dark)" fill="none" strokeWidth="1">
           {rungs.map((r, i) => (
             <line key={i} x1={r.x1} y1={r.y} x2={r.x2} y2={r.y} />
           ))}
