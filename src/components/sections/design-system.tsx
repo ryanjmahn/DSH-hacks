@@ -370,6 +370,66 @@ export function SpringingLine() {
   );
 }
 
+/** ECG pulse rule (§5D) — Register only. A hairline baseline with a single
+ *  PQRST complex at centre; the QRS spike is --rubric, everything else --rule.
+ *  Draws left to right on scroll entry over ~1200ms via stroke-dashoffset,
+ *  then sits static — no looping pulse. Exactly one instance sitewide: it is
+ *  punctuation, not a motif. prefers-reduced-motion shows it fully drawn. */
+export function ECGPulse({ className }: { className?: string }) {
+  const ref = useRef<SVGSVGElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const svg = ref.current;
+    if (!svg) return;
+    const paths = Array.from(svg.querySelectorAll("path"));
+    const lens = paths.map((p) => p.getTotalLength());
+    paths.forEach((p, i) => {
+      p.style.strokeDasharray = `${lens[i]}`;
+      p.style.strokeDashoffset = reduceMotion ? "0" : `${lens[i]}`;
+    });
+    if (reduceMotion) return;
+
+    const total = lens.reduce((a, b) => a + b, 0);
+    let acc = 0;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        paths.forEach((p, i) => {
+          const startFrac = acc / total;
+          acc += lens[i];
+          const durFrac = lens[i] / total;
+          p.style.transition = `stroke-dashoffset 1200ms cubic-bezier(0.16,1,0.3,1) ${Math.round(startFrac * 1200)}ms`;
+          void durFrac;
+          p.style.strokeDashoffset = "0";
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.6 }
+    );
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, [reduceMotion]);
+
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 1000 120"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden="true"
+      fill="none"
+    >
+      {/* lead-in + P wave */}
+      <path d="M0 60 H430 c 8 -13 20 -13 28 0 h 26" stroke="var(--color-rule)" strokeWidth="1.5" />
+      {/* QRS complex — the one rubric mark */}
+      <path d="M484 60 l 10 9 l 13 -52 l 13 60 l 10 -17" stroke="var(--color-rubric)" strokeWidth="1.5" />
+      {/* T wave + tail */}
+      <path d="M530 60 c 14 -21 40 -21 54 0 H1000" stroke="var(--color-rule)" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 /** Small node marker for timeline-style lists. Default is a quiet --rule dot;
  *  `active` lights it to --rubric — spent deliberately on Schedule's helix
  *  markers as the section passes them (see Helix), never as a permanent accent. */
