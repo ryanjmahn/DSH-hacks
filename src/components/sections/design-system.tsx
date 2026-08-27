@@ -148,12 +148,14 @@ export function StatNumeral({
   label,
   className,
   numeralClassName = "type-display",
+  tone = "ink",
   delay = 0,
 }: {
   value: string;
   label: string;
   className?: string;
   numeralClassName?: string;
+  tone?: "ink" | "paper";
   delay?: number;
 }) {
   const motionProps = useFadeRise(delay);
@@ -187,8 +189,8 @@ export function StatNumeral({
 
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", className)}>
-      <span ref={ref} className={cn("text-ink tabular-nums", numeralClassName)}>{display}</span>
-      <span className="type-meta text-ink-muted mt-2">{label}</span>
+      <span ref={ref} className={cn("tabular-nums", tone === "paper" ? "text-paper" : "text-ink", numeralClassName)}>{display}</span>
+      <span className={cn("type-meta mt-2", tone === "paper" ? "text-paper-dim" : "text-ink-muted")}>{label}</span>
     </motion.div>
   );
 }

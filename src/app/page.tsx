@@ -13,7 +13,7 @@ import FooterSection from "@/components/sections/footer-section";
 import { SpringingLine } from "@/components/sections/design-system";
 
 /* Inverted color system: dark grounds are primary, three light relief
-   sections (About, V1 Recap, Sponsors). Each SpringingLine carries the
+   sections (About, Sponsors, Workshops). Each SpringingLine carries the
    ground of its own gap so there's never a stripe of the opposite tone. */
 export default function HomePage() {
   return (
@@ -25,7 +25,7 @@ export default function HomePage() {
       <CountdownSection />
       <SpringingLine ground="light" />
       <AboutSection />
-      <SpringingLine ground="light" />
+      <SpringingLine ground="dark" />
       <V1Section />
       <SpringingLine ground="dark" />
       <ScheduleSection />

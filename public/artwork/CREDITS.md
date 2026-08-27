@@ -50,35 +50,24 @@ coffered vault) stays a *reference only* for the procedural coffer grid, not a
 shipped image. **B3** (Colosseum) was the fresco Register plate; the folio
 Register is an ECG pulse rule with no plate, so B3 is cut.
 
-### Colour plates — the V1 Recap plate section (§5C)
+### Colour plates — CUT
 
-The one place colour appears. Framed, captioned, full-opacity, hard-edged,
-`PLATE I / II` in mono small caps. **Recommendation: two, not three** — keeps
-the section under the §11 400 KB budget with margin, and a deliberate pair
-reads better than a small gallery. Sourced for a blue near `--rubric`
-(`#3636D3`) so the section reads as related to the rest of the site.
+The V1 Recap hand-coloured plate section is removed entirely — both gentian
+plates (Curtis's Botanical Magazine 491/1800 and 723/1803), the framed-plate
+treatment, the `PLATE I / II` captions, and the "From the archive" eyebrow.
+The whole colour-plate concept is gone; the site is now single-ink (white +
+blue on dark) throughout. The Curtis source files were reviewed and rejected
+along the way — the Besler *Hortus Eystettensis* Commons scan was the
+uncoloured 1640 edition and the "Bourgery anatomical" candidate was a
+near-monochrome grid — but that's moot now.
 
-Both plates are from **Curtis's Botanical Magazine** — a deliberate pair: two
-gentians, same publisher and engraving team, three years apart, both a deep
-Prussian/ultramarine blue near `--rubric`. Genuine hand-coloured line
-engravings with the off-register wash and paper foxing intact (§5C.3).
-*Sourcing notes:* the Besler *Hortus Eystettensis* scan on Commons turned out
-to be the uncoloured 1640 edition, and the "Bourgery anatomical" candidate
-(`L0077000`) is a near-monochrome grid of skin-microscopy figures — neither
-survived visual review. Curtis replaced both.
+**Replaced by M5** — a second crop of the same *School of Athens* source as
+M4, so V1 Recap and the Frontispiece read as two views of one continuous
+space:
 
-| Plate | Work | Artist / engraver | Date | Source | Identifier | Licence | Resolution used |
-|---|---|---|---|---|---|---|---|
-| **PLATE I** (`v1-plate-1`) | A gentian (*Gentiana*) — whole plant with root, star-form flowers | drawn Sydenham Edwards, engr. F. Sansom | 1800 | Wikimedia Commons / Biodiversity Heritage Library | *The Botanical Magazine* pl. 491, vol. 14 — `File:The Botanical Magazine, Plate 491 (Volume 14, 1800).png` | PD-old-100 / No Known Copyright Restrictions | 1892×3210 source → 1000w / 640w |
-| **PLATE II** (`v1-plate-2`) | A gentian (*Gentiana*) — trumpet flowers, narrow leaves | drawn Sydenham Edwards, engr. F. Sansom, pub. T. Curtis | Feb 1803 | Wikimedia Commons / Biodiversity Heritage Library | *Curtis's Botanical Magazine* no. 723 — `File:Curtis's botanical magazine (No. 723) (8447532691).jpg` | PD-old-100 / No Known Copyright Restrictions | 1876×3200 source → 1000w / 640w |
-
-**Treatment (§5C, minimal):** per-channel white balance sampled from a paper
-patch, lifting the paper toward `--paper` and neutralising the yellowed-scan
-cast; `gamma 1.03`, `saturation ×1.03`; **not** desaturated, duotoned, or
-reduced in opacity. Off-register wash and foxing left as-is. Exported WebP +
-progressive-JPEG fallback, art-directed at 1000w (desktop) / 640w (mobile).
-Paper grain is the shared CSS `.grain-overlay`, not baked in — keeps the pair
-of desktop WebPs at ~140 KB total, well under the §11 400 KB budget.
+| # | Work | Crop | Source | Licence | Used in |
+|---|---|---|---|---|---|
+| **M5** | ***The School of Athens*** — a **side pier and the angled coffering of the aisle**, seen obliquely (a different part of the architecture from M4's head-on barrel vault) | `left 0.50, top 0.10, w 0.22, h 0.28` of the full frame — no Greek-key border in it | same as M4 (`File:"The School of Athens"…jpg`, 3820×2964, stitched from vatican.va) | Public Domain (`Copyrighted: False`) | **V1 Recap** — negative impression, treatment identical to M4: baked high-contrast grayscale → CSS `invert(1)` → white line on the dark ground, feathered all edges, no box, shared `.grain-overlay`. **CSS presence 0.22** (below M4's 0.26 — it sits behind the winners list, not display type). `object-position: 90% 12%` so the architecture frames the left-aligned content. Desktop 1400w / mobile 950w, AVIF/WebP/JPEG (~120 / 79 KB desktop/mobile WebP). |
 
 **No C3.** Two plates only — keeps V1 Recap under the §11 400 KB budget with
 margin and reads as a deliberate pair. If a third is ever wanted, the safe
