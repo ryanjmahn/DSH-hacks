@@ -32,7 +32,10 @@ const Portico = ({ animate }: { animate: boolean }) => {
       preserveAspectRatio="xMidYMin slice"
       aria-hidden="true"
     >
-      <g stroke="var(--color-rule)" fill="none" strokeWidth="1.5">
+      {/* the portico is Beat 1's whole image — drawn in --ink at low opacity so
+          it reads as an engraved line, not the near-invisible --rule hairline
+          the background motifs use */}
+      <g stroke="var(--color-ink)" strokeOpacity="0.18" fill="none" strokeWidth="1.5">
         {/* arch — two halves sharing an apex, springing outward together */}
         <motion.path d="M 500 -160 A 280 280 0 0 0 220 120" {...draw(0)} />
         <motion.path d="M 500 -160 A 280 280 0 0 1 780 120" {...draw(0)} />
@@ -87,11 +90,11 @@ export default function FrontispieceSection() {
       <Portico animate={animate} />
 
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        <motion.p {...up(0.35)} className="type-meta text-ink-soft text-[clamp(0.625rem,1.5vh,0.8125rem)]">
+        <motion.p {...up(0.35)} className="type-meta text-ink-soft !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
           DeltaForge Hacks &times; NXT Horizon &times; STEMise
         </motion.p>
 
-        <motion.h1 {...up(0.43)} className="type-display mt-3 text-ink text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
+        <motion.h1 {...up(0.43)} className="type-display mt-3 text-ink !text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
           DSH Hacks
           <br />
           V2
@@ -101,18 +104,18 @@ export default function FrontispieceSection() {
           <Ornament />
         </motion.div>
 
-        <motion.p {...up(0.59)} className="type-eyebrow mt-3 text-ink text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
+        <motion.p {...up(0.59)} className="type-eyebrow mt-3 text-ink !text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
           AI &times; Healthcare
         </motion.p>
 
-        <motion.p {...up(0.67)} className="type-mega mt-3 text-ink text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
+        <motion.p {...up(0.67)} className="type-mega mt-3 text-ink !text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
           Nov 7 2026
         </motion.p>
 
         <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
           <motion.div
             {...up(0.75)}
-            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-ink-soft text-[clamp(0.625rem,1.4vh,0.8125rem)]"
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-ink-soft !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
           >
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
@@ -127,12 +130,12 @@ export default function FrontispieceSection() {
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
+            className="mt-4 inline-flex items-center gap-2 bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
           >
             Register on Devpost
           </motion.a>
 
-          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-ink-soft text-[clamp(0.875rem,1.8vh,1.0625rem)]">
+          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-ink-soft !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
             Submissions close November 7
           </motion.p>
 

@@ -106,7 +106,7 @@ const WorkshopsSection = () => {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="type-title text-lg leading-snug text-ink">{video.topic}</p>
+                    <p className="type-title !text-lg leading-snug text-ink">{video.topic}</p>
                     <p className="type-eyebrow mt-2 text-ink-soft">{video.speaker}</p>
                   </div>
                 </a>

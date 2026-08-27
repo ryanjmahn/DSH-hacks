@@ -40,7 +40,7 @@ const Navbar = () => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-8">
           <a href="#frontispiece" className="flex items-center gap-2.5">
             <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={30} height={30} className="object-contain" />
-            <span className="type-title text-base text-ink">DSH Hacks</span>
+            <span className="font-display font-bold uppercase tracking-tight text-base text-ink">DSH Hacks</span>
           </a>
 
           <nav className="hidden items-center gap-7 lg:flex">
@@ -87,7 +87,7 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="type-display text-3xl text-ink transition-colors hover:text-ink-soft"
+              className="font-display font-extrabold uppercase tracking-[-0.025em] text-3xl text-ink transition-colors hover:text-ink-soft"
             >
               {link.label}
             </a>
@@ -187,7 +187,7 @@ export default function HeroSection() {
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6 }}
-            className="type-eyebrow text-lg text-ink-soft sm:text-xl"
+            className="type-eyebrow text-ink-soft"
           >
             a global
           </motion.p>
@@ -206,7 +206,7 @@ export default function HeroSection() {
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6, delay: 0.16 }}
-            className="mt-7 max-w-md type-eyebrow text-lg text-ink-soft sm:ml-[9vw] sm:text-xl"
+            className="mt-7 max-w-md type-eyebrow text-ink-soft sm:ml-[9vw]"
           >
             1,294 hackers. 70+ countries. One question.
           </motion.p>
