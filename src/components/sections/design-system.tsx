@@ -408,18 +408,18 @@ function HelixNode({ progress, frac, cx, cy }: { progress: MotionValue<number>; 
  *
  *  Driven entirely by scrollYProgress MotionValues; nothing re-renders on
  *  scroll. prefers-reduced-motion shows the final drawn state, markers quiet. */
-export function Helix({ sectionRef, count = 5 }: { sectionRef: React.RefObject<HTMLElement | null>; count?: number }) {
+export function Helix({ targetRef, count = 5 }: { targetRef: React.RefObject<HTMLElement | null>; count?: number }) {
   const reduceMotion = useReducedMotion();
   const [h, setH] = useState(0);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start 82%", "end 40%"] });
+  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start 78%", "end 45%"] });
 
   useEffect(() => {
-    const el = sectionRef.current;
+    const el = targetRef.current;
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => setH(Math.round(entry.contentRect.height)));
     ro.observe(el);
     return () => ro.disconnect();
-  }, [sectionRef]);
+  }, [targetRef]);
 
   const W = 40;
   const cx = W / 2;
@@ -447,7 +447,7 @@ export function Helix({ sectionRef, count = 5 }: { sectionRef: React.RefObject<H
   const revealH = useTransform(scrollYProgress, [0, 1], [0, h]);
 
   return (
-    <div className="pointer-events-none absolute left-6 sm:left-8 top-0 bottom-0 hidden lg:block" style={{ width: W }} aria-hidden="true">
+    <div className="pointer-events-none absolute left-0 top-0 bottom-0 hidden lg:block" style={{ width: W }} aria-hidden="true">
       <svg width={W} height={h || 1} viewBox={`0 0 ${W} ${h || 1}`} className="overflow-visible">
         {/* the helix itself — always present, hairline --rule. Progress is never
             carried by the strands changing colour. */}

@@ -85,19 +85,19 @@ function ScheduleRow({
 }
 
 const ScheduleSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const ctaMotion = useFadeRise(0.1);
 
   return (
-    <section ref={sectionRef} id="schedule" className="relative bg-paper text-ink py-24 sm:py-32">
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
-        {/* the section spine — a real 2D-projected double helix, scroll-linked,
-            collapsing to nothing below lg (the list reads fine without it) */}
-        <Helix sectionRef={sectionRef} count={scheduleItems.length} />
-
+    <section id="schedule" className="relative bg-paper text-ink py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What to expect" title="Schedule" />
 
-        <div className="mt-16 sm:mt-20 max-w-3xl lg:pl-16">
+        {/* the numbered list and its spine. The helix is a spine for the steps
+            only — it starts where the list starts, not behind the heading —
+            and collapses to nothing below lg (the list reads fine without it). */}
+        <div ref={listRef} className="relative mt-16 sm:mt-20 max-w-3xl lg:pl-16">
+          <Helix targetRef={listRef} count={scheduleItems.length} />
           {scheduleItems.map((item, i) => (
             <ScheduleRow
               key={item.title}
