@@ -298,9 +298,9 @@ export function EngravedLineDraw({
       const el = p as SVGPathElement;
       const len = el.getTotalLength();
       el.style.fill = "none";
-      el.style.stroke = "var(--color-ink)";
+      el.style.stroke = "var(--color-paper)"; // white line on the dark ground (negative impression)
       el.style.strokeWidth = "1";
-      el.style.strokeOpacity = "0.22"; // §4 monochrome positive: 20-30% so it reads as line, not mush
+      el.style.strokeOpacity = "0.16";
       el.style.strokeDasharray = `${len}`;
       el.style.strokeDashoffset = reduceMotion ? "0" : `${len}`;
     });

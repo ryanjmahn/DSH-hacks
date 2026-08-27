@@ -12,9 +12,8 @@ import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
 import { SpringingLine } from "@/components/sections/design-system";
 
-/* Inverted color system: dark grounds are primary, three light relief
-   sections (About, Sponsors, Workshops). Each SpringingLine carries the
-   ground of its own gap so there's never a stripe of the opposite tone. */
+/* Fully dark. Every section runs the dark ground; the second ink (blue,
+   --rubric-light) carries accent words, eyebrows, labels, and links. */
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-ink">
@@ -23,7 +22,7 @@ export default function HomePage() {
       <HeroSection />
       <SpringingLine ground="dark" />
       <CountdownSection />
-      <SpringingLine ground="light" />
+      <SpringingLine ground="dark" />
       <AboutSection />
       <SpringingLine ground="dark" />
       <V1Section />
@@ -31,9 +30,9 @@ export default function HomePage() {
       <ScheduleSection />
       <SpringingLine ground="dark" />
       <PrizesSection />
-      <SpringingLine ground="light" />
+      <SpringingLine ground="dark" />
       <SponsorsSection />
-      <SpringingLine ground="light" />
+      <SpringingLine ground="dark" />
       <WorkshopsSection />
       <SpringingLine ground="dark" />
       <RegisterSection />

@@ -29,28 +29,28 @@ const WorkshopsSection = () => {
   const ctaMotion = useFadeRise();
 
   return (
-    <section id="workshops" className="relative overflow-hidden bg-paper py-24 text-ink sm:py-32">
+    <section id="workshops" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
       {/* gear-and-screw study in the margin — static (§5B) */}
       <GearTrain className="pointer-events-none absolute right-0 top-24 hidden opacity-70 lg:block" />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <SectionHeading eyebrow="Learn from professionals" title="Workshops" tone="ink" />
+        <SectionHeading eyebrow="Learn from professionals" title="Workshops" />
 
-        <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-ink-soft">
+        <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-paper-dim">
           Learn from industry professionals through our recorded workshop series covering AI,
           product thinking, finance, data, and more. Watch them all on the{" "}
           <a
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink underline decoration-rule-light underline-offset-4 transition-colors hover:decoration-ink"
+            className="text-rubric-light underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper"
           >
             DSH Hacks YouTube channel
           </a>.
         </motion.p>
 
         <div className="mt-10 flex items-center justify-between gap-4 sm:justify-end">
-          <span className="type-meta order-2 tabular-nums text-ink-soft sm:order-1 sm:mr-4">
+          <span className="type-meta order-2 tabular-nums text-paper-dim sm:order-1 sm:mr-4">
             {page + 1} / {pageCount}
           </span>
           <div className="order-1 flex items-center gap-2 sm:order-2">
@@ -58,7 +58,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
               aria-label="Previous workshops"
-              className="btn-wipe flex h-11 w-11 items-center justify-center border border-ink text-ink disabled:pointer-events-none disabled:opacity-30"
+              className="btn-wipe flex h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -66,7 +66,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
               disabled={page === pageCount - 1}
               aria-label="Next workshops"
-              className="btn-wipe flex h-11 w-11 items-center justify-center border border-ink text-ink disabled:pointer-events-none disabled:opacity-30"
+              className="btn-wipe flex h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -89,9 +89,9 @@ const WorkshopsSection = () => {
                   href={`https://www.youtube.com/watch?v=${video.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col border border-rule-light transition-colors hover:border-ink"
+                  className="group flex flex-col border border-rule-dark transition-colors hover:border-paper"
                 >
-                  <div className="relative aspect-video overflow-hidden border-b border-rule-light">
+                  <div className="relative aspect-video overflow-hidden border-b border-rule-dark">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
@@ -106,8 +106,8 @@ const WorkshopsSection = () => {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="type-title !text-lg leading-snug text-ink">{video.topic}</p>
-                    <p className="type-eyebrow mt-2 text-ink-soft">{video.speaker}</p>
+                    <p className="type-title !text-lg leading-snug text-paper">{video.topic}</p>
+                    <p className="type-eyebrow mt-2 text-rubric-light">{video.speaker}</p>
                   </div>
                 </a>
               ))}
@@ -120,7 +120,7 @@ const WorkshopsSection = () => {
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wipe inline-flex items-center gap-2 border border-ink px-8 py-3.5 type-meta text-ink"
+            className="btn-wipe inline-flex items-center gap-2 border border-paper px-8 py-3.5 type-meta text-paper"
           >
             Subscribe on YouTube
             <ExternalLink className="h-3.5 w-3.5" />

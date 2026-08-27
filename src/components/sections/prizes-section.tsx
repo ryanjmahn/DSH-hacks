@@ -23,7 +23,7 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
     >
       <SpecimenKey index={index} />
       <LeaderLine className="mt-2 w-8" />
-      <h3 className="type-title !text-xl mt-2 break-words text-paper">{name}</h3>
+      <h3 className="type-title !text-xl mt-2 break-words text-rubric-light">{name}</h3>
       <p className="type-body mt-2 leading-relaxed text-paper-dim">{detail}</p>
     </motion.div>
   );
@@ -44,7 +44,7 @@ const PrizesSection = () => {
         >
           {/* Leonardo / Pacioli wireframe polyhedron — one per tier, static (§5D) */}
           <Polyhedron kind="rhombicuboctahedron" size={132} className="mb-6" />
-          <p className="type-eyebrow text-paper-dim">Winner</p>
+          <p className="type-eyebrow text-rubric-light">Winner</p>
           <p className="type-display mt-2 text-paper">$100 + $100 AoPS</p>
           <p className="type-body mx-auto mt-4 max-w-xl leading-relaxed text-paper-dim">
             $100 cash plus a $100 AoPS gift card. More prize announcements will be posted on

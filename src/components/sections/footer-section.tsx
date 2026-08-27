@@ -53,7 +53,7 @@ const FooterSection = () => {
             </div>
             <p className="type-body mb-1 !text-sm text-paper-dim">DeltaForge Hacks &times; NXT Horizon &times; STEMise</p>
             <p className="type-body mb-6 !text-sm text-paper-dim">
-              <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper">
+              <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-rubric-light underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper">
                 dsh-hacks-v2.devpost.com
               </a>
             </p>
@@ -67,7 +67,7 @@ const FooterSection = () => {
 
           <motion.div {...rightMotion} className="grid grid-cols-2 gap-8 text-center lg:text-left">
             <div>
-              <h3 className="type-meta mb-4 text-paper">Hackathon</h3>
+              <h3 className="type-meta mb-4 text-rubric-light">Hackathon</h3>
               <ul className="type-body space-y-2.5 !text-sm text-paper-dim">
                 <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Register on Devpost</a></li>
                 <li><a href="https://dsh-hacks-v2.devpost.com/rules" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Rules</a></li>
@@ -77,7 +77,7 @@ const FooterSection = () => {
               </ul>
             </div>
             <div>
-              <h3 className="type-meta mb-4 text-paper">Community</h3>
+              <h3 className="type-meta mb-4 text-rubric-light">Community</h3>
               <ul className="type-body space-y-2.5 !text-sm text-paper-dim">
                 <li><a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">DSH Hacks Discord</a></li>
                 <li><a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Workshops on YouTube</a></li>

@@ -16,28 +16,28 @@ const AboutSection = () => {
   const quoteMotion = useFadeRise(0.18);
 
   return (
-    <section id="about" className="relative bg-paper py-24 text-ink sm:py-32">
+    <section id="about" className="relative bg-ink py-24 text-paper sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-        <SectionHeading eyebrow="Who we are" title="About" tone="ink" />
+        <SectionHeading eyebrow="Who we are" title="About" />
 
         <div className="mt-14 grid items-start gap-12 sm:mt-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <motion.p {...copyMotion} className="type-body leading-relaxed text-ink">
+            <motion.p {...copyMotion} className="type-body leading-relaxed text-paper">
               DSH Hacks is a free, global, online hackathon open to students aged 13+, hosted
               collaboratively by three youth-led organizations:{" "}
-              <span className="font-medium text-ink">DeltaForge Hacks</span>,{" "}
-              <span className="font-medium text-ink">NXT Horizon</span>, and{" "}
-              <span className="font-medium text-ink">STEMise</span>.
+              <span className="font-medium text-rubric-light">DeltaForge Hacks</span>,{" "}
+              <span className="font-medium text-rubric-light">NXT Horizon</span>, and{" "}
+              <span className="font-medium text-rubric-light">STEMise</span>.
             </motion.p>
 
             <motion.blockquote
               {...quoteMotion}
-              className="type-quote my-10 border-t border-b border-rule py-7 text-ink"
+              className="type-quote my-10 border-t border-b border-rule py-7 text-rubric-light"
             >
               AI &times; Healthcare: transforming healthcare access through AI.
             </motion.blockquote>
 
-            <motion.p {...copyMotion} className="type-body leading-relaxed text-ink-soft">
+            <motion.p {...copyMotion} className="type-body leading-relaxed text-paper-dim">
               Identify a real healthcare problem and build an AI-powered app, website, or system
               that tackles it. Any skill level welcome. From diagnostic tools tackling global
               disease burdens, to patient-care platforms improving access and outcomes, to
@@ -63,7 +63,7 @@ const AboutSection = () => {
                 i < 2 ? "border-b border-rule sm:border-b-0" : ""
               } ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
             >
-              <StatNumeral value={stat.value} label={stat.label} numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]" delay={i * 0.08} />
+              <StatNumeral value={stat.value} label={stat.label} tone="paper" numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]" delay={i * 0.08} />
             </div>
           ))}
         </div>

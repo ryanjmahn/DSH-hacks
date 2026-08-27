@@ -59,7 +59,7 @@ function TimeSegment({
       <span className="font-mono font-medium tabular-nums leading-none text-paper text-[length:var(--type-display)]">
         {value === null ? "—" : label === "Days" ? value : String(value).padStart(2, "0")}
       </span>
-      <span className="mt-3 font-serif text-sm uppercase tracking-[0.15em] text-paper-dim">
+      <span className="mt-3 font-serif text-sm uppercase tracking-[0.15em] text-rubric-light">
         {label}
       </span>
     </div>
