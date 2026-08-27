@@ -26,38 +26,51 @@ const SponsorsSection = () => {
   const gridMotion = useFadeRise(0.16);
 
   return (
-    <section id="sponsors" className="relative bg-plaster-shade coffer-texture text-umber py-24 sm:py-32">
+    <section id="sponsors" className="relative bg-paper-alt coffer-texture py-24 text-ink sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who supports us" title="Sponsors" align="center" className="mx-auto" />
 
-        <motion.p {...introMotion} className="type-body text-umber-soft mt-8 mb-14 sm:mb-16 mx-auto max-w-2xl text-center leading-relaxed">
+        <motion.p
+          {...introMotion}
+          className="type-body mx-auto mb-14 mt-8 max-w-2xl text-center leading-relaxed text-ink-soft sm:mb-16"
+        >
           Interested in supporting DSH Hacks? Reach out to us on Discord or email the hackathon
           manager via{" "}
-          <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-sienna hover:text-umber underline underline-offset-4">
+          <a
+            href="https://dsh-hacks-v2.devpost.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink underline decoration-rule underline-offset-4 transition-colors hover:decoration-ink"
+          >
             Devpost
           </a>{" "}
           to learn about sponsorship opportunities.
         </motion.p>
 
-        <motion.div {...gridMotion} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-rule">
+        <motion.div
+          {...gridMotion}
+          className="grid grid-cols-2 border-l border-t border-rule sm:grid-cols-3 lg:grid-cols-4"
+        >
           {sponsors.map(({ name, logo, href }) => (
             <a
               key={name}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center justify-center border-r border-b border-rule py-10 px-6 bg-plaster"
+              className="group relative flex items-center justify-center border-b border-r border-rule bg-paper px-6 py-10"
             >
               <Image
                 src={logo}
                 alt={name}
                 width={140}
                 height={48}
-                className="object-contain max-h-12 w-auto grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                className="max-h-12 w-auto object-contain opacity-70 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
               />
-              {/* ochre hairline beneath — wipes in on hover once the motion
-                  pass lands; static color/opacity transition for now */}
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-ochre scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" aria-hidden="true" />
+              {/* --rubric hairline wiping in beneath on hover (§7) */}
+              <span
+                className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-rubric transition-transform duration-300 group-hover:scale-x-100"
+                aria-hidden="true"
+              />
             </a>
           ))}
         </motion.div>
