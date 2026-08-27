@@ -1,11 +1,35 @@
 import type { Metadata } from "next";
-import { Amarante } from "next/font/google";
+import { Archivo, Newsreader, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
-const amarante = Amarante({
+/* Folio type system (§3): a humanist grotesque for display + body, a quiet
+   literary serif for the folio voice, mono for numerals and metadata only.
+   Free stand-ins for the brief's named faces —
+     Archivo    ~ Söhne Breit / Founders Grotesk  (grotesque, Akzidenz lineage,
+                  variable width axis for the wide display cut)
+     Newsreader ~ GT Alpina                         (literary serif, true italic)
+     IBM Plex Mono                                  (kept from the prior build) */
+
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: "400",
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,8 +47,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={amarante.className}>
-      <body className="antialiased">
+    <html lang="en" className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}>
+      <body className="antialiased font-body">
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
           strategy="afterInteractive"

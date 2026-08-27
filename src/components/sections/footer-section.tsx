@@ -4,60 +4,96 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaInstagram, FaDiscord, FaLinkedin, FaYoutube } from "react-icons/fa";
 import Image from "next/image";
-import { EKGLine } from "@/components/sections/mural-art";
+import { useFadeRise } from "@/components/sections/design-system";
+
+/* Footer — the site's second --ink ground (§2). --paper type, logo reversed
+   out. The star-chart plate (M3, Bayer Uranometria, negative impression)
+   lands behind this in the plates pass; markup slot is below, aria-hidden. */
 
 const FooterSection = () => {
+  const leftMotion = useFadeRise();
+  const rightMotion = useFadeRise(0.1);
+
   return (
-    <footer className="bg-[#12173f] text-[#f2e9d8] py-10 relative overflow-hidden">
-      <EKGLine className="absolute top-0 left-0 w-full h-8 opacity-70" />
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 pt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="flex flex-col items-center lg:items-start">
-            <div className="mb-3 flex items-center gap-3">
-              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={36} height={36} className="object-contain" />
-              <span className="text-2xl font-bold tracking-tight">
-                DSH <span className="text-[#e8836f]">Hacks</span>
-              </span>
+    <footer className="relative overflow-hidden bg-ink py-16 text-paper sm:py-20">
+      {/* star-chart plate — negative impression, feathered into the top-right
+          corner and held well clear of the link columns. Opacity is kept low
+          (0.14) so text over any bright region still passes AA — §10: reduce
+          the graphic, never add a scrim. Flagged as a cut candidate: this low
+          it barely reads as an instrument. */}
+      <div
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        aria-hidden="true"
+        style={{
+          WebkitMaskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
+          maskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
+        }}
+      >
+        <picture>
+          <source srcSet="/plates/footer-starchart.webp" type="image/webp" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/plates/footer-starchart.jpg"
+            alt=""
+            loading="lazy"
+            className="h-full w-full object-cover opacity-[0.14] [filter:grayscale(1)_invert(1)_contrast(1.2)]"
+            onError={(e) => {
+              (e.currentTarget.closest("picture") as HTMLElement | null)?.style.setProperty("display", "none");
+            }}
+          />
+        </picture>
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          <motion.div {...leftMotion} className="flex flex-col items-center text-center lg:items-start lg:text-left">
+            <div className="mb-4 flex items-center gap-3">
+              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={34} height={34} className="object-contain" />
+              <span className="type-title !text-2xl text-paper">DSH Hacks</span>
             </div>
-            <p className="text-[#f2e9d8]/50 text-sm mb-1">DeltaForge Hacks × NXT Horizon × STEMise</p>
-            <p className="text-[#f2e9d8]/70 text-sm mb-4">
-              <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors underline underline-offset-2">
+            <p className="type-body mb-1 !text-sm text-paper-dim">DeltaForge Hacks &times; NXT Horizon &times; STEMise</p>
+            <p className="type-body mb-6 !text-sm text-paper-dim">
+              <a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="text-rubric-light underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper">
                 dsh-hacks-v2.devpost.com
               </a>
             </p>
-            <div className="flex gap-4 text-[#f2e9d8]/80">
-              <a href="https://www.linkedin.com/posts/stemise_stemise-highschool-hackathon-activity-7444950300852973572-mtY-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAF8a_J8BBFD-8QjBjyPkx4PzxZKaZ80DEi8" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition"><FaLinkedin size={22} /></a>
-              <a href="https://www.instagram.com/dshhacksv1/" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition"><FaInstagram size={22} /></a>
-              <a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition"><FaDiscord size={22} /></a>
-              <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition"><FaYoutube size={22} /></a>
+            <div className="flex gap-5 text-paper-dim">
+              <a href="https://www.linkedin.com/posts/stemise_stemise-highschool-hackathon-activity-7444950300852973572-mtY-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAF8a_J8BBFD-8QjBjyPkx4PzxZKaZ80DEi8" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper"><FaLinkedin size={20} /></a>
+              <a href="https://www.instagram.com/dshhacksv1/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper"><FaInstagram size={20} /></a>
+              <a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper"><FaDiscord size={20} /></a>
+              <a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper"><FaYoutube size={20} /></a>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }} className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+          <motion.div {...rightMotion} className="grid grid-cols-2 gap-8 text-center lg:text-left">
             <div>
-              <h3 className="text-base font-bold uppercase tracking-wide mb-3 text-[#eeda9f]">Hackathon</h3>
-              <ul className="space-y-2 text-sm text-[#f2e9d8]/70">
-                <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">Register on Devpost</a></li>
-                <li><a href="https://dsh-hacks-v2.devpost.com/rules" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">Rules</a></li>
-                <li><a href="/dsh-hacks-v2-flyer.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">Event Flyer (PDF)</a></li>
-                <li><a href="#prizes" className="hover:text-[#eecd7f] transition-colors">Prizes</a></li>
-                <li><a href="#sponsors" className="hover:text-[#eecd7f] transition-colors">Sponsors</a></li>
+              <h3 className="type-meta mb-4 text-rubric-light">Hackathon</h3>
+              <ul className="type-body space-y-2.5 !text-sm text-paper-dim">
+                <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Register on Devpost</a></li>
+                <li><a href="https://dsh-hacks-v2.devpost.com/rules" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Rules</a></li>
+                <li><a href="/dsh-hacks-v2-flyer.pdf" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Event flyer (PDF)</a></li>
+                <li><a href="#prizes" className="transition-colors hover:text-paper">Prizes</a></li>
+                <li><a href="#sponsors" className="transition-colors hover:text-paper">Sponsors</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="text-base font-bold uppercase tracking-wide mb-3 text-[#eeda9f]">Community</h3>
-              <ul className="space-y-2 text-sm text-[#f2e9d8]/70">
-                <li><a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">DSH Hacks Discord</a></li>
-                <li><a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">Workshops on YouTube</a></li>
-                <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#eecd7f] transition-colors">Project Gallery</a></li>
-                <li><a href="#faq" className="hover:text-[#eecd7f] transition-colors">FAQ</a></li>
+              <h3 className="type-meta mb-4 text-rubric-light">Community</h3>
+              <ul className="type-body space-y-2.5 !text-sm text-paper-dim">
+                <li><a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">DSH Hacks Discord</a></li>
+                <li><a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Workshops on YouTube</a></li>
+                <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Project gallery</a></li>
+                <li><a href="#faq" className="transition-colors hover:text-paper">FAQ</a></li>
               </ul>
             </div>
           </motion.div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-[#f2e9d8]/15 text-center text-xs text-[#f2e9d8]/40">
-          © 2026 DSH Hacks. Hosted by DeltaForge Hacks, NXT Horizon & STEMise.
+        <div className="mt-12 flex flex-col items-center justify-center gap-2 border-t border-rule-dark pt-6 text-center type-meta !text-xs text-paper-dim sm:flex-row sm:gap-4">
+          <span>&copy; 2026 DSH Hacks. Hosted by DeltaForge Hacks, NXT Horizon &amp; STEMise.</span>
+          <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+          <a href="/artwork/CREDITS.md" target="_blank" rel="noopener noreferrer" className="underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper">
+            Artwork credits
+          </a>
         </div>
       </div>
     </footer>

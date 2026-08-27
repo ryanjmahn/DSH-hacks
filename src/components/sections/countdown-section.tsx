@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { MuralHeading, Constellation, Ribbon, Sparkle, PocketWatch } from "@/components/sections/mural-art";
+import { SectionHeading } from "@/components/sections/design-system";
+import DitherField from "@/components/sections/dither-field";
 
 interface TimeLeft {
   days: number;
@@ -11,9 +11,10 @@ interface TimeLeft {
   seconds: number;
 }
 
+const DEADLINE = "2026-11-08T07:45:00Z"; // Nov 7, 2026 11:45pm PST
+
 const calculateTimeLeft = (): TimeLeft => {
-  // Submission deadline: November 7, 2026 11:45pm PST
-  const difference = +new Date("2026-11-08T07:45:00Z") - +new Date();
+  const difference = +new Date(DEADLINE) - +new Date();
   if (difference <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
   return {
     days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -23,67 +24,89 @@ const calculateTimeLeft = (): TimeLeft => {
   };
 };
 
+/* Faint orbital ellipses behind the digits (§5B) — static line art, drawn
+   once, --paper hairlines at low opacity on the ink ground. Not animated. */
+const Orbitals = () => (
+  <svg
+    className="pointer-events-none absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2"
+    viewBox="0 0 800 800"
+    aria-hidden="true"
+  >
+    <g fill="none" stroke="var(--color-paper)" strokeWidth="1" opacity="0.12">
+      <ellipse cx="400" cy="400" rx="360" ry="150" />
+      <ellipse cx="400" cy="400" rx="360" ry="150" transform="rotate(60 400 400)" />
+      <ellipse cx="400" cy="400" rx="360" ry="150" transform="rotate(120 400 400)" />
+      <circle cx="400" cy="400" r="90" />
+    </g>
+  </svg>
+);
+
+function TimeSegment({
+  value,
+  label,
+  isLast,
+}: {
+  value: number | null;
+  label: string;
+  isLast: boolean;
+}) {
+  return (
+    <div
+      className={`flex min-w-[6rem] flex-1 flex-col items-center py-2 ${
+        isLast ? "" : "sm:border-r sm:border-rule"
+      }`}
+    >
+      <span className="font-mono font-medium tabular-nums leading-none text-paper text-[length:var(--type-display)]">
+        {value === null ? "—" : label === "Days" ? value : String(value).padStart(2, "0")}
+      </span>
+      <span className="mt-3 font-serif text-sm uppercase tracking-[0.15em] text-rubric-light">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 const CountdownSection = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
+  // Static export: seed a stable placeholder on first paint (identical on the
+  // static HTML and the client's pre-hydration pass), then fill in the real
+  // ticking value on mount.
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
 
   useEffect(() => {
+    setTimeLeft(calculateTimeLeft());
     const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, []);
 
   const timeUnits = [
-    { value: timeLeft.days, label: "Days", ring: "#e8836f" },
-    { value: timeLeft.hours, label: "Hours", ring: "#eecd7f" },
-    { value: timeLeft.minutes, label: "Minutes", ring: "#83d3c4" },
-    { value: timeLeft.seconds, label: "Seconds", ring: "#5a77e6" },
+    { value: timeLeft?.days ?? null, label: "Days" },
+    { value: timeLeft?.hours ?? null, label: "Hours" },
+    { value: timeLeft?.minutes ?? null, label: "Minutes" },
+    { value: timeLeft?.seconds ?? null, label: "Seconds" },
   ];
 
   return (
-    <section id="countdown" className="relative overflow-hidden bg-[#1a2153] text-[#f2e9d8] py-20 sm:py-28">
-      <Ribbon className="absolute -top-6 -left-10 w-[420px] sm:w-[560px] opacity-90 pointer-events-none" />
-      <Constellation className="absolute right-[6%] top-14 w-40 pointer-events-none" />
-      <Constellation className="absolute left-[8%] bottom-10 w-32 pointer-events-none opacity-70" />
-      <Sparkle className="absolute right-[20%] bottom-20 w-5 animate-twinkle pointer-events-none" />
-      <Sparkle className="absolute left-[28%] top-16 w-4 animate-twinkle pointer-events-none" color="#f2e9d8" />
-      <PocketWatch className="absolute right-[4%] bottom-[18%] w-16 sm:w-24 animate-bob-slow pointer-events-none hidden md:block" />
+    <section id="countdown" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+      <DitherField className="absolute inset-0 h-full w-full" />
+      <Orbitals />
 
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center"
-        >
-          <MuralHeading title="Countdown" center />
-          <p className="mt-6 text-lg font-bold uppercase tracking-[0.25em] text-[#f2e9d8]/70">
-            Submissions close November 7, 2026
-          </p>
-        </motion.div>
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
+        <SectionHeading eyebrow="Time remaining" title="Countdown" align="right" tone="paper" />
 
-        <div className="mt-14 flex flex-wrap justify-center gap-6 sm:gap-10">
-          {timeUnits.map(({ value, label, ring }, i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex flex-col items-center animate-bob"
-              style={{ animationDelay: `${i * 0.7}s`, animationDuration: `${5.5 + i * 0.6}s` }}
-            >
-              <div
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#f2e9d8] flex items-center justify-center shadow-lg shadow-black/30"
-                style={{ border: `6px solid ${ring}` }}
-              >
-                <span className="text-3xl sm:text-5xl font-bold text-[#1a2153] tabular-nums">
-                  {label !== "Days" ? String(value).padStart(2, "0") : value}
-                </span>
-              </div>
-              <span className="mt-3 text-sm font-bold uppercase tracking-widest text-[#f2e9d8]/80">{label}</span>
-            </motion.div>
+        <div className="mt-16 flex flex-wrap border-t border-b border-rule sm:mt-20 sm:flex-nowrap">
+          {timeUnits.map((unit, i) => (
+            <TimeSegment
+              key={unit.label}
+              value={unit.value}
+              label={unit.label}
+              isLast={i === timeUnits.length - 1}
+            />
           ))}
         </div>
+
+        <p className="type-meta mt-8 text-center text-paper-dim">
+          Submissions close November 7, 2026
+        </p>
       </div>
     </section>
   );

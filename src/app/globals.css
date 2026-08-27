@@ -1,85 +1,87 @@
-@import url("https://fonts.googleapis.com/css2?family=Amarante&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Indigo Light Theme */
-  --color-background: #ffffff;
-  --color-foreground: #26262e;
+  /* The folio palette — INVERTED. The engraved folio now runs dark grounds
+     with white and blue type; three light sections (About, V1 Recap,
+     Sponsors) give relief. Token names are unchanged; values and roles
+     flip. Reference these everywhere; no hardcoded hex in components. */
+  --color-ink: #0b0b0f;           /* PRIMARY PAGE GROUND (was: dark type) */
+  --color-ink-alt: #15151c;       /* adjacent dark sections needing separation */
+  --color-paper: #fcfcfa;         /* PRIMARY TYPE COLOR (was: page ground) */
+  --color-paper-dim: #c4c4cc;     /* secondary text on dark grounds */
+  --color-paper-alt: #f1f1ee;     /* the light relief sections' alt ground */
+  --color-ink-soft: #57575f;      /* secondary text on the light sections */
+  --color-rubric: #3636d3;        /* blue as fill only on dark (CTA); text/line-art on light */
+  --color-rubric-deep: #2a2aa8;   /* rubric hover states */
+  --color-rubric-light: #9c9cf2;  /* blue for text + line art on dark grounds (rubric fails AA there) */
+  --color-rubric-pale: var(--color-rubric-light); /* legacy alias */
+  --color-rule: #31313c;          /* default hairline — dark grounds (dark is primary now) */
+  --color-rule-dark: #31313c;     /* hairlines on dark */
+  --color-rule-light: #d6d6dc;    /* hairlines on light */
+  --color-rule-inverse: #d6d6dc;  /* legacy: now the LIGHT-ground hairline */
+  --color-line-dark: #4a4a58;     /* line-art graphics on dark — brighter than a hairline so engraving stays readable */
 
-  --color-card: #f4f5fb;
-  --color-card-foreground: #26262e;
+  /* Legacy aliases — every component still written against the previous
+     fresco-pigment names resolves through here, so this one file is the
+     entire color swap (§12 step 2: "change nothing else"). Per-section
+     rebuilds replace these with the direct new names as they land. */
+  --color-plaster: var(--color-paper);
+  --color-plaster-shade: var(--color-paper-alt);
+  --color-umber: var(--color-ink);
+  --color-umber-soft: var(--color-ink-soft);
+  --color-lapis: var(--color-rubric);
+  --color-lapis-deep: var(--color-rubric-deep);
+  /* Ochre and sienna have no equivalent in a two-ink system — both fold to
+     ink-soft (a quiet neutral) rather than to rubric, which must stay rare.
+     Numerals/keys/node-markers read as muted until a section is rebuilt to
+     spend one of its two rubric slots on them deliberately (e.g. Schedule's
+     helix node markers, or specimen-key hover). */
+  --color-ochre: var(--color-ink-soft);
+  --color-sienna: var(--color-ink-soft);
 
-  --color-popover: #ffffff;
-  --color-popover-foreground: #26262e;
+  --color-ink-muted: var(--color-ink-soft);
+  --color-brand: var(--color-rubric);
+  --color-brand-deep: var(--color-rubric-deep);
+  --color-brand-ink: var(--color-rubric);
 
-  --color-primary: #4f56e5;
-  --color-primary-foreground: #ffffff;
-
-  --color-secondary: #eceef8;
-  --color-secondary-foreground: #26262e;
-
-  --color-muted: #eceef8;
-  --color-muted-foreground: #64748b;
-
-  --color-accent: #eceef8;
-  --color-accent-foreground: #26262e;
-
+  /* shadcn/radix primitives kept for the accordion + any future ui/ components */
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-paper);
+  --color-card: var(--color-ink-alt);
+  --color-card-foreground: var(--color-paper);
+  --color-popover: var(--color-ink-alt);
+  --color-popover-foreground: var(--color-paper);
+  --color-primary: var(--color-rubric);
+  --color-primary-foreground: var(--color-paper);
+  --color-secondary: var(--color-ink-alt);
+  --color-secondary-foreground: var(--color-paper);
+  --color-muted: var(--color-ink-alt);
+  --color-muted-foreground: var(--color-paper-dim);
+  --color-accent: var(--color-ink-alt);
+  --color-accent-foreground: var(--color-paper);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
+  --color-border: var(--color-rule);
+  --color-input: var(--color-rule);
+  --color-ring: var(--color-rubric-light);
 
-  --color-border: #dfe2f0;
-  --color-input: #dfe2f0;
-  --color-ring: #4f56e5;
+  /* Typography families (§3). Display + body: Archivo, a humanist grotesque in
+     the Akzidenz lineage (free stand-in for Söhne Breit / Founders Grotesk),
+     with a variable width axis for the wide display cut. Serif: Newsreader, a
+     quiet literary serif with a true italic (stand-in for GT Alpina) — the
+     folio voice. Mono: IBM Plex Mono, numerals and metadata only, never body,
+     never headings. */
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), "SF Mono", Menlo, monospace;
 
-  --color-chart-1: #4f56e5;
-  --color-chart-2: #6366f1;
-  --color-chart-3: #6f76ee;
-  --color-chart-4: #6a70f0;
-  --color-chart-5: #818cf8;
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
 
-  --color-sidebar: #f4f5fb;
-  --color-sidebar-foreground: #26262e;
-  --color-sidebar-primary: #4f56e5;
-  --color-sidebar-primary-foreground: #ffffff;
-  --color-sidebar-accent: #eceef8;
-  --color-sidebar-accent-foreground: #26262e;
-  --color-sidebar-border: #dfe2f0;
-  --color-sidebar-ring: #4f56e5;
-
-  /* Mural Design System */
-  --color-background-primary: #1a2153;
-  --color-background-secondary: #12173f;
-  --color-text-primary: #f2e9d8;
-  --color-text-secondary: #64748b;
-  --color-accent-electric: #7a80f2;
-  --color-accent-cyan: #6f76ee;
-  --color-accent-blue: #4f56e5;
-  --color-accent-indigo: #6366f1;
-  --color-accent-glow: #6a70f0;
-  --color-button-primary: #4f56e5;
-  --color-button-primary-foreground: #ffffff;
-  --color-button-electric: #4f56e5;
-  --color-button-electric-foreground: #ffffff;
-  --color-countdown-background: #eceef8;
-  --color-countdown-foreground: #26262e;
-  --color-sponsor-card-background: #f4f5fb;
-  --color-faq-border: #dfe2f0;
-  --color-hero-background: #ffffff;
-  --color-hero-foreground: #26262e;
-
-  /* Typography */
-  --font-sans: "Amarante", serif;
-  --font-display: "Amarante", serif;
-  --font-body: "Amarante", serif;
-
-  /* Radii */
-  --radius-lg: 0.75rem;
-  --radius-md: calc(0.75rem - 2px);
-  --radius-sm: calc(0.75rem - 4px);
-
-  /* Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
@@ -95,78 +97,90 @@
 
 @layer base {
   *, ::after, ::before, ::backdrop, ::file-selector-button {
-    border-color: var(--color-border);
+    border-color: var(--color-rule);
   }
 }
 
 @layer base {
   :root {
-    --background: var(--color-background);
-    --foreground: var(--color-foreground);
-    --card: var(--color-card);
-    --card-foreground: var(--color-card-foreground);
-    --popover: var(--color-popover);
-    --popover-foreground: var(--color-popover-foreground);
-    --primary: var(--color-primary);
-    --primary-foreground: var(--color-primary-foreground);
-    --secondary: var(--color-secondary);
-    --secondary-foreground: var(--color-secondary-foreground);
-    --muted: var(--color-muted);
-    --muted-foreground: var(--color-muted-foreground);
-    --accent: var(--color-accent);
-    --accent-foreground: var(--color-accent-foreground);
-    --destructive: var(--color-destructive);
-    --destructive-foreground: var(--color-destructive-foreground);
-    --border: var(--color-border);
-    --input: var(--color-input);
-    --ring: var(--color-ring);
-    --chart-1: var(--color-chart-1);
-    --chart-2: var(--color-chart-2);
-    --chart-3: var(--color-chart-3);
-    --chart-4: var(--color-chart-4);
-    --chart-5: var(--color-chart-5);
     --radius: var(--radius-lg);
-    --sidebar-background: var(--color-sidebar);
-    --sidebar-foreground: var(--color-sidebar-foreground);
-    --sidebar-primary: var(--color-sidebar-primary);
-    --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
-    --sidebar-accent: var(--color-sidebar-accent);
-    --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
-    --sidebar-border: var(--color-sidebar-border);
-    --sidebar-ring: var(--color-sidebar-ring);
+
+    /* Type scale — the ~1:8 jump between --type-eyebrow and --type-mega is the
+       system's defining trait. Preserve it; don't flatten it in a section. */
+    --type-mega: clamp(4rem, 12vw, 11rem);      /* hero only */
+    --type-display: clamp(2.5rem, 6vw, 5rem);   /* section headings, stat numerals */
+    --type-title: clamp(1.5rem, 2.5vw, 2.25rem); /* card / row titles */
+    --type-eyebrow: 1rem;                        /* eyebrows, small labels */
+    --type-quote: clamp(1.25rem, 2vw, 1.75rem);  /* pull quotes */
+    --type-body: 1.0625rem;                      /* paragraphs */
+    --type-meta: 0.8125rem;                      /* metadata, nav, buttons, labels */
+
+    /* Inline SVG grain — fine film noise, referenced by .grain-overlay.
+       Legacy from the previous redesign; kept where already wired in. */
+    --grain-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    /* Plaster texture — broad mottling and tonal variation, not uniform
+       photographic grain. Low baseFrequency for big soft blotches, referenced
+       by .plaster-texture-overlay. This is the fresco-atlas plate treatment. */
+    --plaster-texture-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+
+    /* Coffers — the barrel vault's receding grid of sunken squares, per
+       Part 4. patternTransform skews the tile itself (background-image
+       can't take a CSS transform and tile correctly), suggesting recession
+       without needing a wrapper element. Hex is --color-ochre's literal
+       value: a data-URI SVG is an isolated document and can't read the
+       page's CSS custom properties. */
+    --coffer-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cdefs%3E%3Cpattern id='c' width='84' height='84' patternUnits='userSpaceOnUse' patternTransform='skewX(-10)'%3E%3Crect x='6' y='6' width='72' height='72' fill='none' stroke='%23D6D6DC' stroke-width='1' opacity='0.7'/%3E%3Crect x='20' y='20' width='44' height='44' fill='none' stroke='%23D6D6DC' stroke-width='1' opacity='0.45'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23c)'/%3E%3C/svg%3E");
   }
 
   html { scroll-behavior: smooth; }
 
+  /* Clears the fixed nav when jumping to a section via anchor link or
+     scrollIntoView — without this the heading renders right under the header. */
+  section[id] { scroll-margin-top: 88px; }
+
   ::selection {
-    background-color: #e2574c;
-    color: #f2e9d8;
+    background-color: var(--color-rubric);
+    color: var(--color-paper);
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-background-primary);
-    color: var(--color-text-primary);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
     line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    color: var(--color-text-primary);
-    line-height: 1.1;
+    color: var(--color-paper);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
   }
 
-  h1 { font-size: 4rem; font-weight: 700; letter-spacing: -0.02em; text-transform: uppercase; }
-  h2 { font-size: 2.5rem; font-weight: 600; line-height: 1.2; text-transform: uppercase; }
-  h3 { font-size: 1.75rem; font-weight: 500; line-height: 1.3; }
-  p  { font-size: 1.125rem; font-weight: 400; line-height: 1.6; color: var(--color-text-primary); }
-  a  { color: var(--color-text-primary); text-decoration: none; }
-  a:hover { text-decoration: none; }
+  h1 { font-size: 4rem; font-weight: 800; }
+  h2 { font-size: 2.5rem; font-weight: 800; }
+  h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-paper); }
+  a  { color: inherit; text-decoration: none; }
 
-  .text-body-large   { font-size: 1.25rem; font-weight: 400; line-height: 1.6; }
-  .text-body-default { font-size: 1.125rem; font-weight: 400; line-height: 1.6; }
-  .text-body-small   { font-size: 1rem; font-weight: 400; line-height: 1.5; }
-  .text-label { font-size: 0.875rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.05em; text-transform: uppercase; }
+  /* Hero legacy classes — kept verbatim so the approved hero renders unchanged.
+     New sections use the .type-* system below instead. */
+  .font-serif-eyebrow {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .text-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
 
   .container {
     max-width: 1400px;
@@ -183,12 +197,158 @@
   @media (min-width: 1024px) {
     h1 { font-size: 6rem; }
     h2 { font-size: 3rem; }
-    h3 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+  }
+
+  /* Visible focus ring — --rubric-light on the dark grounds (primary), no
+     transition. The three light relief sections carry bg-paper / bg-paper-alt
+     on the section element, so scope a --rubric ring inside them. */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--color-rubric-light);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  [class*="bg-paper"] a:focus-visible,
+  [class*="bg-paper"] button:focus-visible,
+  [class*="bg-paper"] [role="button"]:focus-visible,
+  [class*="bg-paper"] input:focus-visible,
+  [class*="bg-paper"] summary:focus-visible {
+    outline-color: var(--color-rubric);
   }
 }
 
+/* The formal type system — one class per role, used sitewide (hero excluded).
+   Tailwind v4's `@import "tailwindcss"` only declares theme/base/utilities
+   layers (no `components`), so these live in `utilities` alongside the rest
+   of the hand-authored CSS below — a separate `@layer components` block gets
+   silently dropped since nothing declares that layer. */
 @layer utilities {
-  body { font-family: var(--font-body); }
+  .type-mega {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.85;
+    font-size: var(--type-mega);
+  }
+  .type-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-stretch: 115%;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.85;
+    font-size: var(--type-display);
+  }
+  .type-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    font-size: var(--type-title);
+  }
+  .type-eyebrow {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    font-size: var(--type-eyebrow);
+  }
+  .type-quote {
+    font-family: var(--font-serif);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.45;
+    font-size: var(--type-quote);
+  }
+  .type-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: var(--type-body);
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    font-size: var(--type-meta);
+  }
+  .type-numeral {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.5rem, 2.6vw, 1.875rem);
+    color: var(--color-paper-dim); /* dark-ground default; light sections override with text-ink-soft */
+  }
+
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain-svg);
+    mix-blend-mode: multiply;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  .plaster-texture-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: var(--plaster-texture-svg);
+    mix-blend-mode: multiply;
+    opacity: 0.14;
+    pointer-events: none;
+  }
+
+  /* Coffered-vault background for --plaster-shade sections. Density is low
+     enough that body text laid directly over it stays fully legible. */
+  .coffer-texture {
+    background-image: var(--coffer-svg);
+    background-repeat: repeat;
+  }
+
+  /* Effect 8 (part 2): secondary/outline buttons fill via a left-to-right
+     wipe on hover, not a color fade. One shared class, applied on top of
+     each button's existing border/text/padding classes. */
+  .btn-wipe {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* Default (dark grounds): --paper outline + type, hover wipes --paper in
+     with --ink type. Under a light relief section it inverts. */
+  .btn-wipe::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-paper);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .btn-wipe:hover {
+    color: var(--color-ink);
+    border-color: var(--color-paper);
+  }
+  .btn-wipe:hover::before {
+    transform: scaleX(1);
+  }
+  [class*="bg-paper"] .btn-wipe::before {
+    background-color: var(--color-ink);
+  }
+  [class*="bg-paper"] .btn-wipe:hover {
+    color: var(--color-paper);
+    border-color: var(--color-ink);
+  }
 
   @keyframes bob {
     0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -202,8 +362,14 @@
   .animate-bob-slow { animation: bob 9s ease-in-out infinite; }
   .animate-twinkle { animation: twinkle 3.5s ease-in-out infinite; }
 
-  .ribbon-nav a tspan { fill: #f2e9d8; }
-  .ribbon-nav a:hover tspan { fill: #1a2153; }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-bob, .animate-bob-slow, .animate-twinkle {
+      animation: none !important;
+    }
+  }
+
+  .ribbon-nav a tspan { fill: var(--color-ink); }
+  .ribbon-nav a:hover tspan { fill: var(--color-brand); }
 }
 
 /* Hide Next.js error overlay portal */
