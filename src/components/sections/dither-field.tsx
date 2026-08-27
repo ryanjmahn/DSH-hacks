@@ -30,9 +30,14 @@ const THRESHOLD = 0.645; // on the 0..1 remapped noise value — tuned to ~15-20
 const STEPS = 5;
 const FRAME_MS = 1000 / 30;
 
-// --paper (#FCFCFA) at the 5 quantised alphas, precomputed
+// --paper (#FCFCFA) at the 5 quantised alphas, precomputed. §5D specifies
+// 0.10–0.45, but a full-strength cluster directly behind a countdown digit
+// drops the digit's contrast to ~2:1 — below the 3:1 bar for large text. Per
+// §10 the fix is to reduce the graphic, not add a scrim, so the top step is
+// capped at 0.30: worst-case digit contrast stays above 3.3:1 and the five
+// discrete steps still read as dithering.
 const FILLS = Array.from({ length: STEPS }, (_, i) => {
-  const a = 0.1 + (0.45 - 0.1) * (i / (STEPS - 1));
+  const a = 0.08 + (0.3 - 0.08) * (i / (STEPS - 1));
   return `rgba(252,252,250,${a.toFixed(3)})`;
 });
 
