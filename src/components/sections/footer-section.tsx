@@ -16,13 +16,17 @@ const FooterSection = () => {
 
   return (
     <footer className="relative overflow-hidden bg-ink py-16 text-paper sm:py-20">
-      {/* star-chart plate slot — negative impression, feathered, 25-35% */}
+      {/* star-chart plate — negative impression, feathered into the top-right
+          corner and held well clear of the link columns. Opacity is kept low
+          (0.14) so text over any bright region still passes AA — §10: reduce
+          the graphic, never add a scrim. Flagged as a cut candidate: this low
+          it barely reads as an instrument. */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 hidden lg:block"
         aria-hidden="true"
         style={{
-          WebkitMaskImage: "radial-gradient(ellipse 70% 90% at 78% 30%, black 0%, transparent 70%)",
-          maskImage: "radial-gradient(ellipse 70% 90% at 78% 30%, black 0%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
+          maskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
         }}
       >
         <picture>
@@ -32,7 +36,7 @@ const FooterSection = () => {
             src="/plates/footer-starchart.jpg"
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover opacity-30 [filter:grayscale(1)_invert(1)_contrast(1.2)]"
+            className="h-full w-full object-cover opacity-[0.14] [filter:grayscale(1)_invert(1)_contrast(1.2)]"
             onError={(e) => {
               (e.currentTarget.closest("picture") as HTMLElement | null)?.style.setProperty("display", "none");
             }}
