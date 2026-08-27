@@ -121,7 +121,7 @@ export function SpecimenKey({ index, className }: { index: number; className?: s
 export function LeaderLine({ className }: { className?: string }) {
   return (
     <span
-      className={cn("block h-px bg-rubric scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
+      className={cn("block h-px bg-rubric-light scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
       aria-hidden="true"
     />
   );
