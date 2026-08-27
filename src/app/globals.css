@@ -3,60 +3,79 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Fresco pigments — reference these everywhere; no hardcoded hex in components.
-     Names kept as the literal pigments so the palette stays legible on its own. */
-  --color-plaster: #f4f0e6;       /* fresco intonaco — page background */
-  --color-plaster-shade: #eae3d4; /* aged plaster — alternating sections */
-  --color-ochre: #c9a227;         /* yellow ochre — hairlines, keys, ornament, numerals */
-  --color-sienna: #a6572f;        /* burnt sienna — secondary accent, warm hovers */
-  --color-umber: #3d3226;         /* raw umber — body text, display headings */
-  --color-umber-soft: #6e6152;    /* diluted umber — secondary text, captions */
-  --color-lapis: #3636d3;         /* ultramarine — the brand indigo, rationed */
-  --color-lapis-deep: #2a2aa8;    /* ultramarine, shadowed — lapis hover states */
+  /* The folio palette — INVERTED. The engraved folio now runs dark grounds
+     with white and blue type; three light sections (About, V1 Recap,
+     Sponsors) give relief. Token names are unchanged; values and roles
+     flip. Reference these everywhere; no hardcoded hex in components. */
+  --color-ink: #0b0b0f;           /* PRIMARY PAGE GROUND (was: dark type) */
+  --color-ink-alt: #15151c;       /* adjacent dark sections needing separation */
+  --color-paper: #fcfcfa;         /* PRIMARY TYPE COLOR (was: page ground) */
+  --color-paper-dim: #c4c4cc;     /* secondary text on dark grounds */
+  --color-paper-alt: #f1f1ee;     /* the light relief sections' alt ground */
+  --color-ink-soft: #57575f;      /* secondary text on the light sections */
+  --color-rubric: #3636d3;        /* blue as fill only on dark (CTA); text/line-art on light */
+  --color-rubric-deep: #2a2aa8;   /* rubric hover states */
+  --color-rubric-light: #9c9cf2;  /* blue for text + line art on dark grounds (rubric fails AA there) */
+  --color-rubric-pale: var(--color-rubric-light); /* legacy alias */
+  --color-rule: #31313c;          /* default hairline — dark grounds (dark is primary now) */
+  --color-rule-dark: #31313c;     /* hairlines on dark */
+  --color-rule-light: #d6d6dc;    /* hairlines on light */
+  --color-rule-inverse: #d6d6dc;  /* legacy: now the LIGHT-ground hairline */
+  --color-line-dark: #4a4a58;     /* line-art graphics on dark — brighter than a hairline so engraving stays readable */
 
-  /* diluted-ochre hairline: the pigment-mixing metaphor, literally */
-  --color-rule: color-mix(in srgb, var(--color-ochre) 32%, var(--color-plaster) 68%);
+  /* Legacy aliases — every component still written against the previous
+     fresco-pigment names resolves through here, so this one file is the
+     entire color swap (§12 step 2: "change nothing else"). Per-section
+     rebuilds replace these with the direct new names as they land. */
+  --color-plaster: var(--color-paper);
+  --color-plaster-shade: var(--color-paper-alt);
+  --color-umber: var(--color-ink);
+  --color-umber-soft: var(--color-ink-soft);
+  --color-lapis: var(--color-rubric);
+  --color-lapis-deep: var(--color-rubric-deep);
+  /* Ochre and sienna have no equivalent in a two-ink system — both fold to
+     ink-soft (a quiet neutral) rather than to rubric, which must stay rare.
+     Numerals/keys/node-markers read as muted until a section is rebuilt to
+     spend one of its two rubric slots on them deliberately (e.g. Schedule's
+     helix node markers, or specimen-key hover). */
+  --color-ochre: var(--color-ink-soft);
+  --color-sienna: var(--color-ink-soft);
 
-  /* Legacy aliases — the approved hero references these names directly and is
-     out of scope until the Frontispiece/Beat 2 gates land. Lapis === the old
-     brand indigo exactly, so the CTA/accent don't shift; ink/paper warm toward
-     the fresco palette gracefully in the meantime. */
-  --color-ink: var(--color-umber);
-  --color-ink-muted: var(--color-umber-soft);
-  --color-paper: var(--color-plaster);
-  --color-paper-alt: var(--color-plaster-shade);
-  --color-brand: var(--color-lapis);
-  --color-brand-deep: var(--color-lapis-deep);
-  --color-brand-ink: var(--color-lapis);
+  --color-ink-muted: var(--color-ink-soft);
+  --color-brand: var(--color-rubric);
+  --color-brand-deep: var(--color-rubric-deep);
+  --color-brand-ink: var(--color-rubric);
 
   /* shadcn/radix primitives kept for the accordion + any future ui/ components */
-  --color-background: var(--color-plaster);
-  --color-foreground: var(--color-umber);
-  --color-card: var(--color-plaster);
-  --color-card-foreground: var(--color-umber);
-  --color-popover: var(--color-plaster);
-  --color-popover-foreground: var(--color-umber);
-  --color-primary: var(--color-lapis);
-  --color-primary-foreground: var(--color-plaster);
-  --color-secondary: var(--color-plaster-shade);
-  --color-secondary-foreground: var(--color-umber);
-  --color-muted: var(--color-plaster-shade);
-  --color-muted-foreground: var(--color-umber-soft);
-  --color-accent: var(--color-plaster-shade);
-  --color-accent-foreground: var(--color-umber);
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-paper);
+  --color-card: var(--color-ink-alt);
+  --color-card-foreground: var(--color-paper);
+  --color-popover: var(--color-ink-alt);
+  --color-popover-foreground: var(--color-paper);
+  --color-primary: var(--color-rubric);
+  --color-primary-foreground: var(--color-paper);
+  --color-secondary: var(--color-ink-alt);
+  --color-secondary-foreground: var(--color-paper);
+  --color-muted: var(--color-ink-alt);
+  --color-muted-foreground: var(--color-paper-dim);
+  --color-accent: var(--color-ink-alt);
+  --color-accent-foreground: var(--color-paper);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
   --color-border: var(--color-rule);
   --color-input: var(--color-rule);
-  --color-ring: var(--color-lapis);
+  --color-ring: var(--color-rubric-light);
 
-  /* Typography families — display carries humanist warmth in a grotesque
-     (closest free equivalent to Söhne Breit/Founders Grotesk); serif is the
-     literal typeface family of the Renaissance printing era; mono is reserved
-     for numerals and metadata only, never body copy or headings. */
-  --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-garamond), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  /* Typography families (§3). Display + body: Archivo, a humanist grotesque in
+     the Akzidenz lineage (free stand-in for Söhne Breit / Founders Grotesk),
+     with a variable width axis for the wide display cut. Serif: Newsreader, a
+     quiet literary serif with a true italic (stand-in for GT Alpina) — the
+     folio voice. Mono: IBM Plex Mono, numerals and metadata only, never body,
+     never headings. */
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-plex-mono), "SF Mono", Menlo, monospace;
 
   --radius-lg: 0.5rem;
@@ -111,7 +130,7 @@
        without needing a wrapper element. Hex is --color-ochre's literal
        value: a data-URI SVG is an isolated document and can't read the
        page's CSS custom properties. */
-    --coffer-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cdefs%3E%3Cpattern id='c' width='84' height='84' patternUnits='userSpaceOnUse' patternTransform='skewX(-10)'%3E%3Crect x='6' y='6' width='72' height='72' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.3'/%3E%3Crect x='20' y='20' width='44' height='44' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.18'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23c)'/%3E%3C/svg%3E");
+    --coffer-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cdefs%3E%3Cpattern id='c' width='84' height='84' patternUnits='userSpaceOnUse' patternTransform='skewX(-10)'%3E%3Crect x='6' y='6' width='72' height='72' fill='none' stroke='%23D6D6DC' stroke-width='1' opacity='0.7'/%3E%3Crect x='20' y='20' width='44' height='44' fill='none' stroke='%23D6D6DC' stroke-width='1' opacity='0.45'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23c)'/%3E%3C/svg%3E");
   }
 
   html { scroll-behavior: smooth; }
@@ -121,20 +140,20 @@
   section[id] { scroll-margin-top: 88px; }
 
   ::selection {
-    background-color: var(--color-brand);
+    background-color: var(--color-rubric);
     color: var(--color-paper);
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
     line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    color: var(--color-ink);
+    color: var(--color-paper);
     line-height: 0.9;
     text-transform: uppercase;
     letter-spacing: -0.025em;
@@ -143,7 +162,7 @@
   h1 { font-size: 4rem; font-weight: 800; }
   h2 { font-size: 2.5rem; font-weight: 800; }
   h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
-  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-ink); }
+  p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-paper); }
   a  { color: inherit; text-decoration: none; }
 
   /* Hero legacy classes — kept verbatim so the approved hero renders unchanged.
@@ -181,15 +200,24 @@
     h3 { font-size: 1.75rem; }
   }
 
-  /* Visible focus ring on every interactive element — brand outline, no exceptions */
+  /* Visible focus ring — --rubric-light on the dark grounds (primary), no
+     transition. The three light relief sections carry bg-paper / bg-paper-alt
+     on the section element, so scope a --rubric ring inside them. */
   a:focus-visible,
   button:focus-visible,
   [role="button"]:focus-visible,
   input:focus-visible,
   summary:focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-rubric-light);
     outline-offset: 3px;
     border-radius: 2px;
+  }
+  [class*="bg-paper"] a:focus-visible,
+  [class*="bg-paper"] button:focus-visible,
+  [class*="bg-paper"] [role="button"]:focus-visible,
+  [class*="bg-paper"] input:focus-visible,
+  [class*="bg-paper"] summary:focus-visible {
+    outline-color: var(--color-rubric);
   }
 }
 
@@ -210,9 +238,10 @@
   .type-display {
     font-family: var(--font-display);
     font-weight: 800;
+    font-stretch: 115%;
     text-transform: uppercase;
     letter-spacing: -0.025em;
-    line-height: 0.88;
+    line-height: 0.85;
     font-size: var(--type-display);
   }
   .type-title {
@@ -245,8 +274,8 @@
     font-size: var(--type-body);
   }
   .type-meta {
-    font-family: var(--font-body);
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     line-height: 1.4;
@@ -257,7 +286,7 @@
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     font-size: clamp(1.5rem, 2.6vw, 1.875rem);
-    color: var(--color-ochre);
+    color: var(--color-paper-dim); /* dark-ground default; light sections override with text-ink-soft */
   }
 
   .grain-overlay {
@@ -294,22 +323,31 @@
     isolation: isolate;
     transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  /* Default (dark grounds): --paper outline + type, hover wipes --paper in
+     with --ink type. Under a light relief section it inverts. */
   .btn-wipe::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: var(--color-sienna);
+    background-color: var(--color-paper);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
     z-index: -1;
   }
   .btn-wipe:hover {
-    color: var(--color-plaster);
-    border-color: var(--color-sienna);
+    color: var(--color-ink);
+    border-color: var(--color-paper);
   }
   .btn-wipe:hover::before {
     transform: scaleX(1);
+  }
+  [class*="bg-paper"] .btn-wipe::before {
+    background-color: var(--color-ink);
+  }
+  [class*="bg-paper"] .btn-wipe:hover {
+    color: var(--color-paper);
+    border-color: var(--color-ink);
   }
 
   @keyframes bob {

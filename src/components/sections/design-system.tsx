@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /* Shared building blocks for the sitewide redesign (hero excluded — it has its
@@ -34,15 +34,25 @@ export function SectionHeading({
   eyebrow,
   title,
   align = "left",
+  tone = "paper",
+  eyebrowAccent = true,
   className,
 }: {
   eyebrow: string;
   title: string;
   align?: "left" | "right" | "center";
+  tone?: "ink" | "paper";
+  eyebrowAccent?: boolean;
   className?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const alignClass = align === "right" ? "text-right items-end" : align === "center" ? "text-center items-center" : "text-left items-start";
+  // On dark grounds the serif eyebrow is the section heading's one blue accent
+  // (§ rubrication). eyebrowAccent=false where the section already spends its
+  // two blue slots elsewhere (e.g. Register: CTA + ECG spike).
+  const eyebrowTone =
+    tone === "paper" ? (eyebrowAccent ? "text-rubric-light" : "text-paper-dim") : "text-ink-soft";
+  const titleTone = tone === "paper" ? "text-paper" : "text-ink";
 
   // Observed on the wrapper, not the heading itself: the heading's own
   // *hidden* state is translated 110% out of place, which can itself drop
@@ -59,7 +69,7 @@ export function SectionHeading({
         initial={reduceMotion ? undefined : { opacity: 0 }}
         animate={reduceMotion ? undefined : { opacity: inView ? 1 : 0 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="type-eyebrow text-sienna"
+        className={cn("type-eyebrow", eyebrowTone)}
       >
         {eyebrow}
       </motion.p>
@@ -68,7 +78,7 @@ export function SectionHeading({
           initial={reduceMotion ? undefined : { y: "110%" }}
           animate={reduceMotion ? undefined : { y: inView ? "0%" : "110%" }}
           transition={{ duration: 0.6, delay: 0.15, ease: EASE_OUT }}
-          className="type-display text-ink mt-1"
+          className={cn("type-display mt-1", titleTone)}
         >
           {title}
         </motion.h2>
@@ -88,7 +98,7 @@ export function SectionHeading({
  *  toward the item. */
 export function Numeral({ n, className }: { n: number; className?: string }) {
   return (
-    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-rubric", className)}>
       {String(n).padStart(2, "0")}/
     </span>
   );
@@ -100,7 +110,7 @@ export function Numeral({ n, className }: { n: number; className?: string }) {
 export function SpecimenKey({ index, className }: { index: number; className?: string }) {
   const letter = String.fromCharCode(97 + index); // 0 -> a, 1 -> b, ...
   return (
-    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-rubric", className)}>
       {letter}.
     </span>
   );
@@ -111,7 +121,7 @@ export function SpecimenKey({ index, className }: { index: number; className?: s
 export function LeaderLine({ className }: { className?: string }) {
   return (
     <span
-      className={cn("block h-px bg-lapis scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
+      className={cn("block h-px bg-rubric-light scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
       aria-hidden="true"
     />
   );
@@ -137,11 +147,15 @@ export function StatNumeral({
   value,
   label,
   className,
+  numeralClassName = "type-display",
+  tone = "ink",
   delay = 0,
 }: {
   value: string;
   label: string;
   className?: string;
+  numeralClassName?: string;
+  tone?: "ink" | "paper";
   delay?: number;
 }) {
   const motionProps = useFadeRise(delay);
@@ -175,8 +189,8 @@ export function StatNumeral({
 
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", className)}>
-      <span ref={ref} className="type-display text-ink tabular-nums">{display}</span>
-      <span className="type-meta text-ink-muted mt-2">{label}</span>
+      <span ref={ref} className={cn("tabular-nums", tone === "paper" ? "text-paper" : "text-ink", numeralClassName)}>{display}</span>
+      <span className={cn("type-meta mt-2", tone === "paper" ? "text-paper-dim" : "text-ink-muted")}>{label}</span>
     </motion.div>
   );
 }
@@ -284,9 +298,9 @@ export function EngravedLineDraw({
       const el = p as SVGPathElement;
       const len = el.getTotalLength();
       el.style.fill = "none";
-      el.style.stroke = "var(--color-ochre)";
+      el.style.stroke = "var(--color-paper)"; // white line on the dark ground (negative impression)
       el.style.strokeWidth = "1";
-      el.style.strokeOpacity = "0.6";
+      el.style.strokeOpacity = "0.16";
       el.style.strokeDasharray = `${len}`;
       el.style.strokeDashoffset = reduceMotion ? "0" : `${len}`;
     });
@@ -338,15 +352,14 @@ export function CofferParallaxBg() {
   );
 }
 
-/** Springing-line section divider (Part 4's "Bays" + Part 6 effect 6) — a
- *  horizontal hairline that curves gently upward at both ends, suggesting
- *  the base of a vault. Sits between every section. Draws outward from its
- *  own center on scroll entry, 800ms — two halves sharing the center point,
- *  same technique as the Frontispiece arch (effect 1), so both "read" as
- *  the same architectural drawing gesture at different scales. pathLength
- *  doesn't move the element's own box, so (unlike the heading reveal) a
- *  plain whileInView on the paths themselves is safe here. */
-export function SpringingLine() {
+/** Springing-line section divider (Part 4's "Bays") — a hairline that springs
+ *  UPWARD at both ends: lowest at the centre, rising toward each edge, the
+ *  base of a vault. Two mirrored quadratic halves, ~31px of rise, capped at
+ *  1200px and centred (edge-to-edge flattens the curve to nothing). Stroke is
+ *  non-scaling so the hairline weight survives the horizontal squish on narrow
+ *  viewports. Each half draws outward from the shared centre on scroll entry,
+ *  800ms. The wrapper stays full-width and carries its gap's ground tone. */
+export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }) {
   const reduceMotion = useReducedMotion();
   const half = reduceMotion
     ? {}
@@ -356,23 +369,203 @@ export function SpringingLine() {
         viewport: { once: true, amount: 0.8 },
         transition: { duration: 0.8, ease: EASE_OUT },
       };
+  const bg = ground === "light" ? "bg-paper" : "bg-ink";
+  const stroke = ground === "light" ? "var(--color-rule-light)" : "var(--color-rule-dark)";
   return (
-    <div className="w-full h-6 sm:h-8 overflow-hidden" aria-hidden="true">
-      <svg viewBox="0 0 1000 24" className="w-full h-full" preserveAspectRatio="none">
-        <motion.path d="M 500 18 Q 250 10 0 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
-        <motion.path d="M 500 18 Q 750 10 1000 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
+    <div className={cn("w-full overflow-hidden py-4 sm:py-5", bg)} aria-hidden="true">
+      <svg
+        viewBox="0 0 1200 48"
+        className="mx-auto block h-12 w-full max-w-[1200px]"
+        preserveAspectRatio="none"
+      >
+        {/* lowest at centre (y=40), rising to the edges (y=10) → ~30px rise */}
+        <motion.path
+          d="M 600 40 Q 300 40 0 10"
+          stroke={stroke}
+          strokeWidth="1.25"
+          fill="none"
+          vectorEffect="non-scaling-stroke"
+          {...half}
+        />
+        <motion.path
+          d="M 600 40 Q 900 40 1200 10"
+          stroke={stroke}
+          strokeWidth="1.25"
+          fill="none"
+          vectorEffect="non-scaling-stroke"
+          {...half}
+        />
       </svg>
     </div>
   );
 }
 
-/** Small ochre node marker for timeline-style lists — Schedule's spine markers,
- *  per the brief. Lapis is never spent here; it stays reserved for CTAs. */
-export function NodeMarker({ className }: { className?: string }) {
+/** ECG pulse rule (§5D) — Register only. A hairline baseline with a single
+ *  PQRST complex at centre; the QRS spike is --rubric, everything else --rule.
+ *  Draws left to right on scroll entry over ~1200ms via stroke-dashoffset,
+ *  then sits static — no looping pulse. Exactly one instance sitewide: it is
+ *  punctuation, not a motif. prefers-reduced-motion shows it fully drawn. */
+export function ECGPulse({ className }: { className?: string }) {
+  const ref = useRef<SVGSVGElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const svg = ref.current;
+    if (!svg) return;
+    const paths = Array.from(svg.querySelectorAll("path"));
+    const lens = paths.map((p) => p.getTotalLength());
+    paths.forEach((p, i) => {
+      p.style.strokeDasharray = `${lens[i]}`;
+      p.style.strokeDashoffset = reduceMotion ? "0" : `${lens[i]}`;
+    });
+    if (reduceMotion) return;
+
+    const total = lens.reduce((a, b) => a + b, 0);
+    let acc = 0;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        paths.forEach((p, i) => {
+          const startFrac = acc / total;
+          acc += lens[i];
+          const durFrac = lens[i] / total;
+          p.style.transition = `stroke-dashoffset 1200ms cubic-bezier(0.16,1,0.3,1) ${Math.round(startFrac * 1200)}ms`;
+          void durFrac;
+          p.style.strokeDashoffset = "0";
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.6 }
+    );
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, [reduceMotion]);
+
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 1000 120"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden="true"
+      fill="none"
+    >
+      {/* lead-in + P wave */}
+      <path d="M0 60 H430 c 8 -13 20 -13 28 0 h 26" stroke="var(--color-line-dark)" strokeWidth="1.5" />
+      {/* QRS complex — the one rubric mark */}
+      <path d="M484 60 l 10 9 l 13 -52 l 13 60 l 10 -17" stroke="var(--color-rubric-light)" strokeWidth="1.5" />
+      {/* T wave + tail */}
+      <path d="M530 60 c 14 -21 40 -21 54 0 H1000" stroke="var(--color-line-dark)" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+/** Small node marker for timeline-style lists. Default is a quiet --rule dot;
+ *  `active` lights it to --rubric — spent deliberately on Schedule's helix
+ *  markers as the section passes them (see Helix), never as a permanent accent. */
+export function NodeMarker({ active = false, className }: { active?: boolean; className?: string }) {
   return (
     <span
-      className={cn("block w-2.5 h-2.5 rounded-full bg-ochre ring-4 ring-paper", className)}
+      className={cn(
+        "block w-2.5 h-2.5 rounded-full ring-4 ring-paper transition-colors duration-300",
+        active ? "bg-rubric" : "bg-rule",
+        className
+      )}
       aria-hidden="true"
     />
+  );
+}
+
+/** One helix node marker. Sits on the spine in --rule; lights to --rubric only
+ *  while the scroll line is level with it, then goes quiet again — so no more
+ *  than one is blue at once and the rubrication rule holds. */
+function HelixNode({ progress, frac, cx, cy }: { progress: MotionValue<number>; frac: number; cx: number; cy: number }) {
+  const w = 0.09; // how wide a scroll band keeps the node lit
+  const lit = useTransform(progress, [frac - w, frac - w * 0.4, frac + w * 0.4, frac + w], [0, 1, 1, 0]);
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={3.5} fill="var(--color-line-dark)" stroke="var(--color-ink)" strokeWidth="3" />
+      <motion.circle cx={cx} cy={cy} r={3.5} fill="var(--color-rubric-light)" stroke="var(--color-ink)" strokeWidth="3" style={{ opacity: lit }} />
+    </>
+  );
+}
+
+/** Double helix (§5D) — the Schedule section's spine and its scroll-progress
+ *  indicator, not decoration. Two counter-phase sine strands ~40px wide down
+ *  the left margin with rung lines between them; a real 2D projection (rungs
+ *  shrink to zero where the strands cross), not a decorative squiggle. A clip
+ *  rect tied to scroll position reveals the rungs top-down so they appear in
+ *  sequence as the line passes them; each node marker lights to --rubric only
+ *  as the line draws level with it (see HelixNode) — never more than one blue
+ *  at a time, none before you scroll in. Below 1024px it renders nothing and
+ *  the section falls back to a plain hairline.
+ *
+ *  Driven entirely by scrollYProgress MotionValues; nothing re-renders on
+ *  scroll. prefers-reduced-motion shows the final drawn state, markers quiet. */
+export function Helix({ targetRef, count = 5 }: { targetRef: React.RefObject<HTMLElement | null>; count?: number }) {
+  const reduceMotion = useReducedMotion();
+  const [h, setH] = useState(0);
+  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start 78%", "end 45%"] });
+
+  useEffect(() => {
+    const el = targetRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => setH(Math.round(entry.contentRect.height)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [targetRef]);
+
+  const W = 40;
+  const cx = W / 2;
+  const amp = 12;
+  const period = 132; // px per full turn
+  const strand = (phase: number) => {
+    if (!h) return "";
+    const pts: string[] = [];
+    for (let y = 0; y <= h; y += 6) {
+      const x = cx + amp * Math.sin((y / period) * Math.PI * 2 + phase);
+      pts.push(`${x.toFixed(1)},${y}`);
+    }
+    return `M ${pts.join(" L ")}`;
+  };
+  const rungs = h
+    ? Array.from({ length: Math.floor(h / 22) }, (_, i) => {
+        const y = i * 22 + 11;
+        const x1 = cx + amp * Math.sin((y / period) * Math.PI * 2);
+        const x2 = cx + amp * Math.sin((y / period) * Math.PI * 2 + Math.PI);
+        return { y, x1, x2 };
+      })
+    : [];
+  const nodes = h ? Array.from({ length: count }, (_, i) => ({ frac: (i + 0.5) / count, cy: ((i + 0.5) / count) * h })) : [];
+
+  const revealH = useTransform(scrollYProgress, [0, 1], [0, h]);
+
+  return (
+    <div className="pointer-events-none absolute left-0 top-0 bottom-0 hidden lg:block" style={{ width: W }} aria-hidden="true">
+      <svg width={W} height={h || 1} viewBox={`0 0 ${W} ${h || 1}`} className="overflow-visible">
+        {/* the helix itself — always present, --line-dark on the dark ground.
+            Progress is never carried by the strands changing colour. */}
+        <g stroke="var(--color-line-dark)" fill="none" strokeWidth="1.25">
+          <path d={strand(0)} />
+          <path d={strand(Math.PI)} />
+        </g>
+
+        {/* rungs revealed top-down by a scroll-driven clip */}
+        <defs>
+          <clipPath id="helix-reveal">
+            <motion.rect x="0" y="0" width={W} height={reduceMotion ? h : revealH} />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#helix-reveal)" stroke="var(--color-line-dark)" fill="none" strokeWidth="1">
+          {rungs.map((r, i) => (
+            <line key={i} x1={r.x1} y1={r.y} x2={r.x2} y2={r.y} />
+          ))}
+        </g>
+
+        {nodes.map((n, i) => (
+          <HelixNode key={i} progress={scrollYProgress} frac={n.frac} cx={cx} cy={n.cy} />
+        ))}
+      </svg>
+    </div>
   );
 }

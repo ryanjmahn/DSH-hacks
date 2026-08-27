@@ -12,32 +12,33 @@ import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
 import { SpringingLine } from "@/components/sections/design-system";
 
+/* Fully dark. Every section runs the dark ground; the second ink (blue,
+   --rubric-light) carries accent words, eyebrows, labels, and links. */
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen bg-ink">
       <FrontispieceSection />
-      {/* no divider here — Beat 1/Beat 2 are explicitly one continuous
-          space per the brief, not a bay boundary */}
+      {/* no divider — Beat 1/Beat 2 are one continuous space */}
       <HeroSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <CountdownSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <AboutSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <V1Section />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <ScheduleSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <PrizesSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <SponsorsSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <WorkshopsSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <RegisterSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <FaqSection />
-      <SpringingLine />
+      <SpringingLine ground="dark" />
       <FooterSection />
     </div>
   );

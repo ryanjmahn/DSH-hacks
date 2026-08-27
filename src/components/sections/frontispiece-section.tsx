@@ -1,72 +1,61 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { EASE_OUT } from "@/components/sections/design-system";
 
-/* A 16th-century engraved title page, rebuilt as a modern event masthead.
-   Height is 92vh (not 100vh) so the CTA and deadline are guaranteed visible
-   without scrolling at both 1440×900 and 390×844 — verified by screenshot,
-   not assumed.
+/* Beat 1 — The Frontispiece. A 16th-century engraved title page rebuilt as an
+   event masthead. The framing element is a bleached architectural background
+   cropped from the upper vault of Raphael's School of Athens (P1 in
+   CREDITS.md) — architecture only, above the figures, so it reads as
+   Renaissance space rather than the specific painting.
 
-   Motion (Part 6, effect 1 — "on load", not scroll-triggered): the arch
-   springs outward from its own apex down both pilasters, then the content
-   fades up in the brief's named order: attribution -> wordmark -> theme ->
-   date -> venue -> CTA. */
+   Motion (§8 effect 1): content fades up in the brief's order — attribution →
+   wordmark → theme → date → venue → CTA, 400ms / 80ms stagger. The vault
+   scales 1.0 → 1.03 across the section's scroll range (scroll-linked, rAF via
+   framer's useScroll), so it opens very slightly as you move down. Both gate
+   behind prefers-reduced-motion.
 
-const ARCH_MS = 1.4;
+   Height 92vh so the CTA and deadline sit above the fold at 1440×900 and
+   390×844. Below 768px a tighter vault crop keeps the coffering readable. */
 
-const Portico = ({ animate }: { animate: boolean }) => {
-  const drawProps = (delay: number) =>
-    animate
-      ? { initial: { pathLength: 0 }, animate: { pathLength: 1 }, transition: { duration: ARCH_MS, delay, ease: EASE_OUT } }
-      : {};
-
-  return (
-    <svg
-      viewBox="0 0 1000 420"
-      className="absolute inset-x-0 top-0 w-full h-full pointer-events-none"
-      preserveAspectRatio="xMidYMin slice"
-      aria-hidden="true"
-    >
-      <g stroke="var(--color-ochre)" strokeOpacity="0.4" fill="none" strokeWidth="1.5">
-        {/* arch — two halves sharing an apex, both animating outward at once
-            so the curve reads as "springing" from its center, not drawn
-            left-to-right like a single stroke */}
-        <motion.path d="M 500 -160 A 280 280 0 0 0 220 120" {...drawProps(0)} />
-        <motion.path d="M 500 -160 A 280 280 0 0 1 780 120" {...drawProps(0)} />
-
-        {/* pilasters — dropped below md, per the brief: don't scale the full
-            architecture down, it turns into a smudge. Grow downward from the
-            springing line, starting partway through the arch's own draw. */}
-        <motion.line x1="220" y1="120" x2="220" y2="400" className="hidden md:inline" {...drawProps(0.5)} />
-        <motion.line x1="780" y1="120" x2="780" y2="400" className="hidden md:inline" {...drawProps(0.5)} />
-        <motion.line
-          x1="196" y1="400" x2="244" y2="400"
-          className="hidden md:inline"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-        <motion.line
-          x1="756" y1="400" x2="804" y2="400"
-          className="hidden md:inline"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-        <motion.line x1="180" y1="118" x2="820" y2="118" className="hidden md:inline" {...drawProps(0.5)} />
-      </g>
-    </svg>
-  );
-};
+const Vault = ({ scale }: { scale: MotionValue<number> | undefined }) => (
+  <motion.div
+    className="pointer-events-none absolute inset-0 opacity-[0.26]"
+    style={{
+      ...(scale ? { scale } : {}),
+      WebkitMaskImage:
+        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+      maskImage:
+        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+    }}
+    aria-hidden="true"
+  >
+    {/* negative impression on the dark ground: the baked file is high-contrast
+        grayscale lifted toward white; invert(1) makes it white coffering on
+        black — reads far better than the positive over the inverted ground */}
+    <picture>
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.avif" type="image/avif" />
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.webp" type="image/webp" />
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.jpg" />
+      <source srcSet="/plates/frontispiece-vault-mobile.avif" type="image/avif" />
+      <source srcSet="/plates/frontispiece-vault-mobile.webp" type="image/webp" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/plates/frontispiece-vault-mobile.jpg"
+        alt=""
+        className="h-full w-full object-cover [filter:invert(1)]"
+        style={{ objectPosition: "50% 30%" }}
+      />
+    </picture>
+  </motion.div>
+);
 
 const Ornament = () => (
-  <div className="relative flex items-center justify-center w-full max-w-xs mx-auto" aria-hidden="true">
-    <span className="h-px w-full bg-ochre/50" />
-    <span className="absolute w-2.5 h-2.5 bg-ochre rotate-45" />
+  <div className="relative flex w-full max-w-[16rem] items-center justify-center" aria-hidden="true">
+    <span className="h-px w-full bg-rule" />
+    <span className="absolute h-2 w-2 rotate-45 bg-paper-dim" />
   </div>
 );
 
@@ -75,84 +64,82 @@ const venueItems = ["Online", "Global", "Ages 13+", "100% Free"];
 export default function FrontispieceSection() {
   const reduceMotion = useReducedMotion();
   const animate = !reduceMotion;
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const fadeUp = (delay: number) =>
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const vaultScale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
+
+  const up = (delay: number) =>
     animate
       ? { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay, ease: EASE_OUT } }
       : {};
 
   return (
     <section
+      ref={sectionRef}
       id="frontispiece"
-      className="relative min-h-[92vh] flex flex-col items-center justify-center bg-plaster text-umber overflow-hidden px-6 py-20 sm:px-8"
+      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-ink px-6 py-20 text-paper sm:px-8"
     >
-      <Portico animate={animate} />
+      <Vault scale={reduceMotion ? undefined : vaultScale} />
+      <div className="grain-overlay" />
 
-      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
-        <motion.p {...fadeUp(0.35)} className="type-meta text-umber-soft text-[clamp(0.625rem,1.5vh,0.8125rem)]">
-          DeltaForge Hacks × NXT Horizon × STEMise
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+        <motion.p {...up(0.35)} className="type-meta text-paper-dim !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
+          DeltaForge Hacks &times; NXT Horizon &times; STEMise
         </motion.p>
 
-        {/* wordmark — smaller than the date, per the brief's explicit ratio.
-            Sized off vh, not vw: the binding constraint here is the 92vh
-            budget, and vw-based sizing blew past it badly on wide-but-short
-            desktop viewports. */}
-        <motion.h1
-          {...fadeUp(0.43)}
-          className="font-display font-extrabold uppercase leading-[0.88] tracking-tight text-umber mt-3 sm:mt-4 text-[clamp(1.75rem,6vh,3.25rem)]"
-        >
+        <motion.h1 {...up(0.43)} className="type-display mt-3 text-paper !text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
           DSH Hacks
           <br />
           V2
         </motion.h1>
 
-        <motion.div {...fadeUp(0.43)} className="mt-3 sm:mt-4 w-full max-w-[16rem]">
+        <motion.div {...up(0.51)} className="mt-3 w-full max-w-[16rem] sm:mt-4">
           <Ornament />
         </motion.div>
 
-        <motion.p {...fadeUp(0.51)} className="type-eyebrow text-umber mt-3 sm:mt-4 text-[clamp(0.9375rem,2vh,1.25rem)]">
-          AI × Healthcare
+        <motion.p {...up(0.59)} className="type-eyebrow mt-3 text-rubric-light !text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
+          AI &times; Healthcare
         </motion.p>
 
-        <motion.p
-          {...fadeUp(0.59)}
-          className="font-display font-extrabold uppercase tracking-tight leading-none text-umber mt-3 sm:mt-5 text-[clamp(3.25rem,12vh,7rem)]"
-        >
+        <motion.p {...up(0.67)} className="type-mega mt-3 text-paper !text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
           Nov 7 2026
         </motion.p>
 
-        <div className="w-full max-w-2xl mx-auto border-t border-rule mt-6 sm:mt-8 pt-4 sm:pt-5 flex flex-col items-center">
-          <motion.div {...fadeUp(0.67)} className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-umber-soft text-[clamp(0.625rem,1.4vh,0.8125rem)]">
+        <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
+          <motion.div
+            {...up(0.75)}
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-paper-dim !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
+          >
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
-                {i > 0 && <span aria-hidden="true">·</span>}
+                {i > 0 && <span className="h-3 w-px bg-rule" aria-hidden="true" />}
                 <span>{item}</span>
               </React.Fragment>
             ))}
           </motion.div>
 
           <motion.a
-            {...fadeUp(0.75)}
+            {...up(0.83)}
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-lapis text-plaster px-8 py-3 sm:py-3.5 type-meta text-[clamp(0.6875rem,1.5vh,0.8125rem)] hover:bg-lapis-deep transition-colors mt-4"
+            className="mt-4 inline-flex items-center gap-2 bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
           >
             Register on Devpost
-            <ArrowRight className="w-4 h-4" />
           </motion.a>
 
-          <motion.p {...fadeUp(0.75)} className="type-eyebrow text-umber-soft mt-3 text-[clamp(0.875rem,1.8vh,1.0625rem)]">
+          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-paper-dim !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
             Submissions close November 7
           </motion.p>
 
-          <motion.div {...fadeUp(0.75)}>
+          <motion.div {...up(0.83)}>
             <Image
               src="/dsh-logo-circle.png"
               alt="DSH Hacks"
               width={24}
               height={24}
-              className="object-contain mt-4 opacity-70"
+              className="mt-4 object-contain opacity-70"
             />
           </motion.div>
         </div>
