@@ -23,7 +23,7 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
     >
       <SpecimenKey index={index} />
       <LeaderLine className="mt-2 w-8" />
-      <h3 className="type-title mt-2 break-words text-paper">{name}</h3>
+      <h3 className="type-title !text-xl mt-2 break-words text-paper">{name}</h3>
       <p className="type-body mt-2 leading-relaxed text-paper-dim">{detail}</p>
     </motion.div>
   );

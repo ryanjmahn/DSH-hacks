@@ -147,11 +147,13 @@ export function StatNumeral({
   value,
   label,
   className,
+  numeralClassName = "type-display",
   delay = 0,
 }: {
   value: string;
   label: string;
   className?: string;
+  numeralClassName?: string;
   delay?: number;
 }) {
   const motionProps = useFadeRise(delay);
@@ -185,7 +187,7 @@ export function StatNumeral({
 
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", className)}>
-      <span ref={ref} className="type-display text-ink tabular-nums">{display}</span>
+      <span ref={ref} className={cn("text-ink tabular-nums", numeralClassName)}>{display}</span>
       <span className="type-meta text-ink-muted mt-2">{label}</span>
     </motion.div>
   );
@@ -348,14 +350,13 @@ export function CofferParallaxBg() {
   );
 }
 
-/** Springing-line section divider (Part 4's "Bays" + Part 6 effect 6) — a
- *  horizontal hairline that curves gently upward at both ends, suggesting
- *  the base of a vault. Sits between every section. Draws outward from its
- *  own center on scroll entry, 800ms — two halves sharing the center point,
- *  same technique as the Frontispiece arch (effect 1), so both "read" as
- *  the same architectural drawing gesture at different scales. pathLength
- *  doesn't move the element's own box, so (unlike the heading reveal) a
- *  plain whileInView on the paths themselves is safe here. */
+/** Springing-line section divider (Part 4's "Bays") — a hairline that springs
+ *  UPWARD at both ends: lowest at the centre, rising toward each edge, the
+ *  base of a vault. Two mirrored quadratic halves, ~31px of rise, capped at
+ *  1200px and centred (edge-to-edge flattens the curve to nothing). Stroke is
+ *  non-scaling so the hairline weight survives the horizontal squish on narrow
+ *  viewports. Each half draws outward from the shared centre on scroll entry,
+ *  800ms. The wrapper stays full-width and carries its gap's ground tone. */
 export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }) {
   const reduceMotion = useReducedMotion();
   const half = reduceMotion
@@ -366,15 +367,32 @@ export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }
         viewport: { once: true, amount: 0.8 },
         transition: { duration: 0.8, ease: EASE_OUT },
       };
-  // the divider carries the ground of its own gap so it never shows a stripe
-  // of the opposite tone between two same-ground sections
   const bg = ground === "light" ? "bg-paper" : "bg-ink";
-  const stroke = ground === "light" ? "var(--color-rule-light)" : "var(--color-line-dark)";
+  const stroke = ground === "light" ? "var(--color-rule-light)" : "var(--color-rule-dark)";
   return (
-    <div className={cn("w-full h-6 sm:h-8 overflow-hidden", bg)} aria-hidden="true">
-      <svg viewBox="0 0 1000 24" className="w-full h-full" preserveAspectRatio="none">
-        <motion.path d="M 500 18 Q 250 10 0 4" stroke={stroke} strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
-        <motion.path d="M 500 18 Q 750 10 1000 4" stroke={stroke} strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
+    <div className={cn("w-full overflow-hidden py-4 sm:py-5", bg)} aria-hidden="true">
+      <svg
+        viewBox="0 0 1200 48"
+        className="mx-auto block h-12 w-full max-w-[1200px]"
+        preserveAspectRatio="none"
+      >
+        {/* lowest at centre (y=40), rising to the edges (y=10) → ~30px rise */}
+        <motion.path
+          d="M 600 40 Q 300 40 0 10"
+          stroke={stroke}
+          strokeWidth="1.25"
+          fill="none"
+          vectorEffect="non-scaling-stroke"
+          {...half}
+        />
+        <motion.path
+          d="M 600 40 Q 900 40 1200 10"
+          stroke={stroke}
+          strokeWidth="1.25"
+          fill="none"
+          vectorEffect="non-scaling-stroke"
+          {...half}
+        />
       </svg>
     </div>
   );

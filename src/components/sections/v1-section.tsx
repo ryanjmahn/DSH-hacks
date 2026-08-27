@@ -105,7 +105,7 @@ const V1Section = () => {
                 i % 2 === 0 ? "border-r border-rule" : ""
               } ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
             >
-              <StatNumeral value={stat.value} label={stat.label} delay={i * 0.06} />
+              <StatNumeral value={stat.value} label={stat.label} numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]" delay={i * 0.06} />
             </div>
           ))}
         </div>
