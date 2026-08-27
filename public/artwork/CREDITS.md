@@ -27,7 +27,13 @@ each earning its place.
 |---|---|---|---|---|---|---|---|---|
 | **M1** | *Tabula II, Liber II* — écorché figure walking in profile | after Andreas Vesalius, engraving | 1568 | Wellcome Collection | V0007742ER / work `wcsthtds` | Public Domain Mark (re-verify) | **Beat 2 / Dedication** — bleached positive stain behind the type, feathered, 20–30%, no box | §4 monochrome positive |
 | **M2** | Human skeleton leaning on a classical tomb, lateral view, after Vesalius | engr. J.R. Bénard after Vesalius | 1779 (after the 1543 woodcut) | Wellcome Collection | 36166i / work `rw2y2mvt` | **now shows CC BY 4.0** (was PDM) — attribution provided here, re-verify at processing | **About** — traced to a hairline `--rule` line-draw (anatomy posed against architecture: the whole thesis in one image) | §5 line art, `stroke-dashoffset` draw-in |
-| **M3** | *Uranometria* Tab. 35 — **Orion**, the figure with lion-skin and club (a whole engraved body, not just a dot-field) | Johann Bayer; engr. Alexander Mair | 1603 | Wikimedia Commons | `Orion Picha.jpg`, else `Eridanus Uranometria.jpg` (4612×3459) as fallback | PD-Mark 1.0 + PD-old-100 | **Footer** (`--ink` ground) — negative impression: white line on black, feathered, 25–35% | §4 monochrome negative + invert |
+| **M3** | *Uranometria* — **Orion**, the figure with lion-skin and club | Johann Bayer; engr. Alexander Mair | 1603 | Wikimedia Commons | `File:Orion Picha.jpg`, 1785×2484 | PD-Mark 1.0 + PD-old-100 | **Footer** (`--ink`) — grayscale + normalise + contrast, then CSS `invert(1)` for the negative impression, feathered radial mask, ~30% (`footer-starchart.*`) | §4 monochrome negative |
+
+*M3 note:* this scan carries modern yellow star-dot overlays and two small
+labels ("Beteigeuze", "Rigel"). At ~30% opacity, inverted, feathered, and
+behind footer text they are not legible; if it ever reads as modified,
+`Eridanus Uranometria.jpg` (4612×3459, unannotated) is the drop-in
+replacement.
 
 *Carried over from the fresco manifest, now cut:* **A3–A5** (spare écorché/myology
 figures — no slot in the folio inventory) and **A6** (nervous-system tree, used
@@ -45,10 +51,27 @@ the section under the §11 400 KB budget with margin, and a deliberate pair
 reads better than a small gallery. Sourced for a blue near `--rubric`
 (`#3636D3`) so the section reads as related to the rest of the site.
 
-| Plate | Candidate | Why | Source | Licence | Blue |
-|---|---|---|---|---|---|
-| **C1** *(anatomical)* | A hand-coloured plate from **Bourgery & Jacob, *Traité complet de l'anatomie de l'homme*** — venous or nervous-system plate | hand-colour + anatomy + blue + the healthcare through-line, all in one | Wikimedia Commons, per-plate, digitised by Wellcome — e.g. `File:Plate 88 Ter. Anatomie Microscopique De La Peau. Wellcome L0077000.jpg`, and the `Wellcome L0077xxx` / `L0010xxx` Bourgery plate set; full volumes also at Internet Archive `BIUSante_02083x01`–`x08` | Wellcome PDM / CC BY 4.0 per plate (re-verify) | venous plates: veins washed in a strong blue over the litho line; off-register wash present |
-| **C2** *(botanical)* | **Besler, *Hortus Eystettensis*** (1613) — a blue iris or larkspur (*Iris*, *Consolida/Delphinium*) plate | true hand-coloured engraving, unmistakable off-register fingerprint, folio-era (1613 sits inside the site's imagery window); a clean tonal contrast with the anatomical plate | Wikimedia Commons `Category:Hortus Eystettensis` — high-res institutional scans | PD-old-100 (re-verify per plate) | ultramarine / indigo flower is the subject |
+Both plates are from **Curtis's Botanical Magazine** — a deliberate pair: two
+gentians, same publisher and engraving team, three years apart, both a deep
+Prussian/ultramarine blue near `--rubric`. Genuine hand-coloured line
+engravings with the off-register wash and paper foxing intact (§5C.3).
+*Sourcing notes:* the Besler *Hortus Eystettensis* scan on Commons turned out
+to be the uncoloured 1640 edition, and the "Bourgery anatomical" candidate
+(`L0077000`) is a near-monochrome grid of skin-microscopy figures — neither
+survived visual review. Curtis replaced both.
+
+| Plate | Work | Artist / engraver | Date | Source | Identifier | Licence | Resolution used |
+|---|---|---|---|---|---|---|---|
+| **PLATE I** (`v1-plate-1`) | A gentian (*Gentiana*) — whole plant with root, star-form flowers | drawn Sydenham Edwards, engr. F. Sansom | 1800 | Wikimedia Commons / Biodiversity Heritage Library | *The Botanical Magazine* pl. 491, vol. 14 — `File:The Botanical Magazine, Plate 491 (Volume 14, 1800).png` | PD-old-100 / No Known Copyright Restrictions | 1892×3210 source → 1000w / 640w |
+| **PLATE II** (`v1-plate-2`) | A gentian (*Gentiana*) — trumpet flowers, narrow leaves | drawn Sydenham Edwards, engr. F. Sansom, pub. T. Curtis | Feb 1803 | Wikimedia Commons / Biodiversity Heritage Library | *Curtis's Botanical Magazine* no. 723 — `File:Curtis's botanical magazine (No. 723) (8447532691).jpg` | PD-old-100 / No Known Copyright Restrictions | 1876×3200 source → 1000w / 640w |
+
+**Treatment (§5C, minimal):** per-channel white balance sampled from a paper
+patch, lifting the paper toward `--paper` and neutralising the yellowed-scan
+cast; `gamma 1.03`, `saturation ×1.03`; **not** desaturated, duotoned, or
+reduced in opacity. Off-register wash and foxing left as-is. Exported WebP +
+progressive-JPEG fallback, art-directed at 1000w (desktop) / 640w (mobile).
+Paper grain is the shared CSS `.grain-overlay`, not baked in — keeps the pair
+of desktop WebPs at ~140 KB total, well under the §11 400 KB budget.
 
 **No C3.** Two plates only — keeps V1 Recap under the §11 400 KB budget with
 margin and reads as a deliberate pair. If a third is ever wanted, the safe
