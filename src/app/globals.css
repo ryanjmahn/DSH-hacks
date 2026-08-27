@@ -3,52 +3,62 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Fresco pigments — reference these everywhere; no hardcoded hex in components.
-     Names kept as the literal pigments so the palette stays legible on its own. */
-  --color-plaster: #f4f0e6;       /* fresco intonaco — page background */
-  --color-plaster-shade: #eae3d4; /* aged plaster — alternating sections */
-  --color-ochre: #c9a227;         /* yellow ochre — hairlines, keys, ornament, numerals */
-  --color-sienna: #a6572f;        /* burnt sienna — secondary accent, warm hovers */
-  --color-umber: #3d3226;         /* raw umber — body text, display headings */
-  --color-umber-soft: #6e6152;    /* diluted umber — secondary text, captions */
-  --color-lapis: #3636d3;         /* ultramarine — the brand indigo, rationed */
-  --color-lapis-deep: #2a2aa8;    /* ultramarine, shadowed — lapis hover states */
+  /* The folio palette — an engraved scientific folio: black ink on white
+     paper, blue as the second (rubrication) ink. Reference these everywhere;
+     no hardcoded hex in components. */
+  --color-paper: #fcfcfa;         /* page ground — plate paper, not screen white */
+  --color-paper-alt: #f1f1ee;     /* alternating light sections */
+  --color-ink: #0b0b0f;           /* text on light grounds; ground for inverted sections */
+  --color-ink-soft: #57575f;      /* secondary text, captions */
+  --color-rubric: #3636d3;        /* the second ink — rationed, max two per viewport */
+  --color-rubric-deep: #2a2aa8;   /* rubric hover states */
+  --color-rubric-pale: #b9b9ee;   /* rubric on --ink grounds, where full saturation fails contrast */
+  --color-rule: #d6d6dc;          /* hairlines + line art on light grounds */
+  --color-rule-inverse: #2a2a33;  /* hairlines + line art on --ink grounds */
 
-  /* diluted-ochre hairline: the pigment-mixing metaphor, literally */
-  --color-rule: color-mix(in srgb, var(--color-ochre) 32%, var(--color-plaster) 68%);
+  /* Legacy aliases — every component still written against the previous
+     fresco-pigment names resolves through here, so this one file is the
+     entire color swap (§12 step 2: "change nothing else"). Per-section
+     rebuilds replace these with the direct new names as they land. */
+  --color-plaster: var(--color-paper);
+  --color-plaster-shade: var(--color-paper-alt);
+  --color-umber: var(--color-ink);
+  --color-umber-soft: var(--color-ink-soft);
+  --color-lapis: var(--color-rubric);
+  --color-lapis-deep: var(--color-rubric-deep);
+  /* Ochre and sienna have no equivalent in a two-ink system — both fold to
+     ink-soft (a quiet neutral) rather than to rubric, which must stay rare.
+     Numerals/keys/node-markers read as muted until a section is rebuilt to
+     spend one of its two rubric slots on them deliberately (e.g. Schedule's
+     helix node markers, or specimen-key hover). */
+  --color-ochre: var(--color-ink-soft);
+  --color-sienna: var(--color-ink-soft);
 
-  /* Legacy aliases — the approved hero references these names directly and is
-     out of scope until the Frontispiece/Beat 2 gates land. Lapis === the old
-     brand indigo exactly, so the CTA/accent don't shift; ink/paper warm toward
-     the fresco palette gracefully in the meantime. */
-  --color-ink: var(--color-umber);
-  --color-ink-muted: var(--color-umber-soft);
-  --color-paper: var(--color-plaster);
-  --color-paper-alt: var(--color-plaster-shade);
-  --color-brand: var(--color-lapis);
-  --color-brand-deep: var(--color-lapis-deep);
-  --color-brand-ink: var(--color-lapis);
+  --color-ink-muted: var(--color-ink-soft);
+  --color-brand: var(--color-rubric);
+  --color-brand-deep: var(--color-rubric-deep);
+  --color-brand-ink: var(--color-rubric);
 
   /* shadcn/radix primitives kept for the accordion + any future ui/ components */
-  --color-background: var(--color-plaster);
-  --color-foreground: var(--color-umber);
-  --color-card: var(--color-plaster);
-  --color-card-foreground: var(--color-umber);
-  --color-popover: var(--color-plaster);
-  --color-popover-foreground: var(--color-umber);
-  --color-primary: var(--color-lapis);
-  --color-primary-foreground: var(--color-plaster);
-  --color-secondary: var(--color-plaster-shade);
-  --color-secondary-foreground: var(--color-umber);
-  --color-muted: var(--color-plaster-shade);
-  --color-muted-foreground: var(--color-umber-soft);
-  --color-accent: var(--color-plaster-shade);
-  --color-accent-foreground: var(--color-umber);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-rubric);
+  --color-primary-foreground: var(--color-paper);
+  --color-secondary: var(--color-paper-alt);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-paper-alt);
+  --color-muted-foreground: var(--color-ink-soft);
+  --color-accent: var(--color-paper-alt);
+  --color-accent-foreground: var(--color-ink);
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
   --color-border: var(--color-rule);
   --color-input: var(--color-rule);
-  --color-ring: var(--color-lapis);
+  --color-ring: var(--color-rubric);
 
   /* Typography families — display carries humanist warmth in a grotesque
      (closest free equivalent to Söhne Breit/Founders Grotesk); serif is the
