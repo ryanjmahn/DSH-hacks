@@ -48,7 +48,7 @@ const FooterSection = () => {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <motion.div {...leftMotion} className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="mb-4 flex items-center gap-3">
-              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={34} height={34} className="object-contain brightness-0 invert" />
+              <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={34} height={34} className="object-contain" />
               <span className="type-title !text-2xl text-paper">DSH Hacks</span>
             </div>
             <p className="type-body mb-1 !text-sm text-paper-dim">DeltaForge Hacks &times; NXT Horizon &times; STEMise</p>

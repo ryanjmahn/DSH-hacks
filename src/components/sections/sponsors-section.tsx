@@ -59,14 +59,15 @@ const SponsorsSection = () => {
               className="flex w-[200px] items-center justify-center px-6 py-8"
               aria-label={name}
             >
-              {/* On the dark ground: invert + grayscale at rest so dark
-                  wordmarks read as pale silhouettes; true colour on hover. */}
+              {/* On the dark ground: grayscale + invert so dark wordmarks
+                  read as pale silhouettes. Hover only lifts the opacity —
+                  no colour change. */}
               <Image
                 src={logo}
                 alt={name}
                 width={150}
                 height={32}
-                className="h-auto max-h-8 w-auto max-w-[150px] object-contain opacity-70 transition-all duration-[250ms] [filter:grayscale(1)_invert(1)] hover:opacity-100 hover:[filter:grayscale(0)_invert(0)]"
+                className="h-auto max-h-8 w-auto max-w-[150px] object-contain opacity-70 transition-all duration-[250ms] [filter:grayscale(1)_invert(1)] hover:opacity-100"
               />
             </a>
           ))}
