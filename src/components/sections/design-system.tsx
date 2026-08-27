@@ -34,15 +34,19 @@ export function SectionHeading({
   eyebrow,
   title,
   align = "left",
+  tone = "ink",
   className,
 }: {
   eyebrow: string;
   title: string;
   align?: "left" | "right" | "center";
+  tone?: "ink" | "paper";
   className?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const alignClass = align === "right" ? "text-right items-end" : align === "center" ? "text-center items-center" : "text-left items-start";
+  const eyebrowTone = tone === "paper" ? "text-paper/70" : "text-ink-soft";
+  const titleTone = tone === "paper" ? "text-paper" : "text-ink";
 
   // Observed on the wrapper, not the heading itself: the heading's own
   // *hidden* state is translated 110% out of place, which can itself drop
@@ -59,7 +63,7 @@ export function SectionHeading({
         initial={reduceMotion ? undefined : { opacity: 0 }}
         animate={reduceMotion ? undefined : { opacity: inView ? 1 : 0 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="type-eyebrow text-ink-soft"
+        className={cn("type-eyebrow", eyebrowTone)}
       >
         {eyebrow}
       </motion.p>
@@ -68,7 +72,7 @@ export function SectionHeading({
           initial={reduceMotion ? undefined : { y: "110%" }}
           animate={reduceMotion ? undefined : { y: inView ? "0%" : "110%" }}
           transition={{ duration: 0.6, delay: 0.15, ease: EASE_OUT }}
-          className="type-display text-ink mt-1"
+          className={cn("type-display mt-1", titleTone)}
         >
           {title}
         </motion.h2>
