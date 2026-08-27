@@ -1,160 +1,125 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { EASE_OUT } from "@/components/sections/design-system";
 
-/* A 16th-century engraved title page, rebuilt as a modern event masthead.
-   Height is 92vh (not 100vh) so the CTA and deadline are guaranteed visible
-   without scrolling at both 1440×900 and 390×844 — verified by screenshot,
-   not assumed.
+/* Beat 1 — The Frontispiece. A 16th-century engraved title page rebuilt as an
+   event masthead: title inside a drawn portico, imprint on the plinth,
+   printer's device at the foot.
 
-   Motion (Part 6, effect 1 — "on load", not scroll-triggered): the arch
-   springs outward from its own apex down both pilasters, then the content
-   fades up in the brief's named order: attribution -> wordmark -> theme ->
-   date -> venue -> CTA. */
+   §12 step 5: STATIC. No motion here — the arch draw-in and staggered load
+   sequence come back in the step 8 motion pass. Everything renders in its
+   final state.
 
-const ARCH_MS = 1.4;
+   Height 92vh (not 100vh) so the CTA and deadline sit above the fold at both
+   1440×900 and 390×844. Clean --paper, no plate — the contrast is what makes
+   Beat 2 land. Below 768px the pilasters drop; the arch curve and plinth rule
+   stay (scaling the whole architecture down turns it into a smudge). */
 
-const Portico = ({ animate }: { animate: boolean }) => {
-  const drawProps = (delay: number) =>
-    animate
-      ? { initial: { pathLength: 0 }, animate: { pathLength: 1 }, transition: { duration: ARCH_MS, delay, ease: EASE_OUT } }
-      : {};
+const Portico = () => (
+  <svg
+    viewBox="0 0 1000 420"
+    className="absolute inset-x-0 top-0 h-full w-full pointer-events-none"
+    preserveAspectRatio="xMidYMin slice"
+    aria-hidden="true"
+  >
+    {/* hairline line art, --rule, 1.5px — off the same press as the plates */}
+    <g stroke="var(--color-rule)" fill="none" strokeWidth="1.5">
+      {/* arch — two halves sharing an apex */}
+      <path d="M 500 -160 A 280 280 0 0 0 220 120" />
+      <path d="M 500 -160 A 280 280 0 0 1 780 120" />
+      {/* entablature over the opening */}
+      <line x1="180" y1="118" x2="820" y2="118" className="hidden md:block" />
+      {/* pilasters — md and up only */}
+      <line x1="220" y1="120" x2="220" y2="400" className="hidden md:block" />
+      <line x1="780" y1="120" x2="780" y2="400" className="hidden md:block" />
+      <line x1="196" y1="400" x2="244" y2="400" className="hidden md:block" />
+      <line x1="756" y1="400" x2="804" y2="400" className="hidden md:block" />
+    </g>
+    {/* compass-construction arcs — the geometry behind the arch, very faint */}
+    <g stroke="var(--color-rule)" fill="none" strokeWidth="1" opacity="0.5">
+      <circle cx="500" cy="120" r="280" />
+      <path d="M 360 120 A 140 140 0 0 1 640 120" />
+    </g>
+  </svg>
+);
 
-  return (
-    <svg
-      viewBox="0 0 1000 420"
-      className="absolute inset-x-0 top-0 w-full h-full pointer-events-none"
-      preserveAspectRatio="xMidYMin slice"
-      aria-hidden="true"
-    >
-      <g stroke="var(--color-ochre)" strokeOpacity="0.4" fill="none" strokeWidth="1.5">
-        {/* arch — two halves sharing an apex, both animating outward at once
-            so the curve reads as "springing" from its center, not drawn
-            left-to-right like a single stroke */}
-        <motion.path d="M 500 -160 A 280 280 0 0 0 220 120" {...drawProps(0)} />
-        <motion.path d="M 500 -160 A 280 280 0 0 1 780 120" {...drawProps(0)} />
-
-        {/* pilasters — dropped below md, per the brief: don't scale the full
-            architecture down, it turns into a smudge. Grow downward from the
-            springing line, starting partway through the arch's own draw. */}
-        <motion.line x1="220" y1="120" x2="220" y2="400" className="hidden md:inline" {...drawProps(0.5)} />
-        <motion.line x1="780" y1="120" x2="780" y2="400" className="hidden md:inline" {...drawProps(0.5)} />
-        <motion.line
-          x1="196" y1="400" x2="244" y2="400"
-          className="hidden md:inline"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-        <motion.line
-          x1="756" y1="400" x2="804" y2="400"
-          className="hidden md:inline"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-        <motion.line x1="180" y1="118" x2="820" y2="118" className="hidden md:inline" {...drawProps(0.5)} />
-      </g>
-    </svg>
-  );
-};
-
+/* A thin rule with a lozenge at centre — a compositor's mark. --ink, not
+   rubric: the CTA is the section's single second-ink element. */
 const Ornament = () => (
-  <div className="relative flex items-center justify-center w-full max-w-xs mx-auto" aria-hidden="true">
-    <span className="h-px w-full bg-ochre/50" />
-    <span className="absolute w-2.5 h-2.5 bg-ochre rotate-45" />
+  <div className="relative flex w-full max-w-[16rem] items-center justify-center" aria-hidden="true">
+    <span className="h-px w-full bg-rule" />
+    <span className="absolute h-2 w-2 rotate-45 bg-ink" />
   </div>
 );
 
 const venueItems = ["Online", "Global", "Ages 13+", "100% Free"];
 
 export default function FrontispieceSection() {
-  const reduceMotion = useReducedMotion();
-  const animate = !reduceMotion;
-
-  const fadeUp = (delay: number) =>
-    animate
-      ? { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay, ease: EASE_OUT } }
-      : {};
-
   return (
     <section
       id="frontispiece"
-      className="relative min-h-[92vh] flex flex-col items-center justify-center bg-plaster text-umber overflow-hidden px-6 py-20 sm:px-8"
+      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-paper px-6 py-20 text-ink sm:px-8"
     >
-      <Portico animate={animate} />
+      <Portico />
 
-      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
-        <motion.p {...fadeUp(0.35)} className="type-meta text-umber-soft text-[clamp(0.625rem,1.5vh,0.8125rem)]">
-          DeltaForge Hacks × NXT Horizon × STEMise
-        </motion.p>
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+        {/* the "publishers", above the arch */}
+        <p className="type-meta text-ink-soft text-[clamp(0.625rem,1.5vh,0.8125rem)]">
+          DeltaForge Hacks &times; NXT Horizon &times; STEMise
+        </p>
 
-        {/* wordmark — smaller than the date, per the brief's explicit ratio.
-            Sized off vh, not vw: the binding constraint here is the 92vh
-            budget, and vw-based sizing blew past it badly on wide-but-short
-            desktop viewports. */}
-        <motion.h1
-          {...fadeUp(0.43)}
-          className="font-display font-extrabold uppercase leading-[0.88] tracking-tight text-umber mt-3 sm:mt-4 text-[clamp(1.75rem,6vh,3.25rem)]"
-        >
+        {/* wordmark — deliberately smaller than the date */}
+        <h1 className="type-display mt-3 text-ink text-[clamp(1.75rem,6vh,3.25rem)] sm:mt-4">
           DSH Hacks
           <br />
           V2
-        </motion.h1>
+        </h1>
 
-        <motion.div {...fadeUp(0.43)} className="mt-3 sm:mt-4 w-full max-w-[16rem]">
+        <div className="mt-3 w-full max-w-[16rem] sm:mt-4">
           <Ornament />
-        </motion.div>
+        </div>
 
-        <motion.p {...fadeUp(0.51)} className="type-eyebrow text-umber mt-3 sm:mt-4 text-[clamp(0.9375rem,2vh,1.25rem)]">
-          AI × Healthcare
-        </motion.p>
+        <p className="type-eyebrow mt-3 text-ink text-[clamp(0.9375rem,2vh,1.25rem)] sm:mt-4">
+          AI &times; Healthcare
+        </p>
 
-        <motion.p
-          {...fadeUp(0.59)}
-          className="font-display font-extrabold uppercase tracking-tight leading-none text-umber mt-3 sm:mt-5 text-[clamp(3.25rem,12vh,7rem)]"
-        >
+        {/* the most urgent fact — the largest element in the section */}
+        <p className="type-mega mt-3 text-ink text-[clamp(3.25rem,12vh,7rem)] sm:mt-5">
           Nov 7 2026
-        </motion.p>
+        </p>
 
-        <div className="w-full max-w-2xl mx-auto border-t border-rule mt-6 sm:mt-8 pt-4 sm:pt-5 flex flex-col items-center">
-          <motion.div {...fadeUp(0.67)} className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-umber-soft text-[clamp(0.625rem,1.4vh,0.8125rem)]">
+        {/* the plinth */}
+        <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-ink-soft text-[clamp(0.625rem,1.4vh,0.8125rem)]">
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
-                {i > 0 && <span aria-hidden="true">·</span>}
+                {i > 0 && <span className="h-3 w-px bg-rule" aria-hidden="true" />}
                 <span>{item}</span>
               </React.Fragment>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.a
-            {...fadeUp(0.75)}
+          {/* CTA — the section's one rubric element */}
+          <a
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-lapis text-plaster px-8 py-3 sm:py-3.5 type-meta text-[clamp(0.6875rem,1.5vh,0.8125rem)] hover:bg-lapis-deep transition-colors mt-4"
+            className="mt-4 inline-flex items-center gap-2 bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
           >
             Register on Devpost
-            <ArrowRight className="w-4 h-4" />
-          </motion.a>
+          </a>
 
-          <motion.p {...fadeUp(0.75)} className="type-eyebrow text-umber-soft mt-3 text-[clamp(0.875rem,1.8vh,1.0625rem)]">
+          <p className="type-eyebrow mt-3 text-ink-soft text-[clamp(0.875rem,1.8vh,1.0625rem)]">
             Submissions close November 7
-          </motion.p>
+          </p>
 
-          <motion.div {...fadeUp(0.75)}>
-            <Image
-              src="/dsh-logo-circle.png"
-              alt="DSH Hacks"
-              width={24}
-              height={24}
-              className="object-contain mt-4 opacity-70"
-            />
-          </motion.div>
+          {/* printer's device */}
+          <Image
+            src="/dsh-logo-circle.png"
+            alt="DSH Hacks"
+            width={24}
+            height={24}
+            className="mt-4 object-contain opacity-70"
+          />
         </div>
       </div>
     </section>
