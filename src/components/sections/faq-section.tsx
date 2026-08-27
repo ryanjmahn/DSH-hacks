@@ -4,6 +4,7 @@ import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
 import { SectionHeading, useFadeRise } from "@/components/sections/design-system";
+import { VortexStudy } from "@/components/sections/graphics";
 
 const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-1",  question: "Who can participate?",
@@ -36,23 +37,26 @@ const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
 
   return (
-    <section id="faq" className="relative bg-plaster text-umber py-24 sm:py-32">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <section id="faq" className="relative overflow-hidden bg-paper py-24 text-ink sm:py-32">
+      {/* Leonardo water-turbulence study in the margin — static (§5B) */}
+      <VortexStudy className="pointer-events-none absolute right-4 top-28 hidden opacity-70 lg:block" />
+
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Good to know" title="FAQ" />
 
         <motion.div {...accordionMotion}>
-          <Accordion type="single" collapsible className="w-full mt-14 sm:mt-16 max-w-3xl">
+          <Accordion type="single" collapsible className="mt-14 w-full max-w-3xl sm:mt-16">
             {faqData.map((faq) => (
-              <AccordionItem key={faq.id} value={faq.id} className="group relative border-rule pl-4 -ml-4">
-                {/* effect 8: left hairline thickens to 2px ochre on row hover */}
+              <AccordionItem key={faq.id} value={faq.id} className="group relative -ml-4 border-rule pl-4">
+                {/* §8: left hairline thickens to 2px --rubric on hover */}
                 <span
-                  className="absolute left-0 top-2 bottom-2 w-px bg-rule group-hover:w-0.5 group-hover:bg-ochre transition-all duration-300"
+                  className="absolute bottom-2 left-0 top-2 w-px bg-rule transition-all duration-300 group-hover:w-0.5 group-hover:bg-rubric"
                   aria-hidden="true"
                 />
-                <AccordionTrigger className="type-title text-left text-umber py-6 hover:text-sienna hover:no-underline [&>svg]:text-umber-soft [&>svg]:size-5">
+                <AccordionTrigger className="type-title py-6 text-left text-ink hover:text-ink-soft hover:no-underline [&>svg]:size-5 [&>svg]:text-ink-soft">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="type-body text-umber-soft pt-0 pb-6 leading-relaxed">
+                <AccordionContent className="type-body pb-6 pt-0 leading-relaxed text-ink-soft">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
