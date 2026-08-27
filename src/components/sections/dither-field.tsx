@@ -31,13 +31,13 @@ const STEPS = 5;
 const FRAME_MS = 1000 / 30;
 
 // --paper (#FCFCFA) at the 5 quantised alphas, precomputed. §5D specifies
-// 0.10–0.45, but a full-strength cluster directly behind a countdown digit
-// drops the digit's contrast to ~2:1 — below the 3:1 bar for large text. Per
-// §10 the fix is to reduce the graphic, not add a scrim, so the top step is
-// capped at 0.30: worst-case digit contrast stays above 3.3:1 and the five
-// discrete steps still read as dithering.
+// 0.10–0.45. On the inverted ground the countdown digits are now WHITE, so a
+// full-strength cluster directly behind a digit is the risky pairing: the top
+// step is capped at 0.24, keeping worst-case white-digit contrast at ~3.6:1
+// (above the 3:1 large-text bar) while the five discrete steps still read as
+// dithering. Per the contrast rule the fix is to reduce the graphic, not scrim.
 const FILLS = Array.from({ length: STEPS }, (_, i) => {
-  const a = 0.08 + (0.3 - 0.08) * (i / (STEPS - 1));
+  const a = 0.06 + (0.24 - 0.06) * (i / (STEPS - 1));
   return `rgba(252,252,250,${a.toFixed(3)})`;
 });
 

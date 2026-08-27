@@ -98,16 +98,16 @@ const Navbar = () => {
   );
 };
 
-/* The bleached Vesalius plate behind the type (§4 monochrome positive, §7
-   Beat 2). Grayscale pushed toward black line on white, whites lifted to
-   --paper, feathered with a radial alpha mask, no bounding box — and no wash,
-   no mottle (that was the fresco treatment). Mask centre sits low so presence
-   is near zero across the top ~20%, reading as a gradual reveal continuing
-   from Beat 1's clean paper rather than a seam. LCP element — preloaded. */
+/* The Vesalius plate behind the type (§7 Beat 2). On the inverted ground this
+   is NOT gone negative — it is DEEPENED: brightness pulled down so the washed
+   colour sits at mid-tone against the black rather than near-white, ~35%
+   saturation kept (a faint anatomical wash, not full grayscale). White display
+   type over a mid-tone plate is a far safer pairing than white-on-near-white.
+   Feathered radial mask, no box. LCP element — preloaded. */
 const DedicationPlate = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
-      className="absolute inset-0 opacity-[0.24]"
+      className="absolute inset-0 opacity-[0.42]"
       style={{
         WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 50% 66%, black 0%, black 18%, transparent 68%)",
         maskImage: "radial-gradient(ellipse 62% 70% at 50% 66%, black 0%, black 18%, transparent 68%)",
@@ -123,7 +123,7 @@ const DedicationPlate = () => (
           alt=""
           fetchPriority="high"
           className="h-full w-full object-cover"
-          style={{ objectPosition: "50% 30%", filter: "grayscale(1) contrast(1.15) brightness(1.3)" }}
+          style={{ objectPosition: "50% 30%", filter: "grayscale(0.65) brightness(0.5) contrast(1.05)" }}
         />
       </picture>
     </div>

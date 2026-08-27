@@ -323,22 +323,31 @@
     isolation: isolate;
     transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  /* Default (dark grounds): --paper outline + type, hover wipes --paper in
+     with --ink type. Under a light relief section it inverts. */
   .btn-wipe::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: var(--color-ink);
+    background-color: var(--color-paper);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
     z-index: -1;
   }
   .btn-wipe:hover {
-    color: var(--color-paper);
-    border-color: var(--color-ink);
+    color: var(--color-ink);
+    border-color: var(--color-paper);
   }
   .btn-wipe:hover::before {
     transform: scaleX(1);
+  }
+  [class*="bg-paper"] .btn-wipe::before {
+    background-color: var(--color-ink);
+  }
+  [class*="bg-paper"] .btn-wipe:hover {
+    color: var(--color-paper);
+    border-color: var(--color-ink);
   }
 
   @keyframes bob {
