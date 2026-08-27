@@ -1,68 +1,53 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { EASE_OUT } from "@/components/sections/design-system";
 
 /* Beat 1 — The Frontispiece. A 16th-century engraved title page rebuilt as an
-   event masthead: title inside a drawn portico, imprint on the plinth,
-   printer's device at the foot.
+   event masthead. The framing element is a bleached architectural background
+   cropped from the upper vault of Raphael's School of Athens (P1 in
+   CREDITS.md) — architecture only, above the figures, so it reads as
+   Renaissance space rather than the specific painting.
 
-   Motion (§8 effect 1 — on load, not scroll): the arch springs outward from
-   its apex down both pilasters, ~1400ms; then the contents fade up in the
-   brief's order — attribution → wordmark → theme → date → venue → CTA, 400ms
-   each, 80ms stagger. prefers-reduced-motion shows everything drawn.
+   Motion (§8 effect 1): content fades up in the brief's order — attribution →
+   wordmark → theme → date → venue → CTA, 400ms / 80ms stagger. The vault
+   scales 1.0 → 1.03 across the section's scroll range (scroll-linked, rAF via
+   framer's useScroll), so it opens very slightly as you move down. Both gate
+   behind prefers-reduced-motion.
 
    Height 92vh so the CTA and deadline sit above the fold at 1440×900 and
-   390×844. Clean --paper, no plate. Below 768px the pilasters drop; the arch
-   curve and plinth rule stay. */
+   390×844. Below 768px a tighter vault crop keeps the coffering readable. */
 
-const ARCH_MS = 1.4;
-
-const Portico = ({ animate }: { animate: boolean }) => {
-  const draw = (delay: number) =>
-    animate
-      ? { initial: { pathLength: 0 }, animate: { pathLength: 1 }, transition: { duration: ARCH_MS, delay, ease: EASE_OUT } }
-      : {};
-  return (
-    <svg
-      viewBox="0 0 1000 420"
-      className="absolute inset-x-0 top-0 h-full w-full pointer-events-none"
-      preserveAspectRatio="xMidYMin slice"
-      aria-hidden="true"
-    >
-      {/* the portico is Beat 1's whole image — drawn in --ink at low opacity so
-          it reads as an engraved line, not the near-invisible --rule hairline
-          the background motifs use */}
-      <g stroke="var(--color-ink)" strokeOpacity="0.18" fill="none" strokeWidth="1.5">
-        {/* arch — two halves sharing an apex, springing outward together */}
-        <motion.path d="M 500 -160 A 280 280 0 0 0 220 120" {...draw(0)} />
-        <motion.path d="M 500 -160 A 280 280 0 0 1 780 120" {...draw(0)} />
-        <motion.line x1="180" y1="118" x2="820" y2="118" className="hidden md:block" {...draw(0.5)} />
-        <motion.line x1="220" y1="120" x2="220" y2="400" className="hidden md:block" {...draw(0.5)} />
-        <motion.line x1="780" y1="120" x2="780" y2="400" className="hidden md:block" {...draw(0.5)} />
-        <motion.line
-          x1="196" y1="400" x2="244" y2="400" className="hidden md:block"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-        <motion.line
-          x1="756" y1="400" x2="804" y2="400" className="hidden md:block"
-          initial={animate ? { opacity: 0 } : undefined}
-          animate={animate ? { opacity: 1 } : undefined}
-          transition={animate ? { duration: 0.3, delay: ARCH_MS } : undefined}
-        />
-      </g>
-      {/* compass-construction arcs — the geometry behind the arch */}
-      <g stroke="var(--color-rule)" fill="none" strokeWidth="1" opacity="0.5">
-        <motion.circle cx="500" cy="120" r="280" {...draw(0.2)} />
-        <motion.path d="M 360 120 A 140 140 0 0 1 640 120" {...draw(0.4)} />
-      </g>
-    </svg>
-  );
-};
+const Vault = ({ scale }: { scale: ReturnType<typeof useTransform> | undefined }) => (
+  <motion.div
+    className="pointer-events-none absolute inset-0 opacity-[0.17]"
+    style={{
+      ...(scale ? { scale } : {}),
+      WebkitMaskImage:
+        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+      maskImage:
+        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+    }}
+    aria-hidden="true"
+  >
+    <picture>
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.avif" type="image/avif" />
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.webp" type="image/webp" />
+      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.jpg" />
+      <source srcSet="/plates/frontispiece-vault-mobile.avif" type="image/avif" />
+      <source srcSet="/plates/frontispiece-vault-mobile.webp" type="image/webp" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/plates/frontispiece-vault-mobile.jpg"
+        alt=""
+        className="h-full w-full object-cover"
+        style={{ objectPosition: "50% 30%" }}
+      />
+    </picture>
+  </motion.div>
+);
 
 const Ornament = () => (
   <div className="relative flex w-full max-w-[16rem] items-center justify-center" aria-hidden="true">
@@ -76,6 +61,10 @@ const venueItems = ["Online", "Global", "Ages 13+", "100% Free"];
 export default function FrontispieceSection() {
   const reduceMotion = useReducedMotion();
   const animate = !reduceMotion;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const vaultScale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
 
   const up = (delay: number) =>
     animate
@@ -84,10 +73,12 @@ export default function FrontispieceSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="frontispiece"
       className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-paper px-6 py-20 text-ink sm:px-8"
     >
-      <Portico animate={animate} />
+      <Vault scale={reduceMotion ? undefined : vaultScale} />
+      <div className="grain-overlay" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
         <motion.p {...up(0.35)} className="type-meta text-ink-soft !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
