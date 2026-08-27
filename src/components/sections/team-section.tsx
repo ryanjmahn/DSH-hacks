@@ -8,7 +8,7 @@ const RegisterNow = () => {
   const copyMotion = useFadeRise(0.15);
 
   return (
-    <section id="register" className="relative overflow-hidden bg-paper py-24 text-paper sm:py-32">
+    <section id="register" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 text-center sm:px-8">
         <SectionHeading eyebrow="Join us" title="Register" align="center" eyebrowAccent={false} className="mx-auto" />
 

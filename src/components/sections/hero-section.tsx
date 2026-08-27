@@ -169,7 +169,7 @@ export default function HeroSection() {
   const animate = reduceMotion ? undefined : { opacity: 1, y: 0 };
 
   return (
-    <div className="bg-paper">
+    <div className="bg-ink">
       <link rel="preload" as="image" href="/plates/beat2-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
       <link rel="preload" as="image" href="/plates/beat2-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
 

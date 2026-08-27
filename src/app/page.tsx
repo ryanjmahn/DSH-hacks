@@ -33,7 +33,7 @@ export default function HomePage() {
       <PrizesSection />
       <SpringingLine ground="light" />
       <SponsorsSection />
-      <SpringingLine ground="dark" />
+      <SpringingLine ground="light" />
       <WorkshopsSection />
       <SpringingLine ground="dark" />
       <RegisterSection />

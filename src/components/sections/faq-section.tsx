@@ -37,7 +37,7 @@ const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-paper py-24 text-paper sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
       {/* Leonardo water-turbulence study in the margin — static (§5B) */}
       <VortexStudy className="pointer-events-none absolute right-4 top-28 hidden opacity-70 lg:block" />
 

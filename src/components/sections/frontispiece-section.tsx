@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { EASE_OUT } from "@/components/sections/design-system";
 
 /* Beat 1 — The Frontispiece. A 16th-century engraved title page rebuilt as an
@@ -20,9 +20,9 @@ import { EASE_OUT } from "@/components/sections/design-system";
    Height 92vh so the CTA and deadline sit above the fold at 1440×900 and
    390×844. Below 768px a tighter vault crop keeps the coffering readable. */
 
-const Vault = ({ scale }: { scale: ReturnType<typeof useTransform> | undefined }) => (
+const Vault = ({ scale }: { scale: MotionValue<number> | undefined }) => (
   <motion.div
-    className="pointer-events-none absolute inset-0 opacity-[0.17]"
+    className="pointer-events-none absolute inset-0 opacity-[0.26]"
     style={{
       ...(scale ? { scale } : {}),
       WebkitMaskImage:
@@ -32,6 +32,9 @@ const Vault = ({ scale }: { scale: ReturnType<typeof useTransform> | undefined }
     }}
     aria-hidden="true"
   >
+    {/* negative impression on the dark ground: the baked file is high-contrast
+        grayscale lifted toward white; invert(1) makes it white coffering on
+        black — reads far better than the positive over the inverted ground */}
     <picture>
       <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.avif" type="image/avif" />
       <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.webp" type="image/webp" />
@@ -42,7 +45,7 @@ const Vault = ({ scale }: { scale: ReturnType<typeof useTransform> | undefined }
       <img
         src="/plates/frontispiece-vault-mobile.jpg"
         alt=""
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover [filter:invert(1)]"
         style={{ objectPosition: "50% 30%" }}
       />
     </picture>
@@ -75,7 +78,7 @@ export default function FrontispieceSection() {
     <section
       ref={sectionRef}
       id="frontispiece"
-      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-paper px-6 py-20 text-paper sm:px-8"
+      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-ink px-6 py-20 text-paper sm:px-8"
     >
       <Vault scale={reduceMotion ? undefined : vaultScale} />
       <div className="grain-overlay" />
