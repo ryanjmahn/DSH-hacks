@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /* Shared building blocks for the sitewide redesign (hero excluded — it has its
@@ -59,7 +59,7 @@ export function SectionHeading({
         initial={reduceMotion ? undefined : { opacity: 0 }}
         animate={reduceMotion ? undefined : { opacity: inView ? 1 : 0 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="type-eyebrow text-sienna"
+        className="type-eyebrow text-ink-soft"
       >
         {eyebrow}
       </motion.p>
@@ -366,13 +366,112 @@ export function SpringingLine() {
   );
 }
 
-/** Small ochre node marker for timeline-style lists — Schedule's spine markers,
- *  per the brief. Lapis is never spent here; it stays reserved for CTAs. */
-export function NodeMarker({ className }: { className?: string }) {
+/** Small node marker for timeline-style lists. Default is a quiet --rule dot;
+ *  `active` lights it to --rubric — spent deliberately on Schedule's helix
+ *  markers as the section passes them (see Helix), never as a permanent accent. */
+export function NodeMarker({ active = false, className }: { active?: boolean; className?: string }) {
   return (
     <span
-      className={cn("block w-2.5 h-2.5 rounded-full bg-ochre ring-4 ring-paper", className)}
+      className={cn(
+        "block w-2.5 h-2.5 rounded-full ring-4 ring-paper transition-colors duration-300",
+        active ? "bg-rubric" : "bg-rule",
+        className
+      )}
       aria-hidden="true"
     />
+  );
+}
+
+/** One helix node marker. Sits on the spine in --rule; lights to --rubric only
+ *  while the scroll line is level with it, then goes quiet again — so no more
+ *  than one is blue at once and the rubrication rule holds. */
+function HelixNode({ progress, frac, cx, cy }: { progress: MotionValue<number>; frac: number; cx: number; cy: number }) {
+  const w = 0.09; // how wide a scroll band keeps the node lit
+  const lit = useTransform(progress, [frac - w, frac - w * 0.4, frac + w * 0.4, frac + w], [0, 1, 1, 0]);
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={3.5} fill="var(--color-rule)" stroke="var(--color-paper)" strokeWidth="3" />
+      <motion.circle cx={cx} cy={cy} r={3.5} fill="var(--color-rubric)" stroke="var(--color-paper)" strokeWidth="3" style={{ opacity: lit }} />
+    </>
+  );
+}
+
+/** Double helix (§5D) — the Schedule section's spine and its scroll-progress
+ *  indicator, not decoration. Two counter-phase sine strands ~40px wide down
+ *  the left margin with rung lines between them; a real 2D projection (rungs
+ *  shrink to zero where the strands cross), not a decorative squiggle. A clip
+ *  rect tied to scroll position reveals the rungs top-down so they appear in
+ *  sequence as the line passes them; each node marker lights to --rubric only
+ *  as the line draws level with it (see HelixNode) — never more than one blue
+ *  at a time, none before you scroll in. Below 1024px it renders nothing and
+ *  the section falls back to a plain hairline.
+ *
+ *  Driven entirely by scrollYProgress MotionValues; nothing re-renders on
+ *  scroll. prefers-reduced-motion shows the final drawn state, markers quiet. */
+export function Helix({ sectionRef, count = 5 }: { sectionRef: React.RefObject<HTMLElement | null>; count?: number }) {
+  const reduceMotion = useReducedMotion();
+  const [h, setH] = useState(0);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start 82%", "end 40%"] });
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => setH(Math.round(entry.contentRect.height)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [sectionRef]);
+
+  const W = 40;
+  const cx = W / 2;
+  const amp = 12;
+  const period = 132; // px per full turn
+  const strand = (phase: number) => {
+    if (!h) return "";
+    const pts: string[] = [];
+    for (let y = 0; y <= h; y += 6) {
+      const x = cx + amp * Math.sin((y / period) * Math.PI * 2 + phase);
+      pts.push(`${x.toFixed(1)},${y}`);
+    }
+    return `M ${pts.join(" L ")}`;
+  };
+  const rungs = h
+    ? Array.from({ length: Math.floor(h / 22) }, (_, i) => {
+        const y = i * 22 + 11;
+        const x1 = cx + amp * Math.sin((y / period) * Math.PI * 2);
+        const x2 = cx + amp * Math.sin((y / period) * Math.PI * 2 + Math.PI);
+        return { y, x1, x2 };
+      })
+    : [];
+  const nodes = h ? Array.from({ length: count }, (_, i) => ({ frac: (i + 0.5) / count, cy: ((i + 0.5) / count) * h })) : [];
+
+  const revealH = useTransform(scrollYProgress, [0, 1], [0, h]);
+
+  return (
+    <div className="pointer-events-none absolute left-6 sm:left-8 top-0 bottom-0 hidden lg:block" style={{ width: W }} aria-hidden="true">
+      <svg width={W} height={h || 1} viewBox={`0 0 ${W} ${h || 1}`} className="overflow-visible">
+        {/* the helix itself — always present, hairline --rule. Progress is never
+            carried by the strands changing colour. */}
+        <g stroke="var(--color-rule)" fill="none" strokeWidth="1.25">
+          <path d={strand(0)} />
+          <path d={strand(Math.PI)} />
+        </g>
+
+        {/* rungs revealed top-down by a scroll-driven clip */}
+        <defs>
+          <clipPath id="helix-reveal">
+            <motion.rect x="0" y="0" width={W} height={reduceMotion ? h : revealH} />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#helix-reveal)" stroke="var(--color-rule)" fill="none" strokeWidth="1">
+          {rungs.map((r, i) => (
+            <line key={i} x1={r.x1} y1={r.y} x2={r.x2} y2={r.y} />
+          ))}
+        </g>
+
+        {nodes.map((n, i) => (
+          <HelixNode key={i} progress={scrollYProgress} frac={n.frac} cx={cx} cy={n.cy} />
+        ))}
+      </svg>
+    </div>
   );
 }
