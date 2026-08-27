@@ -92,7 +92,7 @@ export function SectionHeading({
  *  toward the item. */
 export function Numeral({ n, className }: { n: number; className?: string }) {
   return (
-    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-rubric", className)}>
       {String(n).padStart(2, "0")}/
     </span>
   );
@@ -104,7 +104,7 @@ export function Numeral({ n, className }: { n: number; className?: string }) {
 export function SpecimenKey({ index, className }: { index: number; className?: string }) {
   const letter = String.fromCharCode(97 + index); // 0 -> a, 1 -> b, ...
   return (
-    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-lapis", className)}>
+    <span className={cn("type-numeral select-none transition-colors duration-300 group-hover:text-rubric", className)}>
       {letter}.
     </span>
   );
@@ -115,7 +115,7 @@ export function SpecimenKey({ index, className }: { index: number; className?: s
 export function LeaderLine({ className }: { className?: string }) {
   return (
     <span
-      className={cn("block h-px bg-lapis scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
+      className={cn("block h-px bg-rubric scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300", className)}
       aria-hidden="true"
     />
   );
@@ -363,8 +363,8 @@ export function SpringingLine() {
   return (
     <div className="w-full h-6 sm:h-8 overflow-hidden" aria-hidden="true">
       <svg viewBox="0 0 1000 24" className="w-full h-full" preserveAspectRatio="none">
-        <motion.path d="M 500 18 Q 250 10 0 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
-        <motion.path d="M 500 18 Q 750 10 1000 4" stroke="var(--color-ochre)" strokeOpacity="0.4" strokeWidth="1.25" fill="none" {...half} />
+        <motion.path d="M 500 18 Q 250 10 0 4" stroke="var(--color-rule)" strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
+        <motion.path d="M 500 18 Q 750 10 1000 4" stroke="var(--color-rule)" strokeOpacity="0.9" strokeWidth="1.25" fill="none" {...half} />
       </svg>
     </div>
   );
