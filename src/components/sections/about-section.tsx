@@ -16,23 +16,28 @@ const AboutSection = () => {
   const quoteMotion = useFadeRise(0.18);
 
   return (
-    <section id="about" className="relative bg-plaster text-umber py-24 sm:py-32">
+    <section id="about" className="relative bg-paper py-24 text-ink sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who we are" title="About" />
 
-        <div className="mt-14 sm:mt-20 grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div className="mt-14 grid items-start gap-12 sm:mt-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <motion.p {...copyMotion} className="type-body text-umber leading-relaxed">
+            <motion.p {...copyMotion} className="type-body leading-relaxed text-ink">
               DSH Hacks is a free, global, online hackathon open to students aged 13+, hosted
-              collaboratively by three youth-led organizations: <span className="text-sienna font-medium">DeltaForge Hacks</span>,{" "}
-              <span className="text-sienna font-medium">NXT Horizon</span>, and <span className="text-sienna font-medium">STEMise</span>.
+              collaboratively by three youth-led organizations:{" "}
+              <span className="font-medium text-ink">DeltaForge Hacks</span>,{" "}
+              <span className="font-medium text-ink">NXT Horizon</span>, and{" "}
+              <span className="font-medium text-ink">STEMise</span>.
             </motion.p>
 
-            <motion.blockquote {...quoteMotion} className="type-quote text-umber border-t border-b border-rule py-7 my-10">
-              AI × Healthcare: transforming healthcare access through AI.
+            <motion.blockquote
+              {...quoteMotion}
+              className="type-quote my-10 border-t border-b border-rule py-7 text-ink"
+            >
+              AI &times; Healthcare: transforming healthcare access through AI.
             </motion.blockquote>
 
-            <motion.p {...copyMotion} className="type-body text-umber-soft leading-relaxed">
+            <motion.p {...copyMotion} className="type-body leading-relaxed text-ink-soft">
               Identify a real healthcare problem and build an AI-powered app, website, or system
               that tackles it. Any skill level welcome. From diagnostic tools tackling global
               disease burdens, to patient-care platforms improving access and outcomes, to
@@ -41,20 +46,22 @@ const AboutSection = () => {
             </motion.p>
           </div>
 
-          {/* the skeleton leaning on a classical tomb — anatomy posed against
-              architecture in one plate, the redesign's whole thesis in one
-              image. Traced to an ochre line-draw (effect 4) rather than the
-              raster BleachedPlate treatment used elsewhere on the site. */}
-          <div className="aspect-[3/4] lg:h-full lg:min-h-[520px] flex items-center justify-center">
-            <EngravedLineDraw src="/artwork/traced/about-line.svg" className="w-full h-full" />
+          {/* the skeleton leaning on a classical tomb, after Vesalius (M2) —
+              anatomy posed against architecture in one plate, the redesign's
+              thesis in one image. Traced to a hairline line-draw (§5B), built
+              on scroll entry (§8 effect 4). */}
+          <div className="flex aspect-[3/4] items-center justify-center lg:h-full lg:min-h-[520px]">
+            <EngravedLineDraw src="/artwork/traced/about-line.svg" className="h-full w-full" />
           </div>
         </div>
 
-        <div className="mt-20 sm:mt-28 grid grid-cols-2 sm:grid-cols-4 border-t border-b border-rule">
+        <div className="mt-20 grid grid-cols-2 border-t border-b border-rule sm:mt-28 sm:grid-cols-4">
           {statsData.map((stat, i) => (
             <div
               key={stat.label}
-              className={`min-w-0 px-4 sm:px-8 py-8 ${i % 2 === 0 ? "border-r border-rule sm:border-r" : ""} ${i < 2 ? "border-b sm:border-b-0 border-rule" : ""} ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
+              className={`min-w-0 px-4 py-8 sm:px-8 ${i % 2 === 0 ? "border-r border-rule sm:border-r" : ""} ${
+                i < 2 ? "border-b border-rule sm:border-b-0" : ""
+              } ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
             >
               <StatNumeral value={stat.value} label={stat.label} delay={i * 0.08} />
             </div>
