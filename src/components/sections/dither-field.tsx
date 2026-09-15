@@ -30,15 +30,17 @@ const THRESHOLD = 0.645; // on the 0..1 remapped noise value — tuned to ~15-20
 const STEPS = 5;
 const FRAME_MS = 1000 / 30;
 
-// --paper (#FCFCFA) at the 5 quantised alphas, precomputed. §5D specifies
-// 0.10–0.45. On the inverted ground the countdown digits are now WHITE, so a
-// full-strength cluster directly behind a digit is the risky pairing: the top
-// step is capped at 0.24, keeping worst-case white-digit contrast at ~3.6:1
-// (above the 3:1 large-text bar) while the five discrete steps still read as
-// dithering. Per the contrast rule the fix is to reduce the graphic, not scrim.
+// --paper (#17171A) at the 5 quantised alphas, precomputed. §5D specifies
+// 0.10–0.45. The countdown digits sit in --paper (near-black) over this
+// canvas, so a full-strength cluster directly behind a digit is the risky
+// pairing: the top step is capped at 0.24, keeping worst-case digit contrast
+// well above the 3:1 large-text bar while the five discrete steps still read
+// as dithering. Per the contrast rule the fix is to reduce the graphic, not
+// scrim. Hardcoded rather than reading --color-paper because this is a
+// canvas fill, not CSS — it can't resolve a custom property on its own.
 const FILLS = Array.from({ length: STEPS }, (_, i) => {
   const a = 0.06 + (0.24 - 0.06) * (i / (STEPS - 1));
-  return `rgba(252,252,250,${a.toFixed(3)})`;
+  return `rgba(23,23,26,${a.toFixed(3)})`;
 });
 
 export default function DitherField({ className }: { className?: string }) {
