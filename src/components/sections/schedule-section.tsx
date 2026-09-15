@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, Numeral, Helix, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, Numeral, Helix, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
 
 const linkClass =
   "text-rubric-light underline underline-offset-4 decoration-rule-dark hover:text-paper hover:decoration-paper transition-colors";
@@ -89,8 +89,13 @@ const ScheduleSection = () => {
   const ctaMotion = useFadeRise(0.1);
 
   return (
-    <section id="schedule" className="relative bg-ink text-paper py-24 sm:py-32">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <section id="schedule" className="relative overflow-hidden bg-ink text-paper py-24 sm:py-32 lg:py-40">
+      {/* SF watercolor pass — Lombard Street's switchbacks, echoing the
+          step-by-step layout. No art yet (see sf-watercolor-prompts.md); the
+          Helix stays the section's live spine graphic until the file exists. */}
+      <WatercolorPlate src="/plates/watercolor/schedule-lombard-street.jpg" presence={0.3} maskPosition="75% 45%" />
+
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What to expect" title="Schedule" />
 
         {/* the numbered list and its spine. The helix is a spine for the steps
@@ -114,7 +119,7 @@ const ScheduleSection = () => {
           href="https://dsh-hacks-v2.devpost.com/rules"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-wipe inline-flex mt-14 lg:ml-16 items-center gap-2 border border-paper text-paper px-8 py-3.5 type-meta"
+          className="btn-wipe inline-flex mt-14 lg:ml-16 items-center gap-2 border rounded-full border-paper text-paper px-8 py-3.5 type-meta"
         >
           View Full Rules
           <ExternalLink className="w-3.5 h-3.5" />
