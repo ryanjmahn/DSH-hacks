@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
 import { useReducedMotion } from "framer-motion";
 
@@ -30,22 +30,26 @@ const THRESHOLD = 0.645; // on the 0..1 remapped noise value — tuned to ~15-20
 const STEPS = 5;
 const FRAME_MS = 1000 / 30;
 
-// --paper (#17171A) at the 5 quantised alphas, precomputed. §5D specifies
-// 0.10–0.45. The countdown digits sit in --paper (near-black) over this
-// canvas, so a full-strength cluster directly behind a digit is the risky
-// pairing: the top step is capped at 0.24, keeping worst-case digit contrast
-// well above the 3:1 large-text bar while the five discrete steps still read
-// as dithering. Per the contrast rule the fix is to reduce the graphic, not
-// scrim. Hardcoded rather than reading --color-paper because this is a
-// canvas fill, not CSS — it can't resolve a custom property on its own.
-const FILLS = Array.from({ length: STEPS }, (_, i) => {
-  const a = 0.06 + (0.24 - 0.06) * (i / (STEPS - 1));
-  return `rgba(23,23,26,${a.toFixed(3)})`;
-});
+// 5 quantised alphas, precomputed per instance from `color`. §5D specifies
+// 0.10–0.45. Content sitting over this canvas is always high-contrast text
+// (near-black digits in Countdown/About, white headings on blue-ground
+// sections), so a full-strength cluster directly behind it is the risky
+// pairing: the top step is capped at 0.24, keeping worst-case contrast well
+// above the 3:1 large-text bar while the five discrete steps still read as
+// dithering. Per the contrast rule the fix is to reduce the graphic, not
+// scrim. `color` is a literal "r,g,b" triplet rather than a CSS var name
+// because this is a canvas fill, not CSS — it can't resolve a custom
+// property on its own.
+const buildFills = (color: string) =>
+  Array.from({ length: STEPS }, (_, i) => {
+    const a = 0.06 + (0.24 - 0.06) * (i / (STEPS - 1));
+    return `rgba(${color},${a.toFixed(3)})`;
+  });
 
-export default function DitherField({ className }: { className?: string }) {
+export default function DitherField({ className, color = "23,23,26" }: { className?: string; color?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
+  const fills = useMemo(() => buildFills(color), [color]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -89,7 +93,7 @@ export default function DitherField({ className }: { className?: string }) {
           if (v < THRESHOLD) continue;
           let step = Math.floor(((v - THRESHOLD) / (1 - THRESHOLD)) * STEPS);
           if (step >= STEPS) step = STEPS - 1;
-          ctx.fillStyle = FILLS[step];
+          ctx.fillStyle = fills[step];
           ctx.fillRect(col * s, row * s, c, c);
           lit++;
         }
@@ -156,7 +160,7 @@ export default function DitherField({ className }: { className?: string }) {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, fills]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }
