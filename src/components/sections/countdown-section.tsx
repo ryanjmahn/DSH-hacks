@@ -86,7 +86,7 @@ const CountdownSection = () => {
   ];
 
   return (
-    <section id="countdown" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+    <section id="countdown" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
       <DitherField className="absolute inset-0 h-full w-full" />
       <Orbitals />
 
