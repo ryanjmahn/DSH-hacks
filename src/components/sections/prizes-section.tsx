@@ -2,8 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
-import { Polyhedron, HorizonLine } from "@/components/sections/graphics";
+import { SectionHeading, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
+import { HorizonLine } from "@/components/sections/graphics";
+import DitherField from "@/components/sections/dither-field";
 
 const judgingCriteria = [
   { name: "Idea", detail: "Did the proposal address the theme? Was it innovative? Could it be deployed for real-world impact?" },
@@ -32,9 +33,11 @@ function CriterionItem({ index, name, detail, isLast }: { index: number; name: s
 const PrizesSection = () => {
   const prizeMotion = useFadeRise(0.1);
   const labelMotion = useFadeRise();
+  const sectionReveal = useSectionReveal();
 
   return (
-    <section id="prizes" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+    <section id="prizes" className="blue-ground relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      <DitherField className="absolute inset-0 h-full w-full" color="255,255,255" />
       {/* SF watercolor pass — Ferry Building + Embarcadero, no art yet (see
           sf-watercolor-prompts.md). */}
       <WatercolorPlate src="/plates/watercolor/prizes-ferry-building.jpg" presence={0.3} maskPosition="50% 40%" />
@@ -46,29 +49,34 @@ const PrizesSection = () => {
         <HorizonLine className="absolute bottom-6 h-6 w-full" />
       </ParallaxLayer>
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What you can win" title="Prizes" align="right" />
 
         <motion.div
           {...prizeMotion}
           className="mt-16 flex flex-col items-center border-t border-b border-rule py-10 text-center sm:mt-20 sm:py-14"
         >
-          {/* Leonardo / Pacioli wireframe polyhedron — one per tier, static (§5D) */}
-          <Polyhedron kind="rhombicuboctahedron" size={132} className="mb-6" />
-          {/* SF-vibe pass §5 — the one warm-amber flourish per page, reserved
-              for exactly this "hot" prize-tier tag; everywhere else stays
-              strictly black/blue/white. */}
-          <p className="type-eyebrow text-amber">Winner</p>
-          <p className="type-display mt-2 text-paper">$100 + $100 AoPS</p>
+          {/* Polyhedron wireframe removed (remove-decorative-svg-and-fix-
+              spacing-prompt.md) — the old Leonardo/Pacioli construction
+              doesn't fit the current direction. Definition kept in
+              graphics.tsx, unused. */}
+          {/* No specific tier/breakdown anymore — just the total pool, since
+              individual prize amounts and categories haven't been finalized. */}
+          <p className="type-display text-paper">$100,000+ in prizes</p>
           <p className="type-body mx-auto mt-4 max-w-xl leading-relaxed text-paper-dim">
-            $100 cash plus a $100 AoPS gift card. More prize announcements will be posted on
-            Devpost and in the DSH Hacks Discord. Stay tuned!
+            More prizes are coming soon — stay tuned for announcements on Devpost and in the
+            DSH Hacks Discord.
           </p>
+          {/* bg-rubric would be invisible here — the section's own fill IS
+              that blue now — so this inverts to the white-fill/blue-text
+              pairing the brief asks for, reusing bg-paper/text-ink rather
+              than a new button style since --color-paper/--color-ink are
+              already remapped to white/blue in this section's scope. */}
           <a
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-paper px-8 py-3.5 type-meta text-ink transition-opacity hover:opacity-90"
           >
             See prizes on Devpost
           </a>
@@ -82,7 +90,7 @@ const PrizesSection = () => {
             <CriterionItem key={c.name} index={i} name={c.name} detail={c.detail} isLast={i === judgingCriteria.length - 1} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -3,52 +3,74 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { EASE_OUT } from "@/components/sections/design-system";
+import { EASE_OUT, useSectionReveal } from "@/components/sections/design-system";
+import ParticleImage from "@/components/sections/particle-image";
 
-/* Beat 1 — The Frontispiece. A 16th-century engraved title page rebuilt as an
-   event masthead. The framing element is a bleached architectural background
-   cropped from the upper vault of Raphael's School of Athens (P1 in
-   CREDITS.md) — architecture only, above the figures, so it reads as
-   Renaissance space rather than the specific painting.
+/* Beat 1 — The Frontispiece. Event masthead over an aerial watercolor of the
+   Transamerica Pyramid, bay and hills behind it (frontispiece-transamerica-
+   prompt.md). Supersedes an earlier plan that reused a tighter crop of the
+   Hero's Golden Gate Bridge photo here — that read as the same image twice
+   scrolling from this section into the Hero, so this section now gets its
+   own distinct SF landmark instead while staying in the same watercolor
+   treatment/palette family. The pyramid's strong vertical line is centered
+   behind the title block, echoing how the old vault's arch was centered.
+
+   Legibility: unlike the Hero (content only in the lower two-thirds, so a
+   bottom-anchored gradient is enough), this section's content — and the
+   fixed Navbar from HeroSection, which overlaps the top of this section
+   too — spans its full height. A flat translucent scrim over the whole
+   image keeps the title block and nav legible everywhere rather than only
+   in one band; this source has more contrast (clear blue sky, a sharp
+   pyramid edge) than the pale engraving it originally replaced, so the
+   scrim sits a bit heavier than a first pass at this would need.
 
    Motion (§8 effect 1): content fades up in the brief's order — attribution →
-   wordmark → theme → date → venue → CTA, 400ms / 80ms stagger. The vault
+   wordmark → theme → date → venue → CTA, 400ms / 80ms stagger. The photo
    scales 1.0 → 1.03 across the section's scroll range (scroll-linked, rAF via
    framer's useScroll), so it opens very slightly as you move down. Both gate
    behind prefers-reduced-motion.
 
    Height 92vh so the CTA and deadline sit above the fold at 1440×900 and
-   390×844. Below 768px a tighter vault crop keeps the coffering readable. */
+   390×844. */
 
-const Vault = ({ scale }: { scale: MotionValue<number> | undefined }) => (
+const TransamericaPyramid = ({ scale }: { scale: MotionValue<number> | undefined }) => (
   <motion.div
-    className="pointer-events-none absolute inset-0 opacity-[0.26]"
-    style={{
-      ...(scale ? { scale } : {}),
-      WebkitMaskImage:
-        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
-      maskImage:
-        "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
-    }}
+    className="pointer-events-none absolute inset-0"
+    style={scale ? { scale } : undefined}
     aria-hidden="true"
   >
-    {/* negative impression on the dark ground: the baked file is high-contrast
-        grayscale lifted toward white; invert(1) makes it white coffering on
-        black — reads far better than the positive over the inverted ground */}
-    <picture>
-      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.avif" type="image/avif" />
-      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.webp" type="image/webp" />
-      <source media="(min-width: 768px)" srcSet="/plates/frontispiece-vault-desktop.jpg" />
-      <source srcSet="/plates/frontispiece-vault-mobile.avif" type="image/avif" />
-      <source srcSet="/plates/frontispiece-vault-mobile.webp" type="image/webp" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/plates/frontispiece-vault-mobile.jpg"
-        alt=""
-        className="h-full w-full object-cover [filter:invert(var(--invert-on-dark))]"
-        style={{ objectPosition: "50% 30%" }}
+    {/* Particle/halftone rendering, same treatment as About's bridge photo
+        (particle-image.tsx) — dots sample the pyramid photo's own color
+        rather than a flat <img>. Tuned bolder than About's defaults: tighter
+        stride (denser dots), a contrast gamma that fills out midtones so the
+        pyramid's silhouette stays solid/defined instead of speckly, and a
+        saturation boost so the color reads clearly at a glance — a flat
+        photo opacity was fighting the dot field's own gaps and the scrim
+        below, so full opacity plus a lighter scrim (down from /60) carries
+        legibility instead of dimming the image itself. */}
+    <div
+      className="absolute inset-0"
+      style={{
+        WebkitMaskImage:
+          "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+        maskImage:
+          "radial-gradient(ellipse 92% 86% at 50% 40%, black 0%, black 30%, transparent 82%)",
+      }}
+    >
+      <ParticleImage
+        src="/plates/frontispiece-pyramid-desktop.jpg"
+        className="h-full w-full"
+        objectPosition="43% 38%"
+        stride={5}
+        contrast={0.7}
+        saturate={1.4}
+        lightCutoff={0.96}
       />
-    </picture>
+    </div>
+    {/* flat scrim (not a directional gradient like the Hero's) since the
+        centered title block and the fixed nav both sit over the image's
+        full height here, not just its lower portion */}
+    <div className="absolute inset-0 bg-ink/46" />
   </motion.div>
 );
 
@@ -67,12 +89,14 @@ export default function FrontispieceSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const vaultScale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
+  const pyramidScale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
 
   const up = (delay: number) =>
     animate
       ? { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay, ease: EASE_OUT } }
       : {};
+
+  const sectionReveal = useSectionReveal();
 
   return (
     <section
@@ -80,10 +104,10 @@ export default function FrontispieceSection() {
       id="frontispiece"
       className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-ink px-6 py-20 text-paper sm:px-8"
     >
-      <Vault scale={reduceMotion ? undefined : vaultScale} />
+      <TransamericaPyramid scale={reduceMotion ? undefined : pyramidScale} />
       <div className="grain-overlay" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
         <motion.p {...up(0.35)} className="type-meta text-paper-dim !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
           DeltaForge Hacks &times; NXT Horizon &times; STEMise
         </motion.p>
@@ -124,7 +148,7 @@ export default function FrontispieceSection() {
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3 type-meta text-ink transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
           >
             Register on Devpost
           </motion.a>
@@ -143,7 +167,7 @@ export default function FrontispieceSection() {
             />
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

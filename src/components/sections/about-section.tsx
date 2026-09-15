@@ -2,22 +2,34 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, StatNumeral, EngravedLineDraw, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 import { HillContours, FogLines } from "@/components/sections/graphics";
+import DitherField from "@/components/sections/dither-field";
+import ParticleImage from "@/components/sections/particle-image";
 
 const statsData = [
-  { value: "1300+", label: "Past competitors" },
-  { value: "70+", label: "Countries" },
-  { value: "$30K+", label: "Prizes distributed" },
+  { value: "1290+", label: "Past competitors" },
+  { value: "80+", label: "Countries" },
+  { value: "$35K+", label: "Prizes distributed" },
   { value: "10+", label: "Sponsors" },
+  { value: "80+", label: "Professional judges" },
 ];
 
 const AboutSection = () => {
   const copyMotion = useFadeRise(0.1);
   const quoteMotion = useFadeRise(0.18);
+  const sectionReveal = useSectionReveal();
 
   return (
     <section id="about" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      {/* DitherField, reused from Countdown, as an ambient texture for the
+          Golden Gate Bridge photo's section — same section-wide placement
+          as Countdown (rather than boxed behind the image itself) since the
+          photo is fully opaque and object-cover'd to its own box, so
+          anything placed exactly behind it would be entirely hidden; here
+          it shows through the surrounding negative space instead. */}
+      <DitherField className="absolute inset-0 h-full w-full" color="61,79,224" />
+
       {/* Cohesive SF-scene pass — a fog bank drifting across hills at the
           section's lower edge, the same thin linework as About's own traced
           skeleton plate. Continues the scenery into V1's pier/horizon below. */}
@@ -33,7 +45,7 @@ const AboutSection = () => {
         <FogLines className="absolute bottom-0 h-44 w-full" />
       </ParallaxLayer>
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who we are" title="About" />
 
         <div className="mt-14 grid items-start gap-12 sm:mt-20 lg:grid-cols-2 lg:gap-20">
@@ -62,28 +74,37 @@ const AboutSection = () => {
             </motion.p>
           </div>
 
-          {/* the skeleton leaning on a classical tomb, after Vesalius (M2) —
-              anatomy posed against architecture in one plate, the redesign's
-              thesis in one image. Traced to a hairline line-draw (§5B), built
-              on scroll entry (§8 effect 4). */}
+          {/* Golden Gate Bridge tower crop, rendered as a particle/halftone
+              field rather than a flat photo (about-golden-gate-particles
+              prompt) — the same tight tower crop originally made for the
+              Frontispiece before that section moved to the Transamerica
+              Pyramid instead. Dots sample the photo's own color, so it stays
+              recognizable while reading as "formed," not just displayed;
+              same "engraved stipple" language as DitherField above, just
+              image-driven. This slot had no border/frame of its own to
+              preserve, so only the content changes. */}
           <div className="flex aspect-[3/4] items-center justify-center lg:h-full lg:min-h-[520px]">
-            <EngravedLineDraw src="/artwork/traced/about-line.svg" className="h-full w-full" />
+            <ParticleImage
+              src="/plates/about-bridge-tower.jpg"
+              className="h-full w-full"
+              objectPosition="50% 40%"
+            />
           </div>
         </div>
 
-        <div className="mt-20 grid grid-cols-2 border-t border-b border-rule sm:mt-28 sm:grid-cols-4">
+        {/* 5 stats now (was 4) — the old per-item border math was hand-tuned
+            for an exact 2/4-column split and didn't generalize. divide-x/
+            divide-y sidesteps that: full-width stacked rows on mobile,
+            one undivided 5-up row from sm: up, so there's no wrapping
+            column edge to get wrong. */}
+        <div className="mt-20 grid grid-cols-1 divide-y divide-rule border-t border-b border-rule sm:mt-28 sm:grid-cols-5 sm:divide-x sm:divide-y-0">
           {statsData.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`min-w-0 px-4 py-8 sm:px-8 ${i % 2 === 0 ? "border-r border-rule sm:border-r" : ""} ${
-                i < 2 ? "border-b border-rule sm:border-b-0" : ""
-              } ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
-            >
+            <div key={stat.label} className="min-w-0 px-4 py-8 sm:px-6">
               <StatNumeral value={stat.value} label={stat.label} tone="paper" numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]" delay={i * 0.08} />
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

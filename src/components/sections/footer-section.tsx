@@ -4,58 +4,22 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaInstagram, FaDiscord, FaLinkedin, FaYoutube } from "react-icons/fa";
 import Image from "next/image";
-import { useFadeRise, ParallaxLayer } from "@/components/sections/design-system";
-import { BridgeSilhouette } from "@/components/sections/graphics";
+import { useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 
-/* Footer — the site's second --ink ground (§2). --paper type, logo reversed
-   out. The star-chart plate (M3, Bayer Uranometria, negative impression)
-   lands behind this in the plates pass; markup slot is below, aria-hidden. */
+/* Footer — blue-ground (see globals.css), --paper type reversed out. No
+   DitherField here (kept only on Prizes/Sponsors) — with six blue-ground
+   sections in a row, the dot texture on every one of them started reading
+   as noise rather than a deliberate accent. The star-chart plate and
+   BridgeSilhouette line art were removed earlier for the same reason. */
 
 const FooterSection = () => {
   const leftMotion = useFadeRise();
   const rightMotion = useFadeRise(0.1);
+  const sectionReveal = useSectionReveal();
 
   return (
-    <footer className="relative overflow-hidden bg-ink py-16 text-paper sm:py-20 lg:py-28">
-      {/* star-chart plate — negative impression, feathered into the top-right
-          corner and held well clear of the link columns. Opacity is kept low
-          (0.14) so text over any bright region still passes AA — §10: reduce
-          the graphic, never add a scrim. Flagged as a cut candidate: this low
-          it barely reads as an instrument. */}
-      <div
-        className="pointer-events-none absolute inset-0 hidden lg:block"
-        aria-hidden="true"
-        style={{
-          WebkitMaskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
-          maskImage: "radial-gradient(ellipse 55% 65% at 92% 8%, black 0%, transparent 66%)",
-        }}
-      >
-        <picture>
-          <source srcSet="/plates/footer-starchart.webp" type="image/webp" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/plates/footer-starchart.jpg"
-            alt=""
-            loading="lazy"
-            className="h-full w-full object-cover opacity-[0.14] [filter:grayscale(1)_invert(var(--invert-on-dark))_contrast(1.2)]"
-            onError={(e) => {
-              (e.currentTarget.closest("picture") as HTMLElement | null)?.style.setProperty("display", "none");
-            }}
-          />
-        </picture>
-        <div className="grain-overlay" />
-      </div>
-
-      {/* Cohesive SF-scene pass — the page's final landmark: a suspension
-          bridge silhouette closing out the horizon line that's been running
-          through V1/Prizes/Sponsors/FAQ. Slightly more present than the
-          ambient motifs upstream since this is the scene's resolution, not
-          background texture. */}
-      <ParallaxLayer range={3} className="opacity-40">
-        <BridgeSilhouette className="absolute left-1/2 top-0 h-40 w-full max-w-3xl -translate-x-1/2" />
-      </ParallaxLayer>
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <footer className="blue-ground relative overflow-hidden bg-ink py-16 text-paper sm:py-20 lg:py-28">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <motion.div {...leftMotion} className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="mb-4 flex items-center gap-3">
@@ -112,7 +76,7 @@ const FooterSection = () => {
               potentially misleading, physical-location claim. */}
           <span className="tracking-[0.2em] text-paper-dim/80">Online // Global</span>
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };

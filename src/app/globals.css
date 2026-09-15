@@ -428,6 +428,32 @@
   .ribbon-nav a tspan { fill: var(--color-ink); }
   .ribbon-nav a:hover tspan { fill: var(--color-brand); }
 
+  /* Blue-ground sections (about-swap-and-blue-sections-prompt.md) — Prizes,
+     Sponsors, Workshops, Register, FAQ, Footer swap from the page's
+     off-white ground to a solid fill of the site's one blue accent, text
+     inverted to white. Implemented as a scoped custom-property override
+     rather than a parallel set of "-on-blue" utility classes: every
+     component already reads color through --color-ink/--color-paper/etc,
+     so redefining those on the section root recolors its whole subtree —
+     headings, body copy, dividers, line-art strokes, focus rings, even the
+     .btn-wipe hover fill — with no per-element edits. --color-ink-alt is
+     deliberately left untouched (still #fff), so a card/tile that needs to
+     stay a white chip on top of this (sponsor logos) works unmodified;
+     anything inside such a tile that needs its own dark text (Workshops'
+     video-card title) re-shadows --color-paper back to the site default
+     locally, right at that element. rgba(255,255,255,0.85) for the dim
+     token is tuned to clear 4.5:1 against the blue at body-copy sizes. */
+  .blue-ground {
+    --color-ink: var(--color-rubric);
+    --color-paper: #ffffff;
+    --color-paper-dim: rgba(255, 255, 255, 0.85);
+    --color-rubric-light: #ffffff;
+    --color-rule: rgba(255, 255, 255, 0.22);
+    --color-rule-dark: rgba(255, 255, 255, 0.22);
+    --color-rule-light: rgba(255, 255, 255, 0.22);
+    --color-line-dark: rgba(255, 255, 255, 0.4);
+  }
+
   /* Cohesive SF-scene pass: fog wisps (FogLines, graphics.tsx) drift very
      slowly and loop — "clouds drifting" rendered as sparse linework instead
      of a filled shape. Kept to a few px so it stays atmospheric, not a

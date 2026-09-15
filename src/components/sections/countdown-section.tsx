@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { SectionHeading } from "@/components/sections/design-system";
+import { motion } from "framer-motion";
+import { SectionHeading, useSectionReveal } from "@/components/sections/design-system";
 import DitherField from "@/components/sections/dither-field";
 
 interface TimeLeft {
@@ -25,8 +26,9 @@ const calculateTimeLeft = (): TimeLeft => {
 };
 
 /* Faint orbital ellipses behind the digits (§5B) — static line art, drawn
-   once, --paper hairlines at low opacity on the ink ground. Not animated. */
-const Orbitals = () => (
+   once, --paper hairlines at low opacity on the ink ground. Not animated.
+   Exported so About can reuse it behind the Golden Gate Bridge photo. */
+export const Orbitals = () => (
   <svg
     className="pointer-events-none absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2"
     viewBox="0 0 800 800"
@@ -85,12 +87,13 @@ const CountdownSection = () => {
     { value: timeLeft?.seconds ?? null, label: "Seconds" },
   ];
 
+  const sectionReveal = useSectionReveal();
+
   return (
     <section id="countdown" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
-      <DitherField className="absolute inset-0 h-full w-full" />
-      <Orbitals />
+      <DitherField className="absolute inset-0 h-full w-full" color="61,79,224" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Time remaining" title="Countdown" align="right" tone="paper" />
 
         <div className="mt-16 flex flex-wrap border-t border-b border-rule sm:mt-20 sm:flex-nowrap">
@@ -107,7 +110,7 @@ const CountdownSection = () => {
         <p className="type-meta mt-8 text-center text-paper-dim">
           Submissions close November 7, 2026
         </p>
-      </div>
+      </motion.div>
     </section>
   );
 };

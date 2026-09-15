@@ -3,9 +3,109 @@
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
-import { SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 import { HorizonLine } from "@/components/sections/graphics";
-import { VortexStudy } from "@/components/sections/graphics";
+
+/* Rodin's "The Thinker" as ASCII art, in the margin-study slot VortexStudy
+   used to occupy — a fitting swap for a page called "FAQ": a statue that's
+   literally just sitting there thinking, made of the site's own mono
+   character set instead of an SVG hairline. Hand-generated once (luminance
+   sampled from a public-domain Met Museum photo, mapped to a 10-step
+   " .:-=+*#%@" density ramp, cropped before the pedestal so the figure
+   itself is what reads) and hardcoded as plain text — no client-side image
+   processing, no runtime cost, same "static, sits in the corner" treatment
+   every other margin study on the site gets.
+
+   Sized to actually fill the empty right column next to the accordion
+   rather than sit as a small corner watermark — at 82 columns this reads
+   at ~440px wide, so it only shows from xl: (1280px) up: below that the
+   container hasn't hit its max-w-7xl cap yet, and the accordion's own
+   max-w-3xl would eat into the room this needs. Fixed px sizing rather
+   than a vw-relative clamp is deliberate — once the container hits its
+   1280px cap the space beside the accordion stops growing too, so there's
+   nothing to scale against past that point. */
+const THE_THINKER_ASCII = `          :==-=+=-:-::+-+****++==-:...            =######*++=++=--=
+       .+#%%@@@@@@%#==+-=**++=++-.-:              +#####*++=++**++=
+      +%@@@%%%%%%%%%@%*==++*++++ :-.:.            *####*+-:=*+****=
+ .   *@%%%%%%%%%%%%%%%%*======+=:-. ..            +++***+==***+**+-
+    -%%%%%%%###%%%%%%%%@#*+-=++:=-.=.             +-+****##***+**+-
+   .#%##%#####***###%%%%%%%%**=-:. --      .:..   +--**+====-=+++*-
+   -######******##%%###**##%%%##+==**++**##%%%%*=-*=:++---:..-+==*-
+   =###*******+++******+*###%%%%%%%%%%%%%%%%%%%%@%%#+++++=-=+==-:+:
+   -++++++********+*##*+*####%###***###%%#%%##%##%%%#++**++*+++==+:
+    .-++=+++*****+*####**#**########*###%#############*=+*=-===+++:
+      -++=++++++++*##*####***#############*##**########+.     :+++=-:
+       ::=+++++++*+*****#**++**########*********##*****%#.        .:.
+         .-***++++********++++++**###**++***++**********#*
+           -****++*****+++++==+==+*#*+++++*++++**********#-
+            -==**++***=-=====-===++++==+=++++++++*****+****.
+           :==*#*#****+:..:-==-==++++===+++++++++****++***#*.
+          .**########*#+. :-=---=++++=++++++++******++++***##:
+          :###%#####*++*+-----========****++********+++++****#:
+          -###%####*+====--==++======*####*##*##***++++++++****
+          -+****###+-=====++++++====+**************+++++++++++*=
+          .==+++*##*-...-=+++++++===+****##*+*****+++++++++++++*-
+           .==++=**##-..--==+++++==-+****###******++++++++=+++++=
+==--::.     .=-==++**#*=========+===+************++++++++++*****-
+==++++-       --==+++*##+++++========**####*****+=+++==+++++*++*.
+               :===+++*##**+*+=--====*######****===+===++=+++++*:
+                -=-++=+**##***+=:-=+*#######***+=======++++++++*+
+                 -==++=+***#***+=*#%####**++***===========++++++*:
+:                .=-=+==+******#####********+++======+=======+++*=
+=                 :=-=+==++**####*****++++**++=-=====+========++*+
+=                  :---==+#######***++++++++++-:---====-===++++++*:
+=                   -=+*###*****+++++=+=====+=.  .:---===+++++****=
+=               .-=**###**+++++===++++==+++++++++=++++++++++*******
+=             =*#%###**+**+========+==+==++++**********************:
++           -*#*##**++============++++++++++++***************+*+++*=
+-         :+#*****++============++++++++++++++++******+++++++++++**+
+-       .+*++**+==++====--====++++++==+++++++++++++++++++++++++****+
+=      -**+=========-=++=====++++++++==++++=++++++++++++++++++++++*-
+=     :*+=+=====++=-===+++++++++++++=====++=+++++++==+++++++++++++=
+=   :+=-=+++=====-----=++++++++++++++=======+++++++==+++====+++++*:
+=  -*+=---=-====-------====+++++++++++++====++==++++=++======++++*-.
+=  =+=------=+=-:---------=====++++++++**+===================+++++**+=-:...
+=  .-=-=-----==-:---------=======++++++++**=::-==+++++++++**+****************+-
+:   .-==========-::....:-====-======+++++++*-:-=+++++***+****++***************#*.
+-     -========---:.     .:=======+===++++++*--====+++++++++++++++++++********+*+.
+=      :========----::.     :-==========++*++=.-====++++++++=++++++++++++++*++++*+
+=       .:=======-----::..    :==========+++++=:-=====+++++=====+++++++++++++***++
+=         .-=======-----:::.   .-=========++++++:-================++++++++++++++++
+-           :==========----:.    .-=====+==+++++=.:---=============+++++++++++++++
+-             -=========----:.     .:========++++= .----=========+++++++++++++++++
+=              .-=+=======--::.       -=====+==+++= .----=====-===++===+++++++++++
+:                 :-=+======--::.     .--====++==++- .:-----======++++====++++++++
+-                    :-=====---::.      --====++===+: .::----======+++++++++++*+++
+=                      .-===--:::..      ::=====+++++-...::---=======+++**+**+++++
+-                         :===-:::.       ::=====++++=-::..:--===++===++*++++=++++
+-                           :-=--:...       -=========---:..---=======++++++++++++
+-                             :---::..      :=-=+++===---. .---===+====++***+++++*
+-                              :---::.      .--=+++++===: .::-=====+=++===+++++***
+-                               ----:.. .. .-==++++++==-.::---=====+++=+++++++++**
+:                               :---:::   .-==+++++++=-:-=--==++++=++++****+++****
+--:                            .:-=-:..  :--===+==++=--======+++++++++++**+*******
+==-                            .-===---=+====+++++=--=+====++++++++++*+**++*******
+---                            -=======+=+++=====-==+++++++++++++++++**++++****+**`;
+
+function TheThinkerAscii({ className }: { className?: string }) {
+  return (
+    <pre
+      className={className}
+      style={{
+        fontFamily: "var(--font-mono)",
+        fontSize: "9px",
+        lineHeight: "1.19",
+        letterSpacing: "0.15px",
+        color: "var(--color-paper)",
+        margin: 0,
+        whiteSpace: "pre",
+      }}
+      aria-hidden="true"
+    >
+      {THE_THINKER_ASCII}
+    </pre>
+  );
+}
 
 const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
   { id: "faq-1",  question: "Who can participate?",
@@ -36,11 +136,17 @@ const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
 
 const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
+  const sectionReveal = useSectionReveal();
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
-      {/* Leonardo water-turbulence study in the margin — static (§5B) */}
-      <VortexStudy className="pointer-events-none absolute right-4 top-28 hidden opacity-70 lg:block" />
+    <section id="faq" className="blue-ground relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      {/* DitherField dropped here (kept only on Prizes/Sponsors) — with six
+          blue-ground sections in a row, the dot texture on every one of
+          them started reading as noise rather than a deliberate accent. */}
+      {/* VortexStudy removed (remove-decorative-svg-and-fix-spacing-
+          prompt.md) — the old Leonardo water-turbulence study doesn't fit
+          the current direction. Definition kept in graphics.tsx, unused. */}
+      <TheThinkerAscii className="pointer-events-none absolute right-8 top-1/2 hidden -translate-y-1/2 opacity-70 xl:block" />
 
       {/* SF watercolor pass — a quiet neighborhood/bay view, letting the page
           wind down visually before the footer's bridge landmark. No art yet
@@ -53,7 +159,7 @@ const FaqSection = () => {
         <HorizonLine className="absolute bottom-6 h-6 w-full" />
       </ParallaxLayer>
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Good to know" title="FAQ" />
 
         <motion.div {...accordionMotion}>
@@ -75,7 +181,7 @@ const FaqSection = () => {
             ))}
           </Accordion>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

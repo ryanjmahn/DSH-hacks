@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
+import ParticleImage from "@/components/sections/particle-image";
 
 /* Shared building blocks for the sitewide redesign (hero excluded — it has its
    own bespoke markup and is signed off). Every section below the hero composes
@@ -21,6 +22,26 @@ export function useFadeRise(delay = 0) {
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.3 },
     transition: { duration: 0.5, delay, ease: EASE_OUT },
+  };
+}
+
+/** Whole-section settle-in (smooth-transitions pass) — a slower, larger-scale
+ *  counterpart to useFadeRise, applied once per section to its outer content
+ *  wrapper rather than per text line. Individual headings/paragraphs still
+ *  run their own useFadeRise staggers on top of this; this is the block
+ *  they're staggering within, so scrolling into a new section reads as one
+ *  cohesive piece easing into place — scale 0.98→1 plus the same fade/rise —
+ *  rather than a hard cut followed by a flurry of unrelated small reveals.
+ *  amount is lower than useFadeRise's (0.15 vs 0.3) since it's triggered by
+ *  the whole section, which is taller than any single line, entering view. */
+export function useSectionReveal(delay = 0) {
+  const reduceMotion = useReducedMotion();
+  if (reduceMotion) return { initial: undefined, whileInView: undefined, viewport: undefined, transition: undefined };
+  return {
+    initial: { opacity: 0, y: 36, scale: 0.98 },
+    whileInView: { opacity: 1, y: 0, scale: 1 },
+    viewport: { once: true, amount: 0.15 },
+    transition: { duration: 0.8, delay, ease: EASE_OUT },
   };
 }
 
@@ -260,14 +281,27 @@ export function BleachedPlate({
  *  for the exact prompt and path per landmark). Until then this renders
  *  nothing rather than a broken-image icon — onError hides the whole masked
  *  wrapper, so the section's existing background art (line-art motifs, other
- *  plates) is what's actually visible today. */
+ *  plates) is what's actually visible today.
+ *
+ *  `particle`: renders via ParticleImage (particle-image.tsx) instead of a
+ *  flat <img> — the halftone/particle treatment rolled out across
+ *  Frontispiece/Hero/V1/Schedule. Still honors `presence` as a flat opacity
+ *  on the dot field: unlike About's particle photo (boxed, no text ever
+ *  overlaps it, so it runs at full strength), every WatercolorPlate usage
+ *  is a full-section background that text sits directly on top of, so it
+ *  needs the same kind of dial the old flat-photo version did — tuned lower
+ *  by default (0.55) than the img default (0.4 read as too faint once the
+ *  dot field's own gaps stack on top of it, the opposite problem). Drops
+ *  the onError silent-hide, since every current particle usage points at
+ *  art that's confirmed to exist. */
 export function WatercolorPlate({
   src,
   alt = "",
   className,
   maskPosition = "50% 42%",
-  presence = 0.4,
+  presence,
   objectPosition = "50% 50%",
+  particle = false,
 }: {
   src: string;
   alt?: string;
@@ -275,11 +309,32 @@ export function WatercolorPlate({
   maskPosition?: string;
   presence?: number;
   objectPosition?: string;
+  particle?: boolean;
 }) {
   const mask = `radial-gradient(ellipse 60% 60% at ${maskPosition}, black 0%, black 15%, transparent 70%)`;
+  if (particle) {
+    const dotPresence = presence ?? 0.55;
+    return (
+      <div className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden={alt === ""}>
+        <div className="absolute inset-0" style={{ opacity: dotPresence, WebkitMaskImage: mask, maskImage: mask }}>
+          <ParticleImage
+            src={src}
+            alt={alt}
+            className="h-full w-full"
+            objectPosition={objectPosition}
+            stride={5}
+            contrast={0.7}
+            saturate={1.4}
+            lightCutoff={0.96}
+          />
+        </div>
+      </div>
+    );
+  }
+  const imgPresence = presence ?? 0.4;
   return (
     <div className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden={alt === ""}>
-      <div className="absolute inset-0" style={{ opacity: presence, WebkitMaskImage: mask, maskImage: mask }}>
+      <div className="absolute inset-0" style={{ opacity: imgPresence, WebkitMaskImage: mask, maskImage: mask }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
@@ -458,6 +513,18 @@ export function FogLayer({ className }: { className?: string }) {
  *  section-break glyph (the same mark used in the Frontispiece ornament) —
  *  one marker at the low point, fading in once the cable has drawn. */
 export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }) {
+  // Removed (remove-decorative-svg-and-fix-spacing-prompt.md) — CREDITS.md
+  // calls this element out by name as one of the old engraved-folio's
+  // "Not sourced" procedural decorations ("Dividers: Springing-line vault
+  // bases"), and its rising-arc-plus-diamond glyph is exactly what was
+  // showing up directly above the Countdown numbers, adding ~80px of
+  // divider height on top of that section's own top padding — the "dead
+  // space" the prompt calls out there. A single early return here removes
+  // the glyph from all ~13 call sites at once (each section's own padding
+  // already provides consistent rhythm without it) rather than editing
+  // every page.tsx usage individually. Body kept below, unreachable, so
+  // restoring it later is a one-line revert.
+  return null;
   const reduceMotion = useReducedMotion();
   const half = reduceMotion
     ? {}

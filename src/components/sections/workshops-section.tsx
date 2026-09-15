@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
-import { SectionHeading, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
-import { GearTrain } from "@/components/sections/graphics";
+import { SectionHeading, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 
 const workshops = [
   { id: "v_6Beq5OL5o", speaker: "Maulik Bhatt",            topic: "Search to Intelligence, RAG Driven Agents" },
@@ -27,17 +26,22 @@ const WorkshopsSection = () => {
   const visible = workshops.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
   const introMotion = useFadeRise(0.1);
   const ctaMotion = useFadeRise();
+  const sectionReveal = useSectionReveal();
 
   return (
-    <section id="workshops" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
-      {/* gear-and-screw study in the margin — static (§5B) */}
-      <GearTrain className="pointer-events-none absolute right-0 top-24 hidden opacity-70 lg:block" />
+    <section id="workshops" className="blue-ground relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      {/* DitherField dropped here (kept only on Prizes/Sponsors) — with six
+          blue-ground sections in a row, the dot texture on every one of
+          them started reading as noise rather than a deliberate accent. */}
+      {/* GearTrain removed (remove-decorative-svg-and-fix-spacing-
+          prompt.md) — the old Leonardo gear-and-screw study doesn't fit
+          the current direction. Definition kept in graphics.tsx, unused. */}
 
       {/* SF watercolor pass — Twin Peaks overlook, no art yet (see
           sf-watercolor-prompts.md). */}
       <WatercolorPlate src="/plates/watercolor/workshops-twin-peaks.jpg" presence={0.3} maskPosition="40% 30%" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Learn from professionals" title="Workshops" />
 
         <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-paper-dim">
@@ -109,7 +113,16 @@ const WorkshopsSection = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="card-texture flex flex-1 flex-col bg-ink-alt p-5">
+                  {/* This card stays a white tile (bg-ink-alt is untouched by
+                      .blue-ground) sitting on the section's blue fill, so its
+                      own text needs to shadow --color-paper/--color-rubric-
+                      light back to their site defaults locally — otherwise
+                      the section-level white-text override would render
+                      white text on this white card. */}
+                  <div
+                    className="card-texture flex flex-1 flex-col bg-ink-alt p-5"
+                    style={{ "--color-paper": "#17171a", "--color-rubric-light": "#3d4fe0" } as React.CSSProperties}
+                  >
                     <p className="type-title !text-lg leading-snug text-paper">{video.topic}</p>
                     <p className="type-eyebrow mt-2 text-rubric-light">{video.speaker}</p>
                   </div>
@@ -130,7 +143,7 @@ const WorkshopsSection = () => {
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

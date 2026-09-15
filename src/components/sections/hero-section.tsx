@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, ExternalLink, Menu, X } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { FogLayer } from "@/components/sections/design-system";
+import { FogLayer, useSectionReveal } from "@/components/sections/design-system";
+import ParticleImage from "@/components/sections/particle-image";
 
 /* Trimmed to 4 top-level items per the revamp brief ("condensed set of
    links... one pill-shaped CTA button right"); Sponsors and Workshops fold
@@ -60,7 +61,7 @@ const Navbar = () => {
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-full bg-rubric px-6 py-2.5 type-meta text-paper transition-colors hover:bg-rubric-deep lg:inline-flex lg:items-center"
+            className="hidden rounded-full bg-rubric px-6 py-2.5 type-meta text-ink transition-colors hover:bg-rubric-deep lg:inline-flex lg:items-center"
           >
             Register
           </a>
@@ -108,10 +109,13 @@ const Navbar = () => {
   );
 };
 
-/* The real Golden Gate Bridge photo (gates_integration.md), replacing the
-   old Vesalius vault plate in this slot. Source is a raw, untreated
-   watercolor-filtered crop — every legibility/mood treatment below is real
-   CSS, not baked into the file:
+/* The real Golden Gate Bridge photo (gates_integration.md), rendered as a
+   particle/halftone field (same treatment as Frontispiece/About via
+   particle-image.tsx) rather than a flat photo — dots sample the photo's
+   own color, tuned bolder like Frontispiece (tighter stride, contrast
+   gamma, saturation boost) so the bridge stays a clear, defined shape.
+   Every legibility/mood treatment below is still real CSS, not baked into
+   the file:
      - object-cover + a right-favoring object-position, so the tower (the
        bulk of the bridge's structure sits on the right of the source frame)
        stays the visual anchor at any viewport width rather than drifting
@@ -123,29 +127,35 @@ const Navbar = () => {
        site uses, so it reads as bleeding into the page rather than a
        hard-edged rectangle
      - the sitewide grain overlay for texture continuity
-   LCP element — preloaded (see the <link> tags below). */
+   No longer the LCP element the way a plain <img> was — canvas isn't an LCP
+   candidate, so that role now falls to the headline text, which is a fine
+   trade for a hero whose actual message is the text anyway. Still preloaded
+   (see the <link> tag below) so the particle build starts as early as
+   possible instead of waiting on a cold fetch. */
 const HeroBridgePhoto = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
-      className="absolute inset-0 opacity-[0.85]"
+      className="absolute inset-0"
       style={{
-        WebkitMaskImage: "radial-gradient(ellipse 68% 75% at 62% 55%, black 0%, black 30%, transparent 78%)",
-        maskImage: "radial-gradient(ellipse 68% 75% at 62% 55%, black 0%, black 30%, transparent 78%)",
+        // Widened and re-centered from the original 68%/62% (tuned for a
+        // flat photo, where the right-side tower alone carried the image)
+        // so the left half of the bridge — cables, hillside, the far tower
+        // base — reads clearly as particles too instead of fading to
+        // near-nothing there; the opaque core now holds until 45% of the
+        // radius (up from 30%) before it starts dissolving at the edges.
+        WebkitMaskImage: "radial-gradient(ellipse 92% 85% at 55% 52%, black 0%, black 45%, transparent 85%)",
+        maskImage: "radial-gradient(ellipse 92% 85% at 55% 52%, black 0%, black 45%, transparent 85%)",
       }}
     >
-      <picture>
-        <source media="(min-width: 768px)" srcSet="/plates/watercolor/hero-golden-gate-desktop.webp" type="image/webp" />
-        <source media="(min-width: 768px)" srcSet="/plates/watercolor/hero-golden-gate-desktop.jpg" />
-        <source srcSet="/plates/watercolor/hero-golden-gate-mobile.webp" type="image/webp" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/plates/watercolor/hero-golden-gate-mobile.jpg"
-          alt="Golden Gate Bridge at sunset"
-          fetchPriority="high"
-          className="h-full w-full object-cover"
-          style={{ objectPosition: "72% 38%" }}
-        />
-      </picture>
+      <ParticleImage
+        src="/plates/watercolor/hero-golden-gate-desktop.jpg"
+        className="h-full w-full"
+        objectPosition="72% 38%"
+        stride={5}
+        contrast={0.7}
+        saturate={1.4}
+        lightCutoff={0.96}
+      />
       {/* legibility gradient — transparent top, fading to the page ground by
           two-thirds down, where the headline/stats/buttons sit */}
       <div
@@ -204,11 +214,14 @@ export default function HeroSection() {
   const reduceMotion = useReducedMotion();
   const initial = reduceMotion ? undefined : { opacity: 0, y: 24 };
   const animate = reduceMotion ? undefined : { opacity: 1, y: 0 };
+  const sectionReveal = useSectionReveal();
 
   return (
     <div className="bg-ink">
-      <link rel="preload" as="image" href="/plates/watercolor/hero-golden-gate-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
-      <link rel="preload" as="image" href="/plates/watercolor/hero-golden-gate-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
+      {/* Single desktop source now (ParticleImage samples one file at any
+          viewport, same as Frontispiece/About), so one preload covers it —
+          the old mobile-specific webp preload is no longer fetched here. */}
+      <link rel="preload" as="image" href="/plates/watercolor/hero-golden-gate-desktop.jpg" fetchPriority="high" />
 
       <Navbar />
 
@@ -216,11 +229,17 @@ export default function HeroSection() {
           pilaster so the two beats read as one continuous space. No ground
           change, no hard boundary. */}
       <section id="hero" className="relative min-h-screen overflow-hidden bg-ink text-paper">
-        <RecedingArches />
+        {/* RecedingArches removed (remove-decorative-svg-and-fix-spacing-
+            prompt.md) — the old engraved-folio construction-line arcs read
+            as competing clutter behind "a global" now that there's a real
+            bridge photo underneath. Definition kept below, unused. */}
         <HeroBridgePhoto />
         <HeroFog />
 
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center px-6 pt-28 pb-16 sm:pl-[14vw] sm:pr-8">
+        <motion.div
+          {...sectionReveal}
+          className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center px-6 pt-28 pb-16 sm:pl-[14vw] sm:pr-8"
+        >
           <motion.p
             initial={initial}
             animate={animate}
@@ -273,7 +292,7 @@ export default function HeroSection() {
               href="https://dsh-hacks-v2.devpost.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
+              className="inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3.5 type-meta text-ink transition-colors hover:bg-rubric-deep"
             >
               Register on Devpost
               <ArrowRight className="h-4 w-4" />
@@ -297,7 +316,7 @@ export default function HeroSection() {
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
