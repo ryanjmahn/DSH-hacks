@@ -248,6 +248,56 @@ export function BleachedPlate({
   );
 }
 
+/** Watercolor SF-landmark plate (nocturne-recolor pass). Same masked/faded
+ *  raster-plate convention as BleachedPlate/DedicationPlate above: an
+ *  object-cover image behind a radial mask that dissolves to transparent at
+ *  the edges — a watercolor wash bleeding into the paper, just inverted onto
+ *  a near-black ground — plus the sitewide grain overlay for texture
+ *  continuity with every other plate on the site.
+ *
+ *  No art exists yet: `src` points at a file that doesn't exist until it's
+ *  generated and dropped in (see sf-watercolor-prompts.md at the repo root
+ *  for the exact prompt and path per landmark). Until then this renders
+ *  nothing rather than a broken-image icon — onError hides the whole masked
+ *  wrapper, so the section's existing background art (line-art motifs, other
+ *  plates) is what's actually visible today. */
+export function WatercolorPlate({
+  src,
+  alt = "",
+  className,
+  maskPosition = "50% 42%",
+  presence = 0.4,
+  objectPosition = "50% 50%",
+}: {
+  src: string;
+  alt?: string;
+  className?: string;
+  maskPosition?: string;
+  presence?: number;
+  objectPosition?: string;
+}) {
+  const mask = `radial-gradient(ellipse 60% 60% at ${maskPosition}, black 0%, black 15%, transparent 70%)`;
+  return (
+    <div className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden={alt === ""}>
+      <div className="absolute inset-0" style={{ opacity: presence, WebkitMaskImage: mask, maskImage: mask }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="h-full w-full object-cover"
+          style={{ objectPosition }}
+          onError={(e) => {
+            const wrapper = e.currentTarget.parentElement as HTMLElement | null;
+            wrapper?.style.setProperty("display", "none");
+          }}
+        />
+        <div className="grain-overlay" />
+      </div>
+    </div>
+  );
+}
+
 /** Engraved line-draw (Part 6, effect 4) — About and Register only, two
  *  instances, per the brief. Fetches a potrace-traced, svgo-optimized SVG
  *  (see public/artwork/traced/, CREDITS.md for provenance), strips potrace's
@@ -352,13 +402,61 @@ export function CofferParallaxBg() {
   );
 }
 
+/** Generic slow-scroll parallax wrapper (cohesive SF-scene pass) — a few px of
+ *  vertical drift tied to the host section's own scroll range, shared by the
+ *  new bridge/hill/pier motifs so distant elements can move slightly slower
+ *  than nearer ones without each section re-deriving the same scroll math. */
+export function ParallaxLayer({
+  children,
+  range = 4,
+  className,
+}: {
+  children: React.ReactNode;
+  range?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [-range, range]);
+  return (
+    <div ref={ref} className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden="true">
+      <motion.div className="absolute inset-0" style={reduceMotion ? undefined : { y }}>
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+/** Fog layer (SF-vibe pass §1) — a soft, blue-gray-tinted atmospheric wash
+ *  behind the hero type, with the barely-there scroll drift (2-4px, per the
+ *  brief) that reads as fog rolling past rather than a static graphic. Pure
+ *  CSS gradient (.fog-veil) so it needs no new image asset; the drift is the
+ *  only moving part, capped small enough to stay atmospheric, not parallax-y. */
+export function FogLayer({ className }: { className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [-3, 3]);
+  return (
+    <div ref={ref} className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden="true">
+      <motion.div className="fog-veil" style={reduceMotion ? undefined : { y }} />
+    </div>
+  );
+}
+
 /** Springing-line section divider (Part 4's "Bays") — a hairline that springs
  *  UPWARD at both ends: lowest at the centre, rising toward each edge, the
  *  base of a vault. Two mirrored quadratic halves, ~31px of rise, capped at
  *  1200px and centred (edge-to-edge flattens the curve to nothing). Stroke is
  *  non-scaling so the hairline weight survives the horizontal squish on narrow
  *  viewports. Each half draws outward from the shared centre on scroll entry,
- *  800ms. The wrapper stays full-width and carries its gap's ground tone. */
+ *  800ms. The wrapper stays full-width and carries its gap's ground tone.
+ *
+ *  SF-vibe pass §3: the curve already reads as a sagging cable between two
+ *  piers, so it's the natural place for the site's repeating diamond
+ *  section-break glyph (the same mark used in the Frontispiece ornament) —
+ *  one marker at the low point, fading in once the cable has drawn. */
 export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }) {
   const reduceMotion = useReducedMotion();
   const half = reduceMotion
@@ -369,8 +467,17 @@ export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }
         viewport: { once: true, amount: 0.8 },
         transition: { duration: 0.8, ease: EASE_OUT },
       };
+  const marker = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true, amount: 0.8 },
+        transition: { duration: 0.4, delay: 0.5, ease: EASE_OUT },
+      };
   const bg = ground === "light" ? "bg-paper" : "bg-ink";
   const stroke = ground === "light" ? "var(--color-rule-light)" : "var(--color-rule-dark)";
+  const markerFill = ground === "light" ? "var(--color-ink-soft)" : "var(--color-paper-dim)";
   return (
     <div className={cn("w-full overflow-hidden py-4 sm:py-5", bg)} aria-hidden="true">
       <svg
@@ -394,6 +501,12 @@ export function SpringingLine({ ground = "dark" }: { ground?: "dark" | "light" }
           fill="none"
           vectorEffect="non-scaling-stroke"
           {...half}
+        />
+        <motion.rect
+          x="597" y="37" width="6" height="6"
+          fill={markerFill}
+          transform="rotate(45 600 40)"
+          {...marker}
         />
       </svg>
     </div>
