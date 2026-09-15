@@ -8,7 +8,7 @@ const RegisterNow = () => {
   const copyMotion = useFadeRise(0.15);
 
   return (
-    <section id="register" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+    <section id="register" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 text-center sm:px-8">
         <SectionHeading eyebrow="Join us" title="Register" align="center" eyebrowAccent={false} className="mx-auto" />
 
@@ -23,7 +23,7 @@ const RegisterNow = () => {
               href="https://dsh-hacks-v2.devpost.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-rubric px-9 py-4 type-meta text-paper transition-colors hover:bg-rubric-deep"
+              className="inline-flex items-center gap-2 rounded-full bg-rubric px-9 py-4 type-meta text-paper transition-colors hover:bg-rubric-deep"
             >
               Register now
               <ArrowRight className="h-4 w-4" />
@@ -32,7 +32,7 @@ const RegisterNow = () => {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-wipe inline-flex items-center gap-2 border border-paper px-9 py-4 type-meta text-paper"
+              className="btn-wipe inline-flex items-center gap-2 rounded-full border border-paper px-9 py-4 type-meta text-paper"
             >
               Join the Discord
               <ExternalLink className="h-3.5 w-3.5" />
