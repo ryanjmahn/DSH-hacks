@@ -3,8 +3,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 import { PierPilings, HorizonLine } from "@/components/sections/graphics";
+import ParticleImage from "@/components/sections/particle-image";
 
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
@@ -20,39 +21,37 @@ const v1Winners = [
 ];
 
 /* Palace of Fine Arts watercolor, with the Golden Gate Bridge visible behind
-   the rotunda (v1-recap-bg-replacement-prompt.md) — replaces the old School
-   of Athens arcade crop in this exact slot. Same mask geometry and
-   right-weighted framing as that version so the architecture backs the
-   left-aligned content rather than sitting centred under it — opacity (0.5)
-   and the mask's opaque core are both raised above the old crop's, since a
-   color watercolor needs more presence than a faint grayscale line-art
-   texture to actually read as color. Kept in full color (no grayscale/
-   invert) — the watercolor's warm dome and blue sky are the point.
-   object-position is tuned to this image specifically
-   (50% 38%) so the dome and bridge towers both stay in the visible crop
-   rather than cropping down to just sky above or the reflecting pool below. */
+   the rotunda (v1-recap-bg-replacement-prompt.md) — now rendered as a
+   particle/halftone field (particle-image.tsx), same bolder tuning as
+   Frontispiece/Hero, rather than a flat photo. Same mask geometry and
+   right-weighted framing as the original crop so the architecture backs the
+   left-aligned content rather than sitting centred under it. Kept in full
+   color — the watercolor's warm dome and blue sky are the point.
+   object-position is tuned to this image specifically (50% 38%) so the dome
+   and bridge towers both stay in the visible crop rather than cropping down
+   to just sky above or the reflecting pool below. Presence dialed to 0.55
+   (this section has no scrim/gradient like Frontispiece/Hero do, and the
+   mask's opaque core is unusually large here, so the dot field needs its
+   own opacity cap to keep the stat numbers and winner list legible where
+   the mask doesn't fade it out on its own). */
 const PalaceWatercolor = () => (
   <div
-    className="pointer-events-none absolute inset-0 opacity-[0.5]"
+    className="pointer-events-none absolute inset-0 opacity-[0.55]"
     aria-hidden="true"
     style={{
       WebkitMaskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 34%, transparent 82%)",
       maskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 34%, transparent 82%)",
     }}
   >
-    <picture>
-      <source media="(min-width: 768px)" srcSet="/plates/v1-palace-desktop.webp" type="image/webp" />
-      <source media="(min-width: 768px)" srcSet="/plates/v1-palace-desktop.jpg" />
-      <source srcSet="/plates/v1-palace-mobile.webp" type="image/webp" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/plates/v1-palace-mobile.jpg"
-        alt=""
-        loading="lazy"
-        className="h-full w-full object-cover"
-        style={{ objectPosition: "50% 38%" }}
-      />
-    </picture>
+    <ParticleImage
+      src="/plates/v1-palace-desktop.jpg"
+      className="h-full w-full"
+      objectPosition="50% 38%"
+      stride={5}
+      contrast={0.7}
+      saturate={1.4}
+      lightCutoff={0.96}
+    />
   </div>
 );
 
@@ -77,6 +76,7 @@ const V1Section = () => {
   const introMotion = useFadeRise(0.1);
   const ctaMotion = useFadeRise(0.1);
   const winnersLabelMotion = useFadeRise();
+  const sectionReveal = useSectionReveal();
 
   return (
     <section id="v1" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
@@ -98,7 +98,7 @@ const V1Section = () => {
         <HorizonLine className="absolute bottom-6 h-6 w-full" />
       </ParallaxLayer>
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
+      <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
 
         <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-paper-dim">
@@ -155,7 +155,7 @@ const V1Section = () => {
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };
