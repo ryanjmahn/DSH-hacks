@@ -45,7 +45,7 @@ const Vault = ({ scale }: { scale: MotionValue<number> | undefined }) => (
       <img
         src="/plates/frontispiece-vault-mobile.jpg"
         alt=""
-        className="h-full w-full object-cover [filter:invert(1)]"
+        className="h-full w-full object-cover [filter:invert(var(--invert-on-dark))]"
         style={{ objectPosition: "50% 30%" }}
       />
     </picture>
@@ -124,7 +124,7 @@ export default function FrontispieceSection() {
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3 type-meta text-paper transition-colors hover:bg-rubric-deep !text-[clamp(0.6875rem,1.5vh,0.8125rem)] sm:py-3.5"
           >
             Register on Devpost
           </motion.a>
