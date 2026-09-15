@@ -4,14 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, ExternalLink, Menu, X } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import { FogLayer } from "@/components/sections/design-system";
 
+/* Trimmed to 4 top-level items per the revamp brief ("condensed set of
+   links... one pill-shaped CTA button right"); Sponsors and Workshops fold
+   into the footer instead of competing for header space. */
 const navLinks = [
   { href: "#about", label: "About" },
   { href: "#schedule", label: "Schedule" },
   { href: "#prizes", label: "Prizes" },
-  { href: "#sponsors", label: "Sponsors" },
-  { href: "#workshops", label: "Workshops" },
-  { href: "#register", label: "Register" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -33,14 +34,14 @@ const Navbar = () => {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "border-b border-rule bg-ink/90 backdrop-blur-md shadow-[0_1px_12px_rgba(0,0,0,0.5)]"
+            ? "border-b border-rule bg-ink/90 backdrop-blur-md shadow-[0_1px_12px_var(--shadow-nav)]"
             : "bg-transparent"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-8">
           <a href="#frontispiece" className="flex items-center gap-2.5">
             <Image src="/dsh-logo-circle.png" alt="DSH Hacks" width={30} height={30} className="object-contain" />
-            <span className="font-display font-bold uppercase tracking-tight text-base text-paper">DSH Hacks</span>
+            <span className="font-body font-semibold tracking-tight text-base text-paper">DSH Hacks</span>
           </a>
 
           <nav className="hidden items-center gap-7 lg:flex">
@@ -55,10 +56,19 @@ const Navbar = () => {
             ))}
           </nav>
 
+          <a
+            href="https://dsh-hacks-v2.devpost.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-full bg-rubric px-6 py-2.5 type-meta text-paper transition-colors hover:bg-rubric-deep lg:inline-flex lg:items-center"
+          >
+            Register
+          </a>
+
           <button
             onClick={() => setIsMenuOpen(true)}
             aria-label="Open menu"
-            className="btn-wipe inline-flex h-10 w-10 items-center justify-center border border-rule text-paper lg:hidden"
+            className="btn-wipe inline-flex h-10 w-10 items-center justify-center rounded-full border border-rule text-paper lg:hidden"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -76,7 +86,7 @@ const Navbar = () => {
           <button
             onClick={() => setIsMenuOpen(false)}
             aria-label="Close menu"
-            className="btn-wipe flex h-10 w-10 items-center justify-center border border-rule text-paper"
+            className="btn-wipe flex h-10 w-10 items-center justify-center rounded-full border border-rule text-paper"
           >
             <X className="h-5 w-5" />
           </button>
@@ -87,7 +97,7 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="font-display font-extrabold uppercase tracking-[-0.025em] text-3xl text-paper transition-colors hover:text-paper-dim"
+              className="font-body font-semibold tracking-tight text-3xl text-paper transition-colors hover:text-paper-dim"
             >
               {link.label}
             </a>
@@ -98,35 +108,62 @@ const Navbar = () => {
   );
 };
 
-/* The Vesalius plate behind the type (§7 Beat 2). On the inverted ground this
-   is NOT gone negative — it is DEEPENED: brightness pulled down so the washed
-   colour sits at mid-tone against the black rather than near-white, ~35%
-   saturation kept (a faint anatomical wash, not full grayscale). White display
-   type over a mid-tone plate is a far safer pairing than white-on-near-white.
-   Feathered radial mask, no box. LCP element — preloaded. */
-const DedicationPlate = () => (
+/* The real Golden Gate Bridge photo (gates_integration.md), replacing the
+   old Vesalius vault plate in this slot. Source is a raw, untreated
+   watercolor-filtered crop — every legibility/mood treatment below is real
+   CSS, not baked into the file:
+     - object-cover + a right-favoring object-position, so the tower (the
+       bulk of the bridge's structure sits on the right of the source frame)
+       stays the visual anchor at any viewport width rather than drifting
+       off-center on narrow crops
+     - a bottom-anchored linear gradient to --color-ink, so the hero
+       headline/stats/buttons sitting over the lower two-thirds of the image
+       stay legible without a flat scrim over the whole photo
+     - the same radial "dissolve at the edges" mask every other plate on the
+       site uses, so it reads as bleeding into the page rather than a
+       hard-edged rectangle
+     - the sitewide grain overlay for texture continuity
+   LCP element — preloaded (see the <link> tags below). */
+const HeroBridgePhoto = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
-      className="absolute inset-0 opacity-[0.42]"
+      className="absolute inset-0 opacity-[0.85]"
       style={{
-        WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 50% 66%, black 0%, black 18%, transparent 68%)",
-        maskImage: "radial-gradient(ellipse 62% 70% at 50% 66%, black 0%, black 18%, transparent 68%)",
+        WebkitMaskImage: "radial-gradient(ellipse 68% 75% at 62% 55%, black 0%, black 30%, transparent 78%)",
+        maskImage: "radial-gradient(ellipse 68% 75% at 62% 55%, black 0%, black 30%, transparent 78%)",
       }}
     >
       <picture>
-        <source media="(min-width: 768px)" srcSet="/plates/beat2-desktop.webp" type="image/webp" />
-        <source media="(min-width: 768px)" srcSet="/plates/beat2-desktop.jpg" />
-        <source srcSet="/plates/beat2-mobile.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/plates/watercolor/hero-golden-gate-desktop.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/plates/watercolor/hero-golden-gate-desktop.jpg" />
+        <source srcSet="/plates/watercolor/hero-golden-gate-mobile.webp" type="image/webp" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/plates/beat2-mobile.jpg"
-          alt=""
+          src="/plates/watercolor/hero-golden-gate-mobile.jpg"
+          alt="Golden Gate Bridge at sunset"
           fetchPriority="high"
           className="h-full w-full object-cover"
-          style={{ objectPosition: "50% 30%", filter: "grayscale(0.65) brightness(0.5) contrast(1.05)" }}
+          style={{ objectPosition: "72% 38%" }}
         />
       </picture>
+      {/* legibility gradient — transparent top, fading to the page ground by
+          two-thirds down, where the headline/stats/buttons sit */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(to bottom, transparent 0%, transparent 30%, var(--color-ink) 92%)" }}
+      />
+      <div className="grain-overlay" />
     </div>
+  </div>
+);
+
+/* SF-vibe pass §1 — a soft blue-gray fog wash drifting behind the headline,
+   layered above the plate so it reads as atmosphere veiling the scene rather
+   than a second competing graphic. Opacity capped low; this stays a mood
+   detail, not a haze thick enough to fight text contrast. */
+const HeroFog = () => (
+  <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-70" aria-hidden="true">
+    <FogLayer />
   </div>
 );
 
@@ -170,8 +207,8 @@ export default function HeroSection() {
 
   return (
     <div className="bg-ink">
-      <link rel="preload" as="image" href="/plates/beat2-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
-      <link rel="preload" as="image" href="/plates/beat2-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
+      <link rel="preload" as="image" href="/plates/watercolor/hero-golden-gate-desktop.webp" media="(min-width: 768px)" fetchPriority="high" />
+      <link rel="preload" as="image" href="/plates/watercolor/hero-golden-gate-mobile.webp" media="(max-width: 767px)" fetchPriority="high" />
 
       <Navbar />
 
@@ -180,7 +217,8 @@ export default function HeroSection() {
           change, no hard boundary. */}
       <section id="hero" className="relative min-h-screen overflow-hidden bg-ink text-paper">
         <RecedingArches />
-        <DedicationPlate />
+        <HeroBridgePhoto />
+        <HeroFog />
 
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center px-6 pt-28 pb-16 sm:pl-[14vw] sm:pr-8">
           <motion.p
@@ -235,7 +273,7 @@ export default function HeroSection() {
               href="https://dsh-hacks-v2.devpost.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
+              className="inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
             >
               Register on Devpost
               <ArrowRight className="h-4 w-4" />
@@ -244,7 +282,7 @@ export default function HeroSection() {
               href="https://discord.gg/3HgSzbYPx5"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-wipe inline-flex items-center gap-2 border border-paper px-8 py-3.5 type-meta text-paper"
+              className="btn-wipe inline-flex items-center gap-2 rounded-full border border-paper px-8 py-3.5 type-meta text-paper"
             >
               Join Discord
               <ExternalLink className="h-4 w-4" />

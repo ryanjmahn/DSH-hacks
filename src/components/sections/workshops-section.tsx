@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
-import { SectionHeading, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
 import { GearTrain } from "@/components/sections/graphics";
 
 const workshops = [
@@ -29,9 +29,13 @@ const WorkshopsSection = () => {
   const ctaMotion = useFadeRise();
 
   return (
-    <section id="workshops" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+    <section id="workshops" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
       {/* gear-and-screw study in the margin — static (§5B) */}
       <GearTrain className="pointer-events-none absolute right-0 top-24 hidden opacity-70 lg:block" />
+
+      {/* SF watercolor pass — Twin Peaks overlook, no art yet (see
+          sf-watercolor-prompts.md). */}
+      <WatercolorPlate src="/plates/watercolor/workshops-twin-peaks.jpg" presence={0.3} maskPosition="40% 30%" />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Learn from professionals" title="Workshops" />
@@ -58,7 +62,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
               aria-label="Previous workshops"
-              className="btn-wipe flex h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
+              className="btn-wipe flex rounded-full h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -66,7 +70,7 @@ const WorkshopsSection = () => {
               onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
               disabled={page === pageCount - 1}
               aria-label="Next workshops"
-              className="btn-wipe flex h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
+              className="btn-wipe flex rounded-full h-11 w-11 items-center justify-center border border-paper text-paper disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -89,7 +93,7 @@ const WorkshopsSection = () => {
                   href={`https://www.youtube.com/watch?v=${video.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col border border-rule-dark transition-colors hover:border-paper"
+                  className="group flex flex-col border border-rule-dark transition-all duration-300 hover:-translate-y-0.5 hover:border-paper hover:shadow-[0_10px_28px_-12px_rgba(124,147,255,0.35)]"
                 >
                   <div className="relative aspect-video overflow-hidden border-b border-rule-dark">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,7 +109,7 @@ const WorkshopsSection = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col p-5">
+                  <div className="card-texture flex flex-1 flex-col bg-ink-alt p-5">
                     <p className="type-title !text-lg leading-snug text-paper">{video.topic}</p>
                     <p className="type-eyebrow mt-2 text-rubric-light">{video.speaker}</p>
                   </div>
@@ -120,7 +124,7 @@ const WorkshopsSection = () => {
             href="https://www.youtube.com/@DSHHacks"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wipe inline-flex items-center gap-2 border border-paper px-8 py-3.5 type-meta text-paper"
+            className="btn-wipe inline-flex items-center gap-2 rounded-full border border-paper px-8 py-3.5 type-meta text-paper"
           >
             Subscribe on YouTube
             <ExternalLink className="h-3.5 w-3.5" />

@@ -3,7 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { PierPilings, HorizonLine } from "@/components/sections/graphics";
 
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
@@ -18,36 +19,38 @@ const v1Winners = [
   { name: "SciSim", detail: "AI-powered virtual science lab with chemistry, physics, and biology simulations." },
 ];
 
-/* A second crop of the same School of Athens source as the Frontispiece — a
-   side pier and the angled coffering of the aisle, so the two sections read as
-   two views of one continuous space. Treatment matches the hero exactly:
-   baked high-contrast grayscale, CSS invert(1) to white line on the dark
-   ground, feathered on every edge, no box, shared paper grain. Lands at 0.22
-   — a touch lower than the hero, since this sits behind the winners list, not
-   behind display type. Weighted to the upper right so the architecture frames
-   the left-aligned content rather than sitting centred under it. */
-const Arcade = () => (
+/* Palace of Fine Arts watercolor, with the Golden Gate Bridge visible behind
+   the rotunda (v1-recap-bg-replacement-prompt.md) — replaces the old School
+   of Athens arcade crop in this exact slot. Same mask geometry and
+   right-weighted framing as that version so the architecture backs the
+   left-aligned content rather than sitting centred under it — opacity (0.5)
+   and the mask's opaque core are both raised above the old crop's, since a
+   color watercolor needs more presence than a faint grayscale line-art
+   texture to actually read as color. Kept in full color (no grayscale/
+   invert) — the watercolor's warm dome and blue sky are the point.
+   object-position is tuned to this image specifically
+   (50% 38%) so the dome and bridge towers both stay in the visible crop
+   rather than cropping down to just sky above or the reflecting pool below. */
+const PalaceWatercolor = () => (
   <div
-    className="pointer-events-none absolute inset-0 opacity-[0.22]"
+    className="pointer-events-none absolute inset-0 opacity-[0.5]"
     aria-hidden="true"
     style={{
-      WebkitMaskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 24%, transparent 80%)",
-      maskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 24%, transparent 80%)",
+      WebkitMaskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 34%, transparent 82%)",
+      maskImage: "radial-gradient(ellipse 85% 90% at 78% 32%, black 0%, black 34%, transparent 82%)",
     }}
   >
     <picture>
-      <source media="(min-width: 768px)" srcSet="/plates/v1-arcade-desktop.avif" type="image/avif" />
-      <source media="(min-width: 768px)" srcSet="/plates/v1-arcade-desktop.webp" type="image/webp" />
-      <source media="(min-width: 768px)" srcSet="/plates/v1-arcade-desktop.jpg" />
-      <source srcSet="/plates/v1-arcade-mobile.avif" type="image/avif" />
-      <source srcSet="/plates/v1-arcade-mobile.webp" type="image/webp" />
+      <source media="(min-width: 768px)" srcSet="/plates/v1-palace-desktop.webp" type="image/webp" />
+      <source media="(min-width: 768px)" srcSet="/plates/v1-palace-desktop.jpg" />
+      <source srcSet="/plates/v1-palace-mobile.webp" type="image/webp" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/plates/v1-arcade-mobile.jpg"
+        src="/plates/v1-palace-mobile.jpg"
         alt=""
         loading="lazy"
-        className="h-full w-full object-cover [filter:invert(1)]"
-        style={{ objectPosition: "90% 12%" }}
+        className="h-full w-full object-cover"
+        style={{ objectPosition: "50% 38%" }}
       />
     </picture>
   </div>
@@ -76,9 +79,24 @@ const V1Section = () => {
   const winnersLabelMotion = useFadeRise();
 
   return (
-    <section id="v1" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
-      <Arcade />
+    <section id="v1" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      <PalaceWatercolor />
       <div className="grain-overlay" />
+
+      {/* SF watercolor pass — Coit Tower / Telegraph Hill, no art yet (see
+          sf-watercolor-prompts.md). The Arcade plate + pier line-art below
+          stay as the live background until the file exists. */}
+      <WatercolorPlate src="/plates/watercolor/v1-coit-tower.jpg" presence={0.35} maskPosition="30% 40%" />
+
+      {/* Cohesive SF-scene pass — the existing truss/architecture treatment
+          extended into a pier/dock silhouette with the bay horizon beyond it,
+          continuing from About's hills above and into Schedule below. */}
+      <ParallaxLayer range={3} className="opacity-50">
+        <PierPilings className="absolute bottom-0 h-24 w-full" />
+      </ParallaxLayer>
+      <ParallaxLayer range={5} className="opacity-60">
+        <HorizonLine className="absolute bottom-6 h-6 w-full" />
+      </ParallaxLayer>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
@@ -122,7 +140,7 @@ const V1Section = () => {
             href="https://dsh-hacks-v1.devpost.com/project-gallery"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wipe inline-flex items-center justify-center gap-2 border border-paper px-8 py-3.5 type-meta text-paper"
+            className="btn-wipe inline-flex items-center justify-center gap-2 rounded-full border border-paper px-8 py-3.5 type-meta text-paper"
           >
             Browse all 283 projects
             <ExternalLink className="h-3.5 w-3.5" />

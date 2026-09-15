@@ -254,6 +254,194 @@ export function GoldenSection({
   );
 }
 
+// ─── SF-scene motifs (cohesive-theme pass) ─────────────────────────────────
+// Same discipline as everything above: hairline, geometric, no fills. These
+// extend the site's existing engraving vocabulary into abstract bridge/hill/
+// pier/fog subject matter rather than introducing a second illustration
+// style — kept architectural, not postcard-literal.
+
+// Rolling hill silhouettes (About) — a few open sine contours at decreasing
+// amplitude/opacity, reading as depth rather than a single wavy line.
+
+function hillPath(width: number, baseY: number, amp: number, freq: number, phase: number) {
+  const steps = 60;
+  let d = "";
+  for (let i = 0; i <= steps; i++) {
+    const x = (i / steps) * width;
+    const y = baseY + Math.sin((x / width) * Math.PI * freq + phase) * amp;
+    d += i === 0 ? `M${x.toFixed(1)} ${y.toFixed(1)}` : `L${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return d;
+}
+
+export function HillContours({
+  className,
+  stroke = "var(--color-line-dark)",
+}: {
+  className?: string;
+  stroke?: string;
+}) {
+  return (
+    <svg viewBox="0 0 1200 160" preserveAspectRatio="none" className={className} aria-hidden="true" fill="none">
+      <g stroke={stroke} strokeWidth={1.25}>
+        <path d={hillPath(1200, 110, 22, 1.6, 0.3)} strokeOpacity={0.5} />
+        <path d={hillPath(1200, 130, 16, 2.1, 1.4)} strokeOpacity={0.35} />
+        <path d={hillPath(1200, 146, 10, 2.6, 2.6)} strokeOpacity={0.22} />
+      </g>
+    </svg>
+  );
+}
+
+// Fog wisps (About, Prizes/Sponsors/FAQ) — sparse, short wavy contour
+// segments at scattered x-positions rather than one wave spanning the full
+// width, so it reads as drifting banks, not a ruled line. Pairs with the
+// .fog-drift CSS class (globals.css) for the slow horizontal loop.
+
+function wispPath(len: number, y: number, amp: number, freq: number, phase: number) {
+  const steps = 24;
+  let d = "";
+  for (let i = 0; i <= steps; i++) {
+    const x = (i / steps) * len;
+    const yy = y + Math.sin((x / len) * Math.PI * 2 * freq + phase) * amp;
+    d += i === 0 ? `M${x.toFixed(1)} ${yy.toFixed(1)}` : `L${x.toFixed(1)} ${yy.toFixed(1)}`;
+  }
+  return d;
+}
+
+export function FogLines({
+  className,
+  stroke = "var(--color-line-dark)",
+}: {
+  className?: string;
+  stroke?: string;
+}) {
+  return (
+    <svg viewBox="0 0 1200 180" preserveAspectRatio="none" className={className} aria-hidden="true" fill="none">
+      <g stroke={stroke} strokeWidth={1} strokeLinecap="round" className="fog-drift">
+        <path d={wispPath(420, 30, 6, 1.2, 0)} strokeOpacity={0.4} transform="translate(40,0)" />
+        <path d={wispPath(320, 90, 5, 1.6, 1)} strokeOpacity={0.28} transform="translate(680,0)" />
+        <path d={wispPath(380, 145, 4, 1.0, 2)} strokeOpacity={0.22} transform="translate(260,0)" />
+      </g>
+    </svg>
+  );
+}
+
+// Bay-water horizon (V1, Prizes, Sponsors, FAQ) — one shared thin line
+// convention so each section's edge reads as the same waterline continuing
+// past it, rather than a one-off per section.
+
+export function HorizonLine({
+  className,
+  stroke = "var(--color-line-dark)",
+}: {
+  className?: string;
+  stroke?: string;
+}) {
+  return (
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none" className={className} aria-hidden="true" fill="none">
+      <g stroke={stroke} strokeWidth={1.25}>
+        <path d="M0 14 H1200" strokeOpacity={0.35} />
+        <path d={wispPath(1200, 22, 2, 6, 0)} strokeOpacity={0.15} />
+      </g>
+    </svg>
+  );
+}
+
+// Pier/dock pilings (V1 Recap) — vertical pilings with X cross-bracing below
+// a deck line, meant to sit just above a HorizonLine so the deck reads as
+// standing over the water. Embarcadero/Fort Mason waterfront, kept abstract.
+
+export function PierPilings({
+  className,
+  stroke = "var(--color-line-dark)",
+  count = 7,
+}: {
+  className?: string;
+  stroke?: string;
+  count?: number;
+}) {
+  const width = 1200;
+  const deckY = 10;
+  const baseY = 130;
+  const spacing = width / (count - 1);
+  const xs = Array.from({ length: count }, (_, i) => i * spacing);
+  return (
+    <svg viewBox={`0 0 ${width} 140`} preserveAspectRatio="none" className={className} aria-hidden="true" fill="none">
+      <g stroke={stroke} strokeWidth={1.25}>
+        <path d={`M0 ${deckY} H${width}`} strokeOpacity={0.4} />
+        {xs.map((x, i) => (
+          <g key={i}>
+            <path d={`M${x.toFixed(1)} ${deckY} V${baseY}`} strokeOpacity={0.35} />
+            {i > 0 && (
+              <path
+                d={`M${xs[i - 1].toFixed(1)} ${deckY} L${x.toFixed(1)} ${baseY} M${x.toFixed(1)} ${deckY} L${xs[i - 1].toFixed(1)} ${baseY}`}
+                strokeWidth={1}
+                strokeOpacity={0.16}
+              />
+            )}
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+// Suspension bridge silhouette (Footer) — the page's final landmark. Two
+// towers, a three-span main cable (side anchors + the sagging centre span),
+// vertical hangers, a deck, and the same horizon convention as V1/Prizes/etc.
+// Evokes Golden Gate/Bay Bridge in silhouette without naming either.
+
+function quadBezierY(t: number, p0: number, p1: number, p2: number) {
+  return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+}
+
+export function BridgeSilhouette({
+  className,
+  stroke = "var(--color-paper)",
+}: {
+  className?: string;
+  stroke?: string;
+}) {
+  const width = 900;
+  const height = 260;
+  const deckY = 190;
+  const horizonY = 202;
+  const towerTop = 40;
+  const [t1, t2] = [260, 640];
+  const sagY = deckY - 42;
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMax meet" className={className} aria-hidden="true" fill="none">
+      <g stroke={stroke}>
+        <path d={`M0 ${horizonY} H${width}`} strokeWidth={1} strokeOpacity={0.28} />
+        <path d={`M30 ${deckY} H${width - 30}`} strokeWidth={1.25} strokeOpacity={0.45} />
+
+        {[t1, t2].map((x, i) => (
+          <g key={i} strokeWidth={1.25} strokeOpacity={0.5}>
+            <path d={`M${x - 9} ${towerTop} V${deckY}`} />
+            <path d={`M${x + 9} ${towerTop} V${deckY}`} />
+            <path d={`M${x - 9} ${towerTop + 24} H${x + 9} M${x - 9} ${towerTop + 76} H${x + 9} M${x - 9} ${towerTop + 128} H${x + 9}`} strokeWidth={1} strokeOpacity={0.3} />
+          </g>
+        ))}
+
+        {/* main cable: side anchors sagging down to the deck ends, then the
+            long centre span sagging between the two towers */}
+        <path d={`M10 ${deckY - 6} Q ${t1 - 60} ${towerTop + 10} ${t1} ${towerTop}`} strokeWidth={1} strokeOpacity={0.4} />
+        <path d={`M${t1} ${towerTop} Q ${width / 2} ${sagY} ${t2} ${towerTop}`} strokeWidth={1} strokeOpacity={0.4} />
+        <path d={`M${t2} ${towerTop} Q ${t2 + 60} ${towerTop + 10} ${width - 10} ${deckY - 6}`} strokeWidth={1} strokeOpacity={0.4} />
+
+        {/* hangers dropping from the centre span down to the deck */}
+        {Array.from({ length: 9 }, (_, i) => {
+          const t = (i + 1) / 10;
+          const x = t1 + t * (t2 - t1);
+          const y = quadBezierY(t, towerTop, sagY, towerTop);
+          return <line key={i} x1={x} y1={y} x2={x} y2={deckY} strokeWidth={0.75} strokeOpacity={0.22} />;
+        })}
+      </g>
+    </svg>
+  );
+}
+
 export function Polyhedron({
   kind = "rhombicuboctahedron",
   size = 140,

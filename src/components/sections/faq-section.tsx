@@ -3,7 +3,8 @@
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
-import { SectionHeading, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { HorizonLine } from "@/components/sections/graphics";
 import { VortexStudy } from "@/components/sections/graphics";
 
 const faqData: { id: string; question: string; answer: React.ReactNode }[] = [
@@ -37,9 +38,20 @@ const FaqSection = () => {
   const accordionMotion = useFadeRise(0.1);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
       {/* Leonardo water-turbulence study in the margin — static (§5B) */}
       <VortexStudy className="pointer-events-none absolute right-4 top-28 hidden opacity-70 lg:block" />
+
+      {/* SF watercolor pass — a quiet neighborhood/bay view, letting the page
+          wind down visually before the footer's bridge landmark. No art yet
+          (see sf-watercolor-prompts.md). */}
+      <WatercolorPlate src="/plates/watercolor/faq-neighborhood-bay-view.jpg" presence={0.25} maskPosition="50% 50%" />
+
+      {/* Cohesive SF-scene pass — horizon settling toward the footer's
+          bridge landmark. */}
+      <ParallaxLayer range={4} className="opacity-50">
+        <HorizonLine className="absolute bottom-6 h-6 w-full" />
+      </ParallaxLayer>
 
       <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Good to know" title="FAQ" />

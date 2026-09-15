@@ -1,27 +1,24 @@
 import type { Metadata } from "next";
-import { Archivo, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Instrument_Serif, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
-/* Folio type system (§3): a humanist grotesque for display + body, a quiet
-   literary serif for the folio voice, mono for numerals and metadata only.
-   Free stand-ins for the brief's named faces —
-     Archivo    ~ Söhne Breit / Founders Grotesk  (grotesque, Akzidenz lineage,
-                  variable width axis for the wide display cut)
-     Newsreader ~ GT Alpina                         (literary serif, true italic)
-     IBM Plex Mono                                  (kept from the prior build) */
+/* f.inc-inspired type system (revamp brief): a big editorial display serif for
+   headlines, a clean grotesk for body/nav/UI, mono for numerals and metadata
+   only. These are the exact families f.inc's own production CSS ships
+   (confirmed from their live site), not stand-ins. */
 
-const archivo = Archivo({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
   display: "swap",
 });
 
-const newsreader = Newsreader({
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  variable: "--font-instrument-sans",
   display: "swap",
 });
 
@@ -47,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${instrumentSerif.variable} ${instrumentSans.variable} ${plexMono.variable}`}>
       <body className="antialiased font-body">
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"

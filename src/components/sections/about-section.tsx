@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, StatNumeral, EngravedLineDraw, useFadeRise } from "@/components/sections/design-system";
+import { SectionHeading, StatNumeral, EngravedLineDraw, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { HillContours, FogLines } from "@/components/sections/graphics";
 
 const statsData = [
   { value: "1300+", label: "Past competitors" },
@@ -16,8 +17,23 @@ const AboutSection = () => {
   const quoteMotion = useFadeRise(0.18);
 
   return (
-    <section id="about" className="relative bg-ink py-24 text-paper sm:py-32">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <section id="about" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      {/* Cohesive SF-scene pass — a fog bank drifting across hills at the
+          section's lower edge, the same thin linework as About's own traced
+          skeleton plate. Continues the scenery into V1's pier/horizon below. */}
+      {/* SF watercolor pass — Painted Ladies silhouette, no art yet (see
+          sf-watercolor-prompts.md). The hills/fog line-art below stays as
+          the live background until the file exists. */}
+      <WatercolorPlate src="/plates/watercolor/about-painted-ladies.jpg" presence={0.35} maskPosition="65% 55%" />
+
+      <ParallaxLayer range={4} className="opacity-60">
+        <HillContours className="absolute bottom-0 h-40 w-full" />
+      </ParallaxLayer>
+      <ParallaxLayer range={7} className="opacity-70">
+        <FogLines className="absolute bottom-0 h-44 w-full" />
+      </ParallaxLayer>
+
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="Who we are" title="About" />
 
         <div className="mt-14 grid items-start gap-12 sm:mt-20 lg:grid-cols-2 lg:gap-20">

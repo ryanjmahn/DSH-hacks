@@ -4,7 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaInstagram, FaDiscord, FaLinkedin, FaYoutube } from "react-icons/fa";
 import Image from "next/image";
-import { useFadeRise } from "@/components/sections/design-system";
+import { useFadeRise, ParallaxLayer } from "@/components/sections/design-system";
+import { BridgeSilhouette } from "@/components/sections/graphics";
 
 /* Footer — the site's second --ink ground (§2). --paper type, logo reversed
    out. The star-chart plate (M3, Bayer Uranometria, negative impression)
@@ -15,7 +16,7 @@ const FooterSection = () => {
   const rightMotion = useFadeRise(0.1);
 
   return (
-    <footer className="relative overflow-hidden bg-ink py-16 text-paper sm:py-20">
+    <footer className="relative overflow-hidden bg-ink py-16 text-paper sm:py-20 lg:py-28">
       {/* star-chart plate — negative impression, feathered into the top-right
           corner and held well clear of the link columns. Opacity is kept low
           (0.14) so text over any bright region still passes AA — §10: reduce
@@ -36,13 +37,23 @@ const FooterSection = () => {
             src="/plates/footer-starchart.jpg"
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover opacity-[0.14] [filter:grayscale(1)_invert(1)_contrast(1.2)]"
+            className="h-full w-full object-cover opacity-[0.14] [filter:grayscale(1)_invert(var(--invert-on-dark))_contrast(1.2)]"
             onError={(e) => {
               (e.currentTarget.closest("picture") as HTMLElement | null)?.style.setProperty("display", "none");
             }}
           />
         </picture>
+        <div className="grain-overlay" />
       </div>
+
+      {/* Cohesive SF-scene pass — the page's final landmark: a suspension
+          bridge silhouette closing out the horizon line that's been running
+          through V1/Prizes/Sponsors/FAQ. Slightly more present than the
+          ambient motifs upstream since this is the scene's resolution, not
+          background texture. */}
+      <ParallaxLayer range={3} className="opacity-40">
+        <BridgeSilhouette className="absolute left-1/2 top-0 h-40 w-full max-w-3xl -translate-x-1/2" />
+      </ParallaxLayer>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
@@ -79,6 +90,7 @@ const FooterSection = () => {
             <div>
               <h3 className="type-meta mb-4 text-rubric-light">Community</h3>
               <ul className="type-body space-y-2.5 !text-sm text-paper-dim">
+                <li><a href="#workshops" className="transition-colors hover:text-paper">Workshops</a></li>
                 <li><a href="https://discord.gg/3HgSzbYPx5" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">DSH Hacks Discord</a></li>
                 <li><a href="https://www.youtube.com/@DSHHacks" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Workshops on YouTube</a></li>
                 <li><a href="https://dsh-hacks-v2.devpost.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Project gallery</a></li>
@@ -94,6 +106,11 @@ const FooterSection = () => {
           <a href="/artwork/CREDITS.md" target="_blank" rel="noopener noreferrer" className="underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper">
             Artwork credits
           </a>
+          <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+          {/* Coordinate-tag micro-typography (SF-vibe pass §4) — echoes the
+              hero's tracked mono metadata row rather than a literal, and
+              potentially misleading, physical-location claim. */}
+          <span className="tracking-[0.2em] text-paper-dim/80">Online // Global</span>
         </div>
       </div>
     </footer>

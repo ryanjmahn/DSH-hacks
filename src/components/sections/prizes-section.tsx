@@ -2,8 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, SpecimenKey, LeaderLine, useFadeRise } from "@/components/sections/design-system";
-import { Polyhedron } from "@/components/sections/graphics";
+import { SectionHeading, SpecimenKey, LeaderLine, ParallaxLayer, WatercolorPlate, useFadeRise } from "@/components/sections/design-system";
+import { Polyhedron, HorizonLine } from "@/components/sections/graphics";
 
 const judgingCriteria = [
   { name: "Idea", detail: "Did the proposal address the theme? Was it innovative? Could it be deployed for real-world impact?" },
@@ -34,8 +34,19 @@ const PrizesSection = () => {
   const labelMotion = useFadeRise();
 
   return (
-    <section id="prizes" className="relative bg-ink py-24 text-paper sm:py-32">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+    <section id="prizes" className="relative overflow-hidden bg-ink py-24 text-paper sm:py-32 lg:py-40">
+      {/* SF watercolor pass — Ferry Building + Embarcadero, no art yet (see
+          sf-watercolor-prompts.md). */}
+      <WatercolorPlate src="/plates/watercolor/prizes-ferry-building.jpg" presence={0.3} maskPosition="50% 40%" />
+
+      {/* Cohesive SF-scene pass — the bay horizon continuing from V1's pier,
+          the same convention repeating through Sponsors and FAQ toward the
+          bridge silhouette in the footer. */}
+      <ParallaxLayer range={4} className="opacity-50">
+        <HorizonLine className="absolute bottom-6 h-6 w-full" />
+      </ParallaxLayer>
+
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What you can win" title="Prizes" align="right" />
 
         <motion.div
@@ -44,7 +55,10 @@ const PrizesSection = () => {
         >
           {/* Leonardo / Pacioli wireframe polyhedron — one per tier, static (§5D) */}
           <Polyhedron kind="rhombicuboctahedron" size={132} className="mb-6" />
-          <p className="type-eyebrow text-rubric-light">Winner</p>
+          {/* SF-vibe pass §5 — the one warm-amber flourish per page, reserved
+              for exactly this "hot" prize-tier tag; everywhere else stays
+              strictly black/blue/white. */}
+          <p className="type-eyebrow text-amber">Winner</p>
           <p className="type-display mt-2 text-paper">$100 + $100 AoPS</p>
           <p className="type-body mx-auto mt-4 max-w-xl leading-relaxed text-paper-dim">
             $100 cash plus a $100 AoPS gift card. More prize announcements will be posted on
@@ -54,7 +68,7 @@ const PrizesSection = () => {
             href="https://dsh-hacks-v2.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-rubric px-8 py-3.5 type-meta text-paper transition-colors hover:bg-rubric-deep"
           >
             See prizes on Devpost
           </a>

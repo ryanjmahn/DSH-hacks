@@ -12,8 +12,8 @@ import FaqSection from "@/components/sections/faq-section";
 import FooterSection from "@/components/sections/footer-section";
 import { SpringingLine } from "@/components/sections/design-system";
 
-/* Fully dark. Every section runs the dark ground; the second ink (blue,
-   --rubric-light) carries accent words, eyebrows, labels, and links. */
+/* Fully light. Every section runs the light ground; the accent blue
+   (--rubric) carries accent words, eyebrows, labels, and links. */
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-ink">
