@@ -3,25 +3,36 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* The folio palette — INVERTED. The engraved folio now runs dark grounds
-     with white and blue type; three light sections (About, V1 Recap,
-     Sponsors) give relief. Token names are unchanged; values and roles
-     flip. Reference these everywhere; no hardcoded hex in components. */
-  --color-ink: #0b0b0f;           /* PRIMARY PAGE GROUND (was: dark type) */
-  --color-ink-alt: #15151c;       /* adjacent dark sections needing separation */
-  --color-paper: #fcfcfa;         /* PRIMARY TYPE COLOR (was: page ground) */
-  --color-paper-dim: #c4c4cc;     /* secondary text on dark grounds */
-  --color-paper-alt: #f1f1ee;     /* the light relief sections' alt ground */
-  --color-ink-soft: #57575f;      /* secondary text on the light sections */
-  --color-rubric: #3636d3;        /* blue as fill only on dark (CTA); text/line-art on light */
-  --color-rubric-deep: #2a2aa8;   /* rubric hover states */
-  --color-rubric-light: #9c9cf2;  /* blue for text + line art on dark grounds (rubric fails AA there) */
-  --color-rubric-pale: var(--color-rubric-light); /* legacy alias */
-  --color-rule: #31313c;          /* default hairline — dark grounds (dark is primary now) */
-  --color-rule-dark: #31313c;     /* hairlines on dark */
-  --color-rule-light: #d6d6dc;    /* hairlines on light */
-  --color-rule-inverse: #d6d6dc;  /* legacy: now the LIGHT-ground hairline */
-  --color-line-dark: #4a4a58;     /* line-art graphics on dark — brighter than a hairline so engraving stays readable */
+  /* f.inc-inspired palette, light theme: restrained off-white + near-black,
+     one confident electric-blue accent used sparingly (CTAs, links, tags —
+     never a background fill). Token names are unchanged from the prior dark
+     palette so every component below keeps working untouched; only the
+     values move. The whole site runs on the light ground now — there is no
+     dark-relief section, so ink-soft/paper-alt below are effectively idle. */
+  --color-ink: #fafaf8;           /* PRIMARY PAGE GROUND — warm off-white, not flat white */
+  --color-ink-alt: #ffffff;       /* card / surface ground — one step up from the page */
+  --color-paper: #17171a;         /* PRIMARY TYPE COLOR — near-black, never pure #000 */
+  --color-paper-dim: #5c5c61;     /* secondary/muted text, captions, metadata */
+  --color-paper-alt: #f1f1ee;     /* idle: kept only for any future alt-surface need */
+  --color-ink-soft: #57575f;      /* idle: secondary text if a dark section ever returns */
+  --color-rubric: #3d4fe0;        /* the one electric-blue accent — fill only (CTA) */
+  --color-rubric-deep: #2f3cb0;   /* rubric hover state */
+  /* On a dark ground rubric itself fails AA as text, so rubric-light carries
+     a paler tint for text/line-art there. On a light ground that reasoning
+     reverses — rubric already holds AA as text, so this just equals it
+     rather than keeping a pale tint that would wash out. */
+  --color-rubric-light: var(--color-rubric);
+  --color-rule: rgba(0, 0, 0, 0.08);   /* low-opacity black divider, not a solid gray line */
+  --color-rule-dark: rgba(0, 0, 0, 0.08);
+  --color-rule-light: rgba(0, 0, 0, 0.08);  /* idle: kept distinct only for a future dark section */
+  --color-rule-inverse: var(--color-rule-light); /* legacy alias */
+  --color-line-dark: #c7c7cd;     /* line-art graphics — a light gray hairline reads at low opacity against the light ground */
+
+  /* SF-vibe pass (dsh-hacks-sf-vibes-prompt.md, §5): one warm accent, held in
+     reserve for a single flourish per page (the countdown digits) — never a
+     second theme alongside black/blue/white. Deepened slightly from the dark
+     theme's value so it still holds AA on a light ground. */
+  --color-amber: #a84e2b;
 
   /* Legacy aliases — every component still written against the previous
      fresco-pigment names resolves through here, so this one file is the
@@ -67,15 +78,14 @@
   --color-input: var(--color-rule);
   --color-ring: var(--color-rubric-light);
 
-  /* Typography families (§3). Display + body: Archivo, a humanist grotesque in
-     the Akzidenz lineage (free stand-in for Söhne Breit / Founders Grotesk),
-     with a variable width axis for the wide display cut. Serif: Newsreader, a
-     quiet literary serif with a true italic (stand-in for GT Alpina) — the
-     folio voice. Mono: IBM Plex Mono, numerals and metadata only, never body,
-     never headings. */
-  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  /* Typography families (f.inc revamp). Instrument Serif is the big editorial
+     display headline face; Instrument Sans is the grotesk for body, nav, and
+     UI copy — these are the literal families f.inc's own production CSS
+     ships, not approximations. Mono: IBM Plex Mono, numerals and metadata
+     only, never body, never headings. */
+  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-instrument-sans), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-plex-mono), "SF Mono", Menlo, monospace;
 
   --radius-lg: 0.5rem;
@@ -101,6 +111,7 @@
   }
 }
 
+
 @layer base {
   :root {
     --radius: var(--radius-lg);
@@ -114,6 +125,14 @@
     --type-quote: clamp(1.25rem, 2vw, 1.75rem);  /* pull quotes */
     --type-body: 1.0625rem;                      /* paragraphs */
     --type-meta: 0.8125rem;                      /* metadata, nav, buttons, labels */
+
+    /* Auxiliary filter tokens (not Tailwind color utilities, just raw CSS
+       vars) for the handful of raster/line-art images whose filter is baked
+       in as an inline style rather than a utility class — see
+       hero/frontispiece/v1/footer/sponsors. Single permanent values now that
+       the site has one theme; kept as named tokens rather than inlined. */
+    --invert-on-dark: 0;
+    --shadow-nav: rgba(0, 0, 0, 0.12);
 
     /* Inline SVG grain — fine film noise, referenced by .grain-overlay.
        Legacy from the previous redesign; kept where already wired in. */
@@ -151,17 +170,27 @@
     line-height: 1.6;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* f.inc's own headline CSS runs text-transform:none, weight <=600, and
+     -0.02 to -0.04em tracking on its Instrument Serif h1/h2 — dramatic scale
+     does the work, not forced caps or synthetic bold on a face that has none. */
+  h1, h2 {
     font-family: var(--font-display);
     color: var(--color-paper);
-    line-height: 0.9;
-    text-transform: uppercase;
-    letter-spacing: -0.025em;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    color: var(--color-paper);
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
-  h1 { font-size: 4rem; font-weight: 800; }
-  h2 { font-size: 2.5rem; font-weight: 800; }
-  h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+  h1 { font-size: 4rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 1.5rem; }
   p  { font-size: 1.0625rem; font-weight: 400; line-height: 1.65; color: var(--color-paper); }
   a  { color: inherit; text-decoration: none; }
 
@@ -229,27 +258,23 @@
 @layer utilities {
   .type-mega {
     font-family: var(--font-display);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.025em;
-    line-height: 0.85;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
     font-size: var(--type-mega);
   }
   .type-display {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-stretch: 115%;
-    text-transform: uppercase;
-    letter-spacing: -0.025em;
-    line-height: 0.85;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
     font-size: var(--type-display);
   }
   .type-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: -0.01em;
-    line-height: 1.05;
+    line-height: 1.15;
     font-size: var(--type-title);
   }
   .type-eyebrow {
@@ -304,6 +329,38 @@
     background-image: var(--plaster-texture-svg);
     mix-blend-mode: multiply;
     opacity: 0.14;
+    pointer-events: none;
+  }
+
+  /* SF-vibe pass §6: a very faint grain on card surfaces (sponsor tiles,
+     workshop tiles) so they read as sitting in a physical room rather than
+     flat UI fills. A ::after keeps every card call-site a one-class change —
+     no extra DOM node, no re-plumbed `relative` wrapper. */
+  .card-texture {
+    position: relative;
+  }
+  .card-texture::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: var(--grain-svg);
+    mix-blend-mode: overlay;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  /* SF-vibe pass §1: soft, directional, blue-gray fog behind the hero type —
+     fixed atmospheric tone rather than a design token, since it's a mood
+     wash, not a semantic color. Sized past its own box (inset:-15%) so the
+     blur doesn't cut a visible hard edge. */
+  .fog-veil {
+    position: absolute;
+    inset: -15%;
+    background:
+      radial-gradient(ellipse 55% 45% at 28% 18%, rgba(124, 147, 255, 0.16), transparent 62%),
+      radial-gradient(ellipse 65% 55% at 78% 75%, rgba(90, 110, 200, 0.12), transparent 68%);
+    filter: blur(48px);
     pointer-events: none;
   }
 
@@ -370,6 +427,19 @@
 
   .ribbon-nav a tspan { fill: var(--color-ink); }
   .ribbon-nav a:hover tspan { fill: var(--color-brand); }
+
+  /* Cohesive SF-scene pass: fog wisps (FogLines, graphics.tsx) drift very
+     slowly and loop — "clouds drifting" rendered as sparse linework instead
+     of a filled shape. Kept to a few px so it stays atmospheric, not a
+     dramatic pan; disabled outright under reduced motion rather than eased
+     down, matching every other looping animation on the site. */
+  @keyframes fog-drift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(18px); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .fog-drift { animation: fog-drift 48s ease-in-out infinite; }
+  }
 }
 
 /* Hide Next.js error overlay portal */
