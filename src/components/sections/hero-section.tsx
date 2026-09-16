@@ -263,7 +263,7 @@ export default function HeroSection() {
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6, delay: 0.16 }}
-            className="mt-7 max-w-md type-eyebrow text-paper-dim sm:ml-[9vw]"
+            className="mt-7 max-w-md type-eyebrow text-paper sm:ml-[9vw]"
           >
             1,294 hackers. 70+ countries. One question.
           </motion.p>
@@ -272,7 +272,7 @@ export default function HeroSection() {
             initial={initial}
             animate={animate}
             transition={{ duration: 0.6, delay: 0.24 }}
-            className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 type-meta text-paper-dim"
+            className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 type-meta text-paper"
           >
             {metaItems.map((item, i) => (
               <React.Fragment key={item}>
@@ -310,7 +310,7 @@ export default function HeroSection() {
               href="/dsh-hacks-v2-flyer.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-1 py-3.5 type-meta text-paper-dim underline decoration-rule underline-offset-4 transition-colors hover:text-paper hover:decoration-paper"
+              className="inline-flex items-center gap-1.5 px-1 py-3.5 type-meta text-paper underline decoration-rule underline-offset-4 transition-colors hover:decoration-paper"
             >
               View Flyer
               <ExternalLink className="h-3.5 w-3.5" />

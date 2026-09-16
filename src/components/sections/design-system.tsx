@@ -169,6 +169,7 @@ export function StatNumeral({
   label,
   className,
   numeralClassName = "type-display",
+  labelClassName,
   tone = "ink",
   delay = 0,
 }: {
@@ -176,6 +177,10 @@ export function StatNumeral({
   label: string;
   className?: string;
   numeralClassName?: string;
+  /** Overrides the label's default dim tone — for a usage sitting directly
+   *  over a busy particle/photo background, where the section-wide default
+   *  needs more contrast than sections where the label sits on plain ground. */
+  labelClassName?: string;
   tone?: "ink" | "paper";
   delay?: number;
 }) {
@@ -211,7 +216,7 @@ export function StatNumeral({
   return (
     <motion.div {...motionProps} className={cn("flex flex-col", className)}>
       <span ref={ref} className={cn("tabular-nums", tone === "paper" ? "text-paper" : "text-ink", numeralClassName)}>{display}</span>
-      <span className={cn("type-meta mt-2", tone === "paper" ? "text-paper-dim" : "text-ink-muted")}>{label}</span>
+      <span className={cn("type-meta mt-2", labelClassName ?? (tone === "paper" ? "text-paper-dim" : "text-ink-muted"))}>{label}</span>
     </motion.div>
   );
 }

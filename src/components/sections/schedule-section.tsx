@@ -78,7 +78,7 @@ function ScheduleRow({
 
       <div>
         <h3 className="type-title text-paper">{title}</h3>
-        <p className="type-body text-paper-dim mt-3 leading-relaxed">{detail}</p>
+        <p className="type-body text-paper mt-3 leading-relaxed">{detail}</p>
       </div>
     </motion.div>
   );

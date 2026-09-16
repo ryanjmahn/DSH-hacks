@@ -108,7 +108,7 @@ export default function FrontispieceSection() {
       <div className="grain-overlay" />
 
       <motion.div {...sectionReveal} className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        <motion.p {...up(0.35)} className="type-meta text-paper-dim !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
+        <motion.p {...up(0.35)} className="type-meta text-paper !text-[clamp(0.625rem,1.5vh,0.8125rem)]">
           DeltaForge Hacks &times; NXT Horizon &times; STEMise
         </motion.p>
 
@@ -133,7 +133,7 @@ export default function FrontispieceSection() {
         <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
           <motion.div
             {...up(0.75)}
-            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-paper-dim !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-paper !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
           >
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
@@ -153,7 +153,7 @@ export default function FrontispieceSection() {
             Register on Devpost
           </motion.a>
 
-          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-paper-dim !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
+          <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-paper !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
             Submissions close November 7, 2026 at 11:45pm PST
           </motion.p>
 
