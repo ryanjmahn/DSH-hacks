@@ -28,7 +28,18 @@ import { useReducedMotion } from "framer-motion";
 
 const MAX_RADIUS_FACTOR = 0.72; // relative to stride/2 — lets dark dots overlap slightly for solid coverage
 const REVEAL_MS = 1400;
-const MAX_STAGGER_MS = 700;
+// Each dot's own grow animation is short (was 700ms, tied 1:1 to the stagger
+// spread) — with every dot easing over the same long window as the stagger
+// itself, nearly the entire particle set (tens of thousands of dots on a
+// hero-sized image) was "active" and getting a fresh beginPath/arc/fill
+// every single frame for almost the whole reveal, which is what actually
+// showed up as jank. Shortening the per-dot window to a fast pop while
+// keeping the same total REVEAL_MS/stagger spread turns this into a real
+// sweeping wave — only the dots inside a ~180ms band of the sweep are ever
+// drawn on a given frame, not the whole field at once.
+const GROW_MS = 180;
+const MAX_STAGGER_MS = REVEAL_MS - GROW_MS;
+const REVEAL_FRAME_MS = 1000 / 45; // caps redraws during the reveal — the ease-out over 1.4s doesn't need native 90-120hz
 
 interface Particle {
   x: number;
@@ -36,6 +47,7 @@ interface Particle {
   r: number;
   color: string;
   delay: number;
+  settled: boolean;
 }
 
 function coverDraw(
@@ -101,7 +113,18 @@ export default function ParticleImage({
     img.decoding = "async";
     img.src = src;
 
-    const buildParticles = () => {
+    // Rows processed per animation frame while sampling the photo into
+    // particles. This loop can run 15-20k+ iterations for a hero-sized
+    // image, and running it all in one synchronous pass was the actual
+    // source of visible jank — a single ~50-80ms blocking task landing
+    // right on img.onload, sometimes for two above-the-fold images back to
+    // back. Chunking it across frames keeps every task short enough that
+    // the browser never drops a frame building it, at the cost of the
+    // particle field taking a few extra frames (well under 100ms total) to
+    // finish sampling before its reveal can start.
+    const ROWS_PER_CHUNK = 24;
+
+    const buildParticles = (done: () => void) => {
       const rect = container.getBoundingClientRect();
       cssW = Math.max(1, Math.round(rect.width));
       cssH = Math.max(1, Math.round(rect.height));
@@ -121,45 +144,72 @@ export default function ParticleImage({
       const { data } = offCtx.getImageData(0, 0, cssW, cssH);
 
       const maxR = (stride / 2) * MAX_RADIUS_FACTOR;
+      const rows: number[] = [];
+      for (let y = stride / 2; y < cssH; y += stride) rows.push(y);
       const next: Particle[] = [];
-      for (let y = stride / 2; y < cssH; y += stride) {
-        for (let x = stride / 2; x < cssW; x += stride) {
-          const i = (Math.floor(y) * cssW + Math.floor(x)) * 4;
-          let r = data[i];
-          let g = data[i + 1];
-          let b = data[i + 2];
-          const a = data[i + 3];
-          if (a < 16) continue;
-          const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-          if (luminance > lightCutoff) continue;
-          if (saturate !== 1) {
-            const gray = luminance * 255;
-            r = Math.max(0, Math.min(255, gray + (r - gray) * saturate));
-            g = Math.max(0, Math.min(255, gray + (g - gray) * saturate));
-            b = Math.max(0, Math.min(255, gray + (b - gray) * saturate));
+      let rowIndex = 0;
+
+      const processChunk = () => {
+        if (cancelled) return;
+        const end = Math.min(rowIndex + ROWS_PER_CHUNK, rows.length);
+        for (; rowIndex < end; rowIndex++) {
+          const y = rows[rowIndex];
+          for (let x = stride / 2; x < cssW; x += stride) {
+            const i = (Math.floor(y) * cssW + Math.floor(x)) * 4;
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+            const a = data[i + 3];
+            if (a < 16) continue;
+            const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+            if (luminance > lightCutoff) continue;
+            if (saturate !== 1) {
+              const gray = luminance * 255;
+              r = Math.max(0, Math.min(255, gray + (r - gray) * saturate));
+              g = Math.max(0, Math.min(255, gray + (g - gray) * saturate));
+              b = Math.max(0, Math.min(255, gray + (b - gray) * saturate));
+            }
+            const darkness = Math.pow(1 - luminance, contrast);
+            next.push({
+              x,
+              y,
+              r: Math.max(0.4, maxR * darkness),
+              color: `rgb(${r.toFixed(0)},${g.toFixed(0)},${b.toFixed(0)})`,
+              delay: Math.random() * MAX_STAGGER_MS,
+              settled: false,
+            });
           }
-          const darkness = Math.pow(1 - luminance, contrast);
-          next.push({
-            x,
-            y,
-            r: Math.max(0.4, maxR * darkness),
-            color: `rgb(${r.toFixed(0)},${g.toFixed(0)},${b.toFixed(0)})`,
-            delay: Math.random() * MAX_STAGGER_MS,
-          });
         }
-      }
-      particles = next;
+        if (rowIndex < rows.length) {
+          raf = requestAnimationFrame(processChunk);
+        } else {
+          particles = next;
+          done();
+        }
+      };
+      processChunk();
     };
 
+    // Cached once rather than re-fetched every frame — getContext is cheap
+    // per-call, but the reveal loop can run 80+ times, and there's no reason
+    // to pay it more than once.
+    const ctx = canvas.getContext("2d");
+
+    // Not cleared here — canvas.width/height (set in buildParticles) already
+    // resets the bitmap to blank once, and every dot's radius only ever
+    // grows, so a later, larger draw at the same center/color fully covers
+    // its own earlier frame. That means a settled dot (already painted at
+    // its final radius) needs no further work at all — skipping it is what
+    // makes the per-frame cost shrink as the reveal progresses instead of
+    // redrawing the entire field, settled or not, on every single frame.
     const drawFrame = (t: number) => {
-      const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, cssW, cssH);
       for (const p of particles) {
+        if (p.settled) continue;
         let scale = 1;
         if (t !== Infinity) {
-          const local = Math.max(0, Math.min(1, (t - p.delay) / (REVEAL_MS - MAX_STAGGER_MS)));
+          const local = Math.max(0, Math.min(1, (t - p.delay) / GROW_MS));
           scale = 1 - Math.pow(1 - local, 3); // ease-out cubic
         }
         if (scale <= 0) continue;
@@ -167,6 +217,7 @@ export default function ParticleImage({
         ctx.fillStyle = p.color;
         ctx.arc(p.x, p.y, p.r * scale, 0, Math.PI * 2);
         ctx.fill();
+        if (scale >= 1) p.settled = true;
       }
     };
 
@@ -176,9 +227,13 @@ export default function ParticleImage({
         return;
       }
       const start = performance.now();
+      let lastDraw = 0;
       const loop = (now: number) => {
         const elapsed = now - start;
-        drawFrame(elapsed);
+        if (elapsed - lastDraw >= REVEAL_FRAME_MS) {
+          lastDraw = elapsed;
+          drawFrame(elapsed);
+        }
         if (elapsed < REVEAL_MS) {
           raf = requestAnimationFrame(loop);
         } else {
@@ -192,17 +247,19 @@ export default function ParticleImage({
 
     const onReady = () => {
       if (cancelled) return;
-      buildParticles();
-      drawFrame(0);
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries[0].isIntersecting) return;
-          runReveal();
-          observer?.disconnect();
-        },
-        { threshold: 0.2 }
-      );
-      observer.observe(container);
+      buildParticles(() => {
+        if (cancelled) return;
+        drawFrame(0);
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (!entries[0].isIntersecting) return;
+            runReveal();
+            observer?.disconnect();
+          },
+          { threshold: 0.2 }
+        );
+        observer.observe(container);
+      });
     };
 
     if (img.complete) onReady();
