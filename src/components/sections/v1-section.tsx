@@ -52,6 +52,11 @@ const PalaceWatercolor = () => (
       saturate={1.4}
       lightCutoff={0.96}
     />
+    {/* Scrim added — the stats/winner list sit directly on the dot field with
+        no gradient like Frontispiece/Hero have, and bright dot clusters
+        behind the paper-colored text were washing out contrast. Same flat
+        ink scrim Frontispiece uses over its particle image. */}
+    <div className="absolute inset-0 bg-ink/50" />
   </div>
 );
 

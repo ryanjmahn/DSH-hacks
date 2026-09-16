@@ -105,6 +105,11 @@ const ScheduleSection = () => {
         objectPosition="28% 38%"
         particle
       />
+      {/* Scrim — the schedule list sits directly over the particle field at
+          its default (unlowered) presence, with no gradient of its own, so
+          bright dot clusters behind the paper-colored text were washing out
+          contrast. Same flat ink scrim Frontispiece/V1 use. */}
+      <div className="pointer-events-none absolute inset-0 bg-ink/40" aria-hidden="true" />
 
       <motion.div {...sectionReveal} className="relative mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="What to expect" title="Schedule" />
