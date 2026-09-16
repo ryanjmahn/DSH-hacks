@@ -10,7 +10,7 @@ import ParticleImage from "@/components/sections/particle-image";
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
   { value: "283", label: "Projects submitted" },
-  { value: "70+", label: "Countries" },
+  { value: "80", label: "Countries" },
   { value: "8", label: "Prize categories" },
 ];
 
