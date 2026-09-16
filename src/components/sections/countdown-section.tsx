@@ -108,7 +108,7 @@ const CountdownSection = () => {
         </div>
 
         <p className="type-meta mt-8 text-center text-paper-dim">
-          Submissions close November 7, 2026
+          Submissions close November 7, 2026 at 11:45pm PST
         </p>
       </motion.div>
     </section>

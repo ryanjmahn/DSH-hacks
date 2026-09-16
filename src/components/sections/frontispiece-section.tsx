@@ -154,7 +154,7 @@ export default function FrontispieceSection() {
           </motion.a>
 
           <motion.p {...up(0.83)} className="type-eyebrow mt-3 text-paper-dim !text-[clamp(0.875rem,1.8vh,1.0625rem)]">
-            Submissions close November 7
+            Submissions close November 7, 2026 at 11:45pm PST
           </motion.p>
 
           <motion.div {...up(0.83)}>
