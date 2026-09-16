@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { motion } from "framer-motion";
-import { SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { EASE_OUT, SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 import { HorizonLine } from "@/components/sections/graphics";
 
 /* Rodin's "The Thinker" as ASCII art, in the margin-study slot VortexStudy
@@ -87,23 +87,49 @@ const THE_THINKER_ASCII = `          :==-=+=-:-::+-+****++==-:...            =##
 ==-                            .-===---=+====+++++=--=+====++++++++++*+**++*******
 ---                            -=======+=+++=====-==+++++++++++++++++**++++****+**`;
 
+/* Motion: reveals via a bottom-up clip wipe on scroll into view, rather than
+   a plain fade — the same "build, don't just appear" language as
+   ParticleImage's dot-grow entrance and EngravedLineDraw's stroke draw-in
+   elsewhere on the site, just expressed as ink assembling top-to-bottom
+   instead of dots or a path. clipPath (not opacity) so it composes cleanly
+   with the parent's own opacity-70 className instead of fighting it — an
+   animated opacity here would override that class via inline style.
+
+   The same chicken-and-egg trap SectionHeading's own comment above already
+   flags: a clip-path that starts at zero visible area makes the browser's
+   IntersectionObserver report zero intersection forever, since it measures
+   the clipped/rendered box, not the full geometry — so whileInView on the
+   clipped element itself never fires. Fix is the same one SectionHeading
+   uses: track visibility via useInView on a stable, unclipped wrapper (the
+   positioned/sized element), then drive the inner element's clip-path off
+   that boolean instead of observing the clipped element directly.
+
+   Runs once and stops; prefers-reduced-motion skips straight to the fully
+   revealed frame, matching every other entrance on the page. */
 function TheThinkerAscii({ className }: { className?: string }) {
+  const reduceMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
   return (
-    <pre
-      className={className}
-      style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: "9px",
-        lineHeight: "1.19",
-        letterSpacing: "0.15px",
-        color: "var(--color-paper)",
-        margin: 0,
-        whiteSpace: "pre",
-      }}
-      aria-hidden="true"
-    >
-      {THE_THINKER_ASCII}
-    </pre>
+    <div ref={ref} className={className}>
+      <motion.pre
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "9px",
+          lineHeight: "1.19",
+          letterSpacing: "0.15px",
+          color: "var(--color-paper)",
+          margin: 0,
+          whiteSpace: "pre",
+        }}
+        initial={reduceMotion ? undefined : { clipPath: "inset(0% 0% 100% 0%)" }}
+        animate={reduceMotion ? undefined : { clipPath: inView ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)" }}
+        transition={{ duration: 1.8, ease: EASE_OUT }}
+        aria-hidden="true"
+      >
+        {THE_THINKER_ASCII}
+      </motion.pre>
+    </div>
   );
 }
 
