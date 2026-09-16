@@ -454,6 +454,17 @@
     --color-line-dark: rgba(255, 255, 255, 0.4);
   }
 
+  /* Same scoped-override technique as .blue-ground above, for the one
+     section (Frontispiece) that sits directly on the busiest, highest-
+     contrast particle photo on the site and asked for its type pushed all
+     the way to true black rather than the site's standard near-black
+     --color-paper (#17171a) — every component already reads color through
+     that token, so redefining it here recolors the whole subtree with no
+     per-element edits. */
+  .ink-max {
+    --color-paper: #000000;
+  }
+
   /* Cohesive SF-scene pass: fog wisps (FogLines, graphics.tsx) drift very
      slowly and loop — "clouds drifting" rendered as sparse linework instead
      of a filled shape. Kept to a few px so it stays atmospheric, not a

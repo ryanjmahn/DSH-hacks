@@ -102,7 +102,7 @@ export default function FrontispieceSection() {
     <section
       ref={sectionRef}
       id="frontispiece"
-      className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-ink px-6 py-20 text-paper sm:px-8"
+      className="ink-max relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden bg-ink px-6 py-20 text-paper sm:px-8"
     >
       <TransamericaPyramid scale={reduceMotion ? undefined : pyramidScale} />
       <div className="grain-overlay" />
