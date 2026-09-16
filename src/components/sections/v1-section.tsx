@@ -10,7 +10,7 @@ import ParticleImage from "@/components/sections/particle-image";
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
   { value: "283", label: "Projects submitted" },
-  { value: "70+", label: "Countries" },
+  { value: "80", label: "Countries" },
   { value: "8", label: "Prize categories" },
 ];
 
@@ -52,6 +52,11 @@ const PalaceWatercolor = () => (
       saturate={1.4}
       lightCutoff={0.96}
     />
+    {/* Scrim added — the stats/winner list sit directly on the dot field with
+        no gradient like Frontispiece/Hero have, and bright dot clusters
+        behind the paper-colored text were washing out contrast. Same flat
+        ink scrim Frontispiece uses over its particle image. */}
+    <div className="absolute inset-0 bg-ink/50" />
   </div>
 );
 
@@ -66,7 +71,7 @@ function WinnerRow({ index, name, detail, isLast }: { index: number; name: strin
       <div>
         <LeaderLine className="mb-2 w-8" />
         <h3 className="type-title text-paper">{name}</h3>
-        <p className="type-body mt-2 leading-relaxed text-paper-dim">{detail}</p>
+        <p className="type-body mt-2 leading-relaxed text-paper">{detail}</p>
       </div>
     </motion.div>
   );
@@ -101,7 +106,7 @@ const V1Section = () => {
       <motion.div {...sectionReveal} className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8">
         <SectionHeading eyebrow="May 20 – June 15, 2026 · AI × STEM Education" title="V1 Recap" />
 
-        <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-paper-dim">
+        <motion.p {...introMotion} className="type-body mt-8 max-w-2xl leading-relaxed text-paper">
           Our first hackathon brought together students from around the world to build AI
           products for STEM education, judged by engineers from Microsoft, Apple, Amazon, Meta,
           and PayPal. V2 is building on that momentum.
@@ -120,13 +125,14 @@ const V1Section = () => {
                 label={stat.label}
                 tone="paper"
                 numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]"
+                labelClassName="text-paper"
                 delay={i * 0.06}
               />
             </div>
           ))}
         </div>
 
-        <motion.p {...winnersLabelMotion} className="type-meta mt-16 text-paper-dim sm:mt-20">
+        <motion.p {...winnersLabelMotion} className="type-meta mt-16 text-paper sm:mt-20">
           Winning projects included
         </motion.p>
         <div className="mt-4 max-w-3xl">
@@ -149,7 +155,7 @@ const V1Section = () => {
             href="https://dsh-hacks-v1.devpost.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 type-meta text-paper-dim underline decoration-rule-dark underline-offset-4 transition-colors hover:text-paper hover:decoration-paper"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 type-meta text-paper underline decoration-rule-dark underline-offset-4 transition-colors hover:decoration-paper"
           >
             V1 on Devpost
             <ExternalLink className="h-3.5 w-3.5" />

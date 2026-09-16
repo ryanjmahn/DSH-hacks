@@ -18,7 +18,7 @@ import { useReducedMotion } from "framer-motion";
      ~15-20% of cells lit.
    - 5 quantised opacity steps (0.10-0.45) against the ink ground — never
      continuous opacity; snapping to levels is what reads as dithering.
-   - 30fps frame limiter. Paused off-screen (IntersectionObserver) and on
+   - 20fps frame limiter. Paused off-screen (IntersectionObserver) and on
      visibilitychange. prefers-reduced-motion: one static frame, no loop.
 
    In dev it logs the lit fraction and rolling mean draw time once a second. */
@@ -28,7 +28,10 @@ const GAP = 2;
 const STRIDE = CELL + GAP;
 const THRESHOLD = 0.645; // on the 0..1 remapped noise value — tuned to ~15-20% lit
 const STEPS = 5;
-const FRAME_MS = 1000 / 30;
+// was 30fps — the drift is driven by a slow time constant (z = t*0.0004), so
+// dropping the redraw rate is imperceptible here but cuts the noise3D/fillRect
+// work per instance by a third
+const FRAME_MS = 1000 / 20;
 
 // 5 quantised alphas, precomputed per instance from `color`. §5D specifies
 // 0.10–0.45. Content sitting over this canvas is always high-contrast text
