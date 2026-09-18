@@ -49,6 +49,7 @@ const FooterSection = () => {
                 <li><a href="/dsh-hacks-v2-flyer.pdf" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-paper">Event flyer (PDF)</a></li>
                 <li><a href="#prizes" className="transition-colors hover:text-paper">Prizes</a></li>
                 <li><a href="#sponsors" className="transition-colors hover:text-paper">Sponsors</a></li>
+                <li><a href="#judges" className="transition-colors hover:text-paper">Judges</a></li>
               </ul>
             </div>
             <div>

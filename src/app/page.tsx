@@ -6,6 +6,7 @@ import V1Section from "@/components/sections/v1-section";
 import ScheduleSection from "@/components/sections/schedule-section";
 import PrizesSection from "@/components/sections/prizes-section";
 import SponsorsSection from "@/components/sections/sponsors-section";
+import JudgesSection from "@/components/sections/judges-section";
 import WorkshopsSection from "@/components/sections/workshops-section";
 import RegisterSection from "@/components/sections/team-section";
 import FaqSection from "@/components/sections/faq-section";
@@ -32,6 +33,8 @@ export default function HomePage() {
       <PrizesSection />
       <SpringingLine ground="dark" />
       <SponsorsSection />
+      <SpringingLine ground="dark" />
+      <JudgesSection />
       <SpringingLine ground="dark" />
       <WorkshopsSection />
       <SpringingLine ground="dark" />

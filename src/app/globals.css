@@ -477,6 +477,44 @@
   @media (prefers-reduced-motion: no-preference) {
     .fog-drift { animation: fog-drift 48s ease-in-out infinite; }
   }
+
+  /* Logo marquee (Judges section) — a continuously-scrolling row of
+     affiliation wordmarks, the "rotating" companies treatment. The track
+     renders its item list twice back to back; animating exactly -50% of
+     its own width loops seamlessly from the duplicate straight back into
+     the original with no visible seam or snap. Paused on hover so a name
+     can actually be read/clicked. Reduced-motion gets a static, non-
+     duplicated row instead (see judges-section.tsx), matching every other
+     looping animation on the site. */
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee-track {
+      animation: marquee 22s linear infinite;
+      /* translate3d above already promotes this to its own compositor
+         layer; will-change reserves that layer up front instead of on the
+         animation's first frame, and backface-visibility avoids a Safari/
+         Chrome flicker some translate3d layers show on promotion. Without
+         these the 40-logo track (20 companies x 2 for the seamless loop)
+         was visibly janky — each frame was repainting the row instead of
+         just moving an already-composited layer. */
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+  }
+  .marquee-mask {
+    /* Isolates the masked strip into its own paint/layout scope so the
+       moving layer beneath it doesn't force the browser to recompute
+       painting for content outside this box on every animation frame. */
+    contain: paint;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
 }
 
 /* Hide Next.js error overlay portal */
