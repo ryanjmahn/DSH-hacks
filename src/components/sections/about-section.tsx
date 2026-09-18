@@ -2,18 +2,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { SectionHeading, StatNumeral, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
+import { SectionHeading, ParallaxLayer, WatercolorPlate, useFadeRise, useSectionReveal } from "@/components/sections/design-system";
 import { HillContours, FogLines } from "@/components/sections/graphics";
 import DitherField from "@/components/sections/dither-field";
 import ParticleImage from "@/components/sections/particle-image";
-
-const statsData = [
-  { value: "1290+", label: "Past competitors" },
-  { value: "80+", label: "Countries" },
-  { value: "$35K+", label: "Prizes distributed" },
-  { value: "10+", label: "Sponsors" },
-  { value: "80+", label: "Professional judges" },
-];
 
 const AboutSection = () => {
   const copyMotion = useFadeRise(0.1);
@@ -90,19 +82,6 @@ const AboutSection = () => {
               objectPosition="50% 40%"
             />
           </div>
-        </div>
-
-        {/* 5 stats now (was 4) — the old per-item border math was hand-tuned
-            for an exact 2/4-column split and didn't generalize. divide-x/
-            divide-y sidesteps that: full-width stacked rows on mobile,
-            one undivided 5-up row from sm: up, so there's no wrapping
-            column edge to get wrong. */}
-        <div className="mt-20 grid grid-cols-1 divide-y divide-rule border-t border-b border-rule sm:mt-28 sm:grid-cols-5 sm:divide-x sm:divide-y-0">
-          {statsData.map((stat, i) => (
-            <div key={stat.label} className="min-w-0 px-4 py-8 sm:px-6">
-              <StatNumeral value={stat.value} label={stat.label} tone="paper" numeralClassName="type-display !text-[clamp(1.875rem,4vw,3rem)]" delay={i * 0.08} />
-            </div>
-          ))}
         </div>
       </motion.div>
     </section>

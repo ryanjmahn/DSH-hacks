@@ -10,8 +10,11 @@ import ParticleImage from "@/components/sections/particle-image";
 const v1Stats = [
   { value: "1,294", label: "Hackers registered" },
   { value: "283", label: "Projects submitted" },
-  { value: "80", label: "Countries" },
+  { value: "80+", label: "Countries" },
   { value: "8", label: "Prize categories" },
+  { value: "$35K+", label: "Prizes distributed" },
+  { value: "10+", label: "Sponsors" },
+  { value: "80+", label: "Professional judges" },
 ];
 
 const v1Winners = [
@@ -112,14 +115,15 @@ const V1Section = () => {
           and PayPal. V2 is building on that momentum.
         </motion.p>
 
-        <div className="mt-14 grid grid-cols-2 border-t border-b border-rule sm:mt-16 sm:grid-cols-4">
+        {/* 7 stats now (was 4, +3 migrated over from About) — the old
+            per-item border math was hand-tuned for an exact 2/4-column
+            split and didn't generalize (see About's own note on this same
+            fix). divide-x/divide-y sidesteps that: full-width stacked rows
+            on mobile, one undivided 7-up row from sm: up, so there's no
+            wrapping column edge to get wrong. */}
+        <div className="mt-14 grid grid-cols-1 divide-y divide-rule border-t border-b border-rule sm:mt-16 sm:grid-cols-7 sm:divide-x sm:divide-y-0">
           {v1Stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`min-w-0 px-4 py-8 sm:px-8 ${i < 2 ? "border-b border-rule sm:border-b-0" : ""} ${
-                i % 2 === 0 ? "border-r border-rule" : ""
-              } ${i % 4 !== 0 ? "sm:border-l" : ""} sm:border-r-0`}
-            >
+            <div key={stat.label} className="min-w-0 px-4 py-8 sm:px-4">
               <StatNumeral
                 value={stat.value}
                 label={stat.label}
