@@ -133,12 +133,12 @@ export default function FrontispieceSection() {
         <div className="mt-6 flex w-full max-w-2xl flex-col items-center border-t border-rule pt-4 sm:mt-8 sm:pt-5">
           <motion.div
             {...up(0.75)}
-            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 type-meta text-paper !font-black !font-[family-name:var(--font-display)] !text-[clamp(0.625rem,1.4vh,0.8125rem)]"
-            style={{ WebkitTextStroke: "0.5px currentColor" }}
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 type-meta text-paper !text-[clamp(0.9375rem,2.6vh,1.375rem)]"
+            style={{ WebkitTextStroke: "0.6px currentColor" }}
           >
             {venueItems.map((item, i) => (
               <React.Fragment key={item}>
-                {i > 0 && <span className="h-3 w-px bg-rule" aria-hidden="true" />}
+                {i > 0 && <span className="h-4 w-px bg-rule sm:h-5" aria-hidden="true" />}
                 <span>{item}</span>
               </React.Fragment>
             ))}
@@ -156,7 +156,7 @@ export default function FrontispieceSection() {
 
           <motion.p
             {...up(0.83)}
-            className="type-eyebrow !not-italic !font-black mt-3 text-paper !text-[clamp(0.875rem,1.8vh,1.0625rem)]"
+            className="type-eyebrow !not-italic mt-3 text-paper !text-[clamp(1.125rem,2.6vh,1.625rem)]"
             style={{ WebkitTextStroke: "0.5px currentColor" }}
           >
             Submissions close November 7, 2026 at 11:45pm PST
