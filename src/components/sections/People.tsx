@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { LINKS, SectionHead, ext } from "./shared";
+import JudgesRoll from "./JudgesRoll";
 
 /* From the sponsor tiles on dsh-hacks-v2.devpost.com and
    dsh-hacks-v1.devpost.com; logos in /public/sponsors. */
@@ -105,6 +106,12 @@ export default function People() {
             </div>
           </div>
         </div>
+
+        <div id="judges-roll" style={{ marginTop: "clamp(64px, 8vw, 112px)" }}>
+          <h3 className="people-h">Judges</h3>
+          <p className="sub">The people scoring your project, and the ones who scored V1.</p>
+        </div>
+        <JudgesRoll />
 
         <div id="workshops" style={{ marginTop: "clamp(64px, 8vw, 112px)" }}>
           <h3 className="people-h">Workshops</h3>

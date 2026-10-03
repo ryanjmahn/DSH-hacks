@@ -78,6 +78,27 @@ async function make(p: Project, w: number, h: number): Promise<PlateSource> {
   return { dith, dev, real: !!im };
 }
 
+/* Square portraits (judges): dithered at `size`, with the photo at 2×. */
+const portraits = new Map<string, Promise<PlateSource>>();
+export function getPortrait(src: string, size: number) {
+  const key = `${src}:${size}`;
+  let hit = portraits.get(key);
+  if (!hit) {
+    hit = loadImage(src).then((im) => {
+      const base = canvas(size, size);
+      const ctx = base.getContext("2d", { willReadFrequently: true })!;
+      cover(ctx, im, size, size);
+      const dith = canvas(size, size);
+      dith.getContext("2d")!.putImageData(ditherImage(ctx.getImageData(0, 0, size, size), FILM, false, 1.1), 0, 0);
+      const dev = canvas(size * 2, size * 2);
+      cover(dev.getContext("2d")!, im, size * 2, size * 2);
+      return { dith, dev, real: true };
+    });
+    portraits.set(key, hit);
+  }
+  return hit;
+}
+
 /* ---------- generated plates ---------- */
 function hash(s: string) {
   let h = 2166136261;

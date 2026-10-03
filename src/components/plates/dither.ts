@@ -33,8 +33,9 @@ export function ditherLum(L: Float32Array, w: number, h: number, out: Uint8Clamp
   }
 }
 
-/* RGBA → darkened luminance. invert flips it first (dark marks become ink). */
-export function toLum(src: Uint8ClampedArray, w: number, h: number, invert = false) {
+/* RGBA → darkened luminance. invert flips it first (dark marks become ink);
+   gamma sets how hard it darkens (portraits use a lighter curve). */
+export function toLum(src: Uint8ClampedArray, w: number, h: number, invert = false, gamma = 1.9) {
   const L = new Float32Array(w * h);
   for (let i = 0; i < w * h; i++) {
     const o = i * 4;
@@ -42,14 +43,14 @@ export function toLum(src: Uint8ClampedArray, w: number, h: number, invert = fal
     const a = src[o + 3] / 255;
     lum = lum * a + (invert ? 255 : 0) * (1 - a);
     if (invert) lum = 255 - lum;
-    L[i] = 255 * Math.pow(lum / 255, 1.9);
+    L[i] = 255 * Math.pow(lum / 255, gamma);
   }
   return L;
 }
 
-export function ditherImage(img: ImageData, off: RGB | null, invert = false) {
+export function ditherImage(img: ImageData, off: RGB | null, invert = false, gamma = 1.9) {
   const out = new ImageData(img.width, img.height);
-  ditherLum(toLum(img.data, img.width, img.height, invert), img.width, img.height, out.data, off);
+  ditherLum(toLum(img.data, img.width, img.height, invert, gamma), img.width, img.height, out.data, off);
   return out;
 }
 
