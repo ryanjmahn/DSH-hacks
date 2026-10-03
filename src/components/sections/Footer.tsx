@@ -1,11 +1,9 @@
 "use client";
 
 import Terminal from "@/components/Terminal";
-import { usePacificTime } from "@/components/Clock";
 import { LINKS, ext } from "./shared";
 
 export default function Footer() {
-  const now = usePacificTime();
   return (
     <footer className="site-footer">
       <div className="wrap">
@@ -37,7 +35,6 @@ export default function Footer() {
         </div>
         <div className="foot-bar">
           <span>© 2026 DSH Hacks · Online, global</span>
-          <span>{now ? `${now.time} ${now.zone}` : "--:--"} in California, where the deadline lives</span>
           <Terminal />
         </div>
       </div>

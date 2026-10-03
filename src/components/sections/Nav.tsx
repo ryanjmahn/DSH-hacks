@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Clock from "@/components/Clock";
 import { ditherImage } from "@/components/plates/dither";
 import { LINKS, ext } from "./shared";
 
@@ -39,7 +38,6 @@ export default function Nav() {
           <a href="#prizes">Prizes</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <Clock className="nav-clock" />
         <a className="btn solid sm" href={LINKS.devpost} {...ext}>Register</a>
       </div>
     </header>
