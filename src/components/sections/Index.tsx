@@ -1,6 +1,6 @@
 const ITEMS: [no: string, title: string, href: string, count?: string][] = [
   ["01", "About", "#about"],
-  ["02", "Plates", "#plates", "283 projects"],
+  ["02", "Projects", "#projects", "283 submissions"],
   ["03", "Schedule", "#schedule", "5 stages"],
   ["04", "Prizes", "#prizes"],
   ["05", "People", "#people", "sponsors, judges"],

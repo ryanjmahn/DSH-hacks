@@ -37,9 +37,9 @@ export default function Footer() {
           <div>
             <h3>Colophon</h3>
             <p className="colophon">
-              Set in Instrument Serif and Geist Mono, with Doto on the clock. Each plate is the
-              project&apos;s image, Atkinson-dithered to two inks on blue-black film; hover or open one
-              to see the original underneath.
+              Set in Instrument Serif and Geist Mono, with Doto on the clock. Each project&apos;s image
+              is Atkinson-dithered to two inks on blue-black film; hover or open one to see the
+              original underneath.
             </p>
           </div>
         </div>

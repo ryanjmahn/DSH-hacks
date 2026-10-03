@@ -55,7 +55,7 @@ export default function Lightbox({ view, onIndex, onClose }: Props) {
     <dialog
       ref={dlg}
       className="lightbox"
-      aria-label={p ? `Plate ${plateNo(p.no)}, ${p.t}` : "Plate"}
+      aria-label={p ? `Project ${plateNo(p.no)}, ${p.t}` : "Project"}
       onClose={onClose}
       onKeyDown={onKey}
       onClick={(e) => { if (e.target === dlg.current) dlg.current?.close(); }}
@@ -71,7 +71,7 @@ export default function Lightbox({ view, onIndex, onClose }: Props) {
           </figure>
           <div>
             <div className="lb-top">
-              <span>Plate {plateNo(p.no)}</span>
+              <span>Project {plateNo(p.no)}</span>
               <span>{view.index + 1} / {view.list.length}</span>
             </div>
             <h2 className="lb-title">{p.t}</h2>
@@ -84,7 +84,7 @@ export default function Lightbox({ view, onIndex, onClose }: Props) {
             </dl>
             <div className="btn-row">
               <button type="button" className="btn sm" onClick={() => setOriginal((o) => !o)}>
-                {original ? "Show plate" : "Show original"}
+                {original ? "Show dithered" : "Show original"}
               </button>
               <button type="button" className="btn sm" onClick={() => step(-1)}>Prev</button>
               <button type="button" className="btn sm" onClick={() => step(1)}>Next</button>

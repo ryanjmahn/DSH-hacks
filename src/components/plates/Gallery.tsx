@@ -30,7 +30,7 @@ export default function Gallery() {
   return (
     <div>
       <div className="gal-bar">
-        <div className="btn-row" role="group" aria-label="Filter plates">
+        <div className="btn-row" role="group" aria-label="Filter projects">
           {FILTERS.map((f) => (
             <button key={f.id} type="button" className="chip" aria-pressed={filter === f.id} onClick={() => setFilter(f.id)}>
               {f.label}<span className="k">{projects.filter(f.test).length}</span>
@@ -38,7 +38,7 @@ export default function Gallery() {
           ))}
         </div>
         <div className="gal-tools">
-          <label className="sr-only" htmlFor="plate-search">Search plates</label>
+          <label className="sr-only" htmlFor="plate-search">Search projects</label>
           <input
             id="plate-search"
             className="search"
@@ -57,7 +57,7 @@ export default function Gallery() {
       <p className="status" aria-live="polite">Showing {shown.length} of {projects.length}</p>
 
       {shown.length === 0 ? (
-        <p className="empty">No plates match &ldquo;{q}&rdquo;. Try a different word or clear the filter.</p>
+        <p className="empty">No projects match &ldquo;{q}&rdquo;. Try a different word or clear the filter.</p>
       ) : view === "wall" ? (
         <ul className="wall" style={{ margin: 0, padding: 0 }}>
           {shown.map((p, i) => (

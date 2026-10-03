@@ -171,7 +171,7 @@ function observatory(x: number, y: number) {
   return d;
 }
 
-/* Plates: the archive — server halls with blinking rack LEDs, rooftop
+/* Projects: the archive — server halls with blinking rack LEDs, rooftop
    chillers, and a lattice transmission tower. */
 const RACKS: [number, number, number][] = [[-0.95, -0.5, 0.3], [-0.6, -0.82, 0.34], [-0.2, -0.98, 0.36], [0.2, -0.7, 0.32], [0.56, -0.88, 0.3]];
 function datacenter(x: number, y: number) {
@@ -287,7 +287,7 @@ function array(x: number, y: number) {
 }
 
 /* Register: the kingdom — a keep with a lit gate, spired towers, curtain
-   walls, and a transmitter crown. Your plate goes here next. */
+   walls, and a transmitter crown. Your project goes here next. */
 function kingdom(x: number, y: number) {
   const ax = Math.abs(x);
   let d = union(bldg(x, y, -0.26, 0.26, -0.92, 0, 0.12), crenels(x, y, -0.26, 0.26, -0.92, 5));

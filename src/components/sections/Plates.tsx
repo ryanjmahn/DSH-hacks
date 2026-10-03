@@ -3,11 +3,11 @@ import { LINKS, SectionHead, ext } from "./shared";
 
 export default function Plates() {
   return (
-    <section id="plates" className="section" data-swing="">
+    <section id="projects" className="section" data-swing="">
       <div className="wrap">
-        <SectionHead no="02" title="Plates" />
+        <SectionHead no="02" title="Projects" />
         <p className="plates-intro">
-          Every V1 project, printed as a plate. Hover to see under the dither, click to open one.
+          Every V1 project, printed in dither. Hover to see the original, click to open one.
           V1&apos;s theme was AI × STEM education; these are what students built in four weeks.
         </p>
         <Gallery />

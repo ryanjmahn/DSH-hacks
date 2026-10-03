@@ -5,7 +5,7 @@ import type { Project } from "./projects";
 import { getPlate } from "./source";
 
 export const plateNo = (no: number) => String(no).padStart(2, "0");
-export const plateLabel = (p: Project) => `Plate ${plateNo(p.no)}, ${p.t}. Open.`;
+export const plateLabel = (p: Project) => `Project ${plateNo(p.no)}, ${p.t}. Open.`;
 
 /* Copy a cached source canvas into a mounted one. */
 export function blit(dst: HTMLCanvasElement | null, src: HTMLCanvasElement, smooth: boolean) {
@@ -62,7 +62,7 @@ export default function Plate({ project, onOpen, caption = true }: { project: Pr
       {caption && (
         <div className="plate-cap" aria-hidden="true">
           <div className="t">{project.t}</div>
-          <div className="m">Pl. {plateNo(project.no)} / {project.track}</div>
+          <div className="m">No. {plateNo(project.no)} / {project.track}</div>
         </div>
       )}
     </button>

@@ -24,8 +24,8 @@ type Key = [section: string, anchor: number, state: State];
 const KEYS: Key[] = [
   ["hero", .2, { o: .5, b: .04, blobs: [[.85, .25, .45, .75], [.10, .95, .35, .35]], shape: ["citadel", .72, .97, .5, .95] }],
   ["about", .5, { o: .46, b: .02, blobs: [[.95, .55, .35, .55], [.05, .15, .25, .25]], shape: ["observatory", .72, .97, .5, .95], tr: "rise" }],
-  ["plates", .5, { o: .36, b: 0, blobs: [[0, .5, .25, .45], [1, .1, .2, .2]], shape: ["datacenter", .7, .97, .45, 1], tr: "wipe" }],
-  ["plates", .9, { o: .36, b: 0, blobs: [[0, .5, .25, .45], [1, .1, .2, .2]], shape: ["datacenter", .7, .97, .45, 1] }],
+  ["projects", .5, { o: .36, b: 0, blobs: [[0, .5, .25, .45], [1, .1, .2, .2]], shape: ["datacenter", .7, .97, .45, 1], tr: "wipe" }],
+  ["projects", .9, { o: .36, b: 0, blobs: [[0, .5, .25, .45], [1, .1, .2, .2]], shape: ["datacenter", .7, .97, .45, 1] }],
   ["schedule", .85, { o: .46, b: .10, blobs: [[.8, 1, .6, .8], [.2, 1.1, .5, .6]], shape: ["launch", .74, .97, .5, 1], tr: "blinds" }],
   ["prizes", .15, { o: 1, b: 1, blobs: [[.5, .5, .1, 1], [.5, .5, .1, 1]], shape: null, tr: "liftoff" }],
   ["prizes", .7, { o: 1, b: 1, blobs: [[.5, .5, .1, 1], [.5, .5, .1, 1]], shape: null }],

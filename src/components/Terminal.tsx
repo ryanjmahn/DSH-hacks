@@ -15,16 +15,16 @@ function run(input: string): Line[] | "clear" | "exit" {
     case "":
       return [];
     case "help":
-      return [{ kind: "out", text: "help  whoami  plates  open <n>  deadline  beat  sudo submit  clear  exit" }];
+      return [{ kind: "out", text: "help  whoami  projects  open <n>  deadline  beat  sudo submit  clear  exit" }];
     case "whoami":
       return [{ kind: "out", text: "a builder, probably" }];
-    case "plates":
+    case "projects":
       return [{ kind: "out", text: `${projects.length} on file. try: open 1` }];
     case "open": {
       const n = Number(args[0]);
-      if (!projects.some((p) => p.no === n)) return [{ kind: "out", text: `no plate ${args[0] ?? ""}. try a number from 1 to ${projects.length}` }];
+      if (!projects.some((p) => p.no === n)) return [{ kind: "out", text: `no project ${args[0] ?? ""}. try a number from 1 to ${projects.length}` }];
       emitOpenPlate(n);
-      return [{ kind: "out", text: `opening plate ${String(n).padStart(2, "0")}` }];
+      return [{ kind: "out", text: `opening project ${String(n).padStart(2, "0")}` }];
     }
     case "deadline":
       return [{ kind: "out", text: countdownString() }];

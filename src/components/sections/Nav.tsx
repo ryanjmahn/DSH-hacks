@@ -34,7 +34,7 @@ export default function Nav() {
         </a>
         <nav className="nav-links" aria-label="Sections">
           <a href="#about">About</a>
-          <a href="#plates">Plates</a>
+          <a href="#projects">Projects</a>
           <a href="#schedule">Schedule</a>
           <a href="#prizes">Prizes</a>
           <a href="#faq">FAQ</a>
