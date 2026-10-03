@@ -34,14 +34,6 @@ export default function Footer() {
               <li><a href={LINKS.v1} {...ext}>V1 projects</a></li>
             </ul>
           </div>
-          <div>
-            <h3>Colophon</h3>
-            <p className="colophon">
-              Set in Instrument Serif and Geist Mono, with Doto on the clock. Each project&apos;s image
-              is Atkinson-dithered to two inks on blue-black film; hover or open one to see the
-              original underneath.
-            </p>
-          </div>
         </div>
         <div className="foot-bar">
           <span>© 2026 DSH Hacks · Online, global</span>
