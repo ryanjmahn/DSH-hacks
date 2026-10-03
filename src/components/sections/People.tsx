@@ -42,7 +42,7 @@ const SPONSORS: { group: string; list: { name: string; logo: string; href: strin
 /* Where judges come from: logos in /public/judges, then V1's in
    /public/professionals. */
 /* square marks get more height so they read at the size of the wordmarks */
-const SQUARE = new Set(["/judges/goldmansachs.png", "/judges/oxford.png", "/professionals/apple.png"]);
+const SQUARE = new Set(["/judges/goldmansachs.png", "/judges/oxford.png", "/professionals/apple.png", "/pro-paramount.svg"]);
 const JUDGES_FROM: [string, string][] = [
   ["Y Combinator", "/judges/ycombinator.png"], ["Goldman Sachs", "/judges/goldmansachs.png"],
   ["University of Oxford", "/judges/oxford.png"], ["Columbia Business School", "/judges/columbia.png"],
@@ -52,6 +52,9 @@ const JUDGES_FROM: [string, string][] = [
   ["Cisco", "/professionals/ciscosystems.png"], ["HCLTech", "/professionals/hcltech.png"], ["U.S. Bank", "/professionals/usbank.png"], ["Citizens", "/professionals/citizensbank.png"],
   ["State Street", "/professionals/statestreet.png"], ["Highspot", "/professionals/highspot.png"], ["Develop Health", "/professionals/develophealth.png"],
   ["Octery", "/professionals/octery.png"], ["ERP Smart Labs", "/professionals/erpsmartlabs.png"], ["Achieve", "/professionals/achieve.png"],
+  // confirmed V2 affiliations from upstream's judges marquee
+  ["Google", "/pro-google.svg"], ["IBM", "/pro-ibm.svg"], ["T-Mobile", "/pro-t-mobile.svg"], ["Accenture", "/Accenture.svg"],
+  ["Oracle", "/pro-oracle.svg"], ["Capital One", "/pro-capital-one.svg"], ["Paramount", "/pro-paramount.svg"],
 ];
 
 const TALKS = [
