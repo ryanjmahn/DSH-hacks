@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { projects, TRACKS, type Project } from "./projects";
 import Plate, { PlateFrame, plateLabel, plateNo } from "./Plate";
 import { useOpenPlate } from "./PlatesProvider";
@@ -18,6 +18,15 @@ export default function Gallery() {
   const [filter, setFilter] = useState<Filter>("winners");
   const [q, setQ] = useState("");
   const [view, setView] = useState<"wall" | "list">("wall");
+  // render in batches: 8 on phones, 36 on larger screens
+  const [batch, setBatch] = useState(36);
+  const [limit, setLimit] = useState(36);
+  useEffect(() => {
+    const b = window.matchMedia("(max-width: 720px)").matches ? 8 : 36;
+    setBatch(b);
+    setLimit(b);
+  }, []);
+  useEffect(() => setLimit(batch), [filter, q, batch]);
 
   const shown = useMemo(() => {
     const f = FILTERS.find((x) => x.id === filter)!;
@@ -60,7 +69,7 @@ export default function Gallery() {
         <p className="empty">No projects match &ldquo;{q}&rdquo;. Try a different word or clear the filter.</p>
       ) : view === "wall" ? (
         <ul className="wall" style={{ margin: 0, padding: 0 }}>
-          {shown.map((p, i) => (
+          {shown.slice(0, limit).map((p, i) => (
             <li key={p.no}>
               <Plate project={p} onOpen={() => open(shown, i)} />
             </li>
@@ -68,7 +77,7 @@ export default function Gallery() {
         </ul>
       ) : (
         <ul className="list">
-          {shown.map((p, i) => (
+          {shown.slice(0, limit).map((p, i) => (
             <li key={p.no}>
               <button type="button" className="plate-btn" onClick={() => open(shown, i)} aria-label={plateLabel(p)}>
                 <span className="no">{plateNo(p.no)}</span>
@@ -80,6 +89,11 @@ export default function Gallery() {
             </li>
           ))}
         </ul>
+      )}
+      {shown.length > limit && (
+        <button type="button" className="btn more" onClick={() => setLimit((l) => l + batch)}>
+          Show more ({shown.length - limit} left)
+        </button>
       )}
     </div>
   );

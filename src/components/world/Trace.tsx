@@ -23,7 +23,9 @@ export default function Trace() {
   const ghost = useRef<SVGPathElement>(null);
   const live = useRef<SVGPathElement>(null);
   const nodesG = useRef<SVGGElement>(null);
-  const reticle = useRef<SVGGElement>(null);
+  // the reticle lives in its own small layer, moved by transform, so its
+  // pulse never repaints the page-tall trace
+  const reticle = useRef<SVGSVGElement>(null);
   const st = useRef({
     samples: new Float32Array(0), // [len, x, y] triples
     total: 0,
@@ -153,7 +155,7 @@ export default function Trace() {
 
     let beatT = 0;
     const onBeat = () => {
-      const s = svg.current;
+      const s = reticle.current;
       if (!s) return;
       s.classList.remove("fast");
       void s.getBoundingClientRect();
@@ -184,7 +186,7 @@ export default function Trace() {
     }
     const len = smp[lo * 3], x = smp[lo * 3 + 1], y = smp[lo * 3 + 2];
     live.current.style.strokeDashoffset = String(s.total - len);
-    reticle.current.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+    reticle.current.style.transform = `translate3d(${(x - 24).toFixed(1)}px, ${(y - 24).toFixed(1)}px, 0)`;
     for (const nd of s.nodes) {
       const on = nd.y <= y + 0.5;
       if (on !== nd.on) {
@@ -195,16 +197,18 @@ export default function Trace() {
   });
 
   return (
-    <svg ref={svg} className="trace" aria-hidden="true" height="0">
-      <path ref={ghost} className="ghost" />
-      <path ref={live} className="live" />
-      <g ref={nodesG} />
-      <g ref={reticle} className="reticle">
+    <>
+      <svg ref={svg} className="trace" aria-hidden="true" height="0">
+        <path ref={ghost} className="ghost" />
+        <path ref={live} className="live" />
+        <g ref={nodesG} />
+      </svg>
+      <svg ref={reticle} className="reticle" aria-hidden="true" width="48" height="48" viewBox="-24 -24 48 48">
         <circle className="pulse" r="10" fill="none" stroke="currentColor" strokeWidth="1" />
         <circle r="10" fill="none" stroke="currentColor" strokeWidth="1" />
         <path d="M-18 0H-10M10 0H18M0 -18V-10M0 10V18" stroke="currentColor" strokeWidth="1" />
         <circle r="2" fill="currentColor" />
-      </g>
-    </svg>
+      </svg>
+    </>
   );
 }
