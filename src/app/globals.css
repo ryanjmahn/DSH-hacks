@@ -265,9 +265,12 @@ main, .site-footer { position: relative; z-index: 2; }
 .logo { filter: brightness(0) invert(1); opacity: .7; transition: opacity .2s; object-fit: contain; }
 a:hover .logo, .logo-grid > div:hover .logo { opacity: 1; }
 .logo-list .logo { height: 22px; width: auto; max-width: 150px; }
+.logo-group + .logo-group { margin-top: 28px; }
+.logo-group > .label { margin: 0 0 8px; }
 .logo-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
 .logo-grid > div { display: flex; align-items: center; justify-content: center; height: 88px; padding: 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.logo-grid .logo { max-height: 28px; max-width: 100%; width: auto; }
+.logo-grid .logo { max-height: 34px; max-width: 82%; width: auto; }
+.logo-grid .logo.sq { max-height: 56px; }
 .talks { list-style: none; margin: 0 0 28px; padding: 0; border-top: 1px solid var(--rule); }
 .talks a { display: grid; grid-template-columns: 1fr 260px 60px; gap: 20px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
 .talks a:hover .w { color: var(--paper); }

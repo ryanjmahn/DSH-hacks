@@ -1,29 +1,56 @@
 /* eslint-disable @next/next/no-img-element */
 import { LINKS, SectionHead, ext } from "./shared";
 
-const SPONSORS: { name: string; logo: string; href: string }[] = [
-  { name: "CodeCrafters Forum", logo: "/codecrafters-logo.png", href: "https://codecrafters.io/" },
-  { name: "Featherless AI", logo: "/featherless-logo.png", href: "https://featherless.ai/" },
-  { name: "relay.app", logo: "/relay-logo-clean.png", href: "https://relay.app/" },
-  { name: "Crackd", logo: "/crackd-logo.png", href: "https://www.crackd.one/" },
-  { name: "Aniko", logo: "/aniko-logo-clean.png", href: "https://www.aniko.ai/" },
-  { name: "CleanShot", logo: "/cleanshot-logo-clean.png", href: "https://cleanshot.com/" },
-  { name: "Ideavo", logo: "/ideavo-logo.png", href: "https://ideavo.ai/" },
-  { name: "Iteration Machine", logo: "/iterationmachine-logo.png", href: "https://iterationmachine.com/" },
-  { name: "LLM.API", logo: "/llmapi-logo.png", href: "https://llmapi.com/" },
-  { name: "InterviewBuddy", logo: "/interviewbuddy-logo.png", href: "https://interviewbuddy.net/" },
-  { name: "AoPS", logo: "/aops-logo.png", href: "https://artofproblemsolving.com/" },
-  { name: "HowtoHackathon", logo: "/howtohackathon-logo.png", href: "https://www.howtohackathon.org/" },
-  { name: "Devswarm", logo: "/devswarm-logo.png", href: "https://devswarm.ai/" },
+/* From the sponsor tiles on dsh-hacks-v2.devpost.com and
+   dsh-hacks-v1.devpost.com; logos in /public/sponsors. */
+const SPONSORS: { group: string; list: { name: string; logo: string; href: string }[] }[] = [
+  {
+    group: "V2",
+    list: [
+      { name: "Art of Problem Solving", logo: "aops", href: "https://artofproblemsolving.com/" },
+      { name: "HowtoHackathon", logo: "howtohackathon", href: "https://www.howtohackathon.org/" },
+      { name: "Devswarm", logo: "devswarm", href: "https://devswarm.ai/" },
+      { name: "CodeCrafters", logo: "codecrafters", href: "https://codecrafters.io/" },
+      { name: "CleanShot X", logo: "cleanshotx", href: "https://cleanshot.com/" },
+      { name: "Adaption Lab", logo: "adaptionlab", href: "https://adaptionlabs.ai/" },
+      { name: "Momen", logo: "momen", href: "https://momen.app/" },
+      { name: "MeDo", logo: "medo", href: "https://medo.dev/home" },
+      { name: "Tin Computer", logo: "tincomputer", href: "https://tin.computer/" },
+      { name: "YRI", logo: "yri", href: "https://www.yriscience.com/" },
+      { name: "Mobbin", logo: "mobbin", href: "https://mobbin.com/" },
+      { name: "RISE Research", logo: "riseresearch", href: "https://riseglobaleducation.com/" },
+    ],
+  },
+  {
+    group: "V1",
+    list: [
+      { name: "Hudson River Trading", logo: "hrt", href: "https://www.hudsonrivertrading.com/" },
+      { name: "Ideavo", logo: "ideavo", href: "https://ideavo.ai/" },
+      { name: "LLM.API", logo: "llmapi", href: "https://llmapi.ai/" },
+      { name: "Aniko", logo: "aniko", href: "https://www.aniko.ai/" },
+      { name: "InterviewBuddy", logo: "interviewbuddy", href: "https://interviewbuddy.net/" },
+      { name: "relay.app", logo: "relayapp", href: "https://www.relay.app/" },
+      { name: "Interview Cake", logo: "interviewcake", href: "https://www.interviewcake.com/" },
+      { name: "Featherless", logo: "featherless", href: "https://featherless.ai/" },
+      { name: "Crackd", logo: "crackd", href: "https://crackd.it/" },
+      { name: "Iteration Machine", logo: "iterationmachine", href: "https://www.iterationmachine.com/" },
+    ],
+  },
 ];
 
-/* Where V1's judges worked (logos in /public/professionals). */
+/* Where judges come from: logos in /public/judges, then V1's in
+   /public/professionals. */
+/* square marks get more height so they read at the size of the wordmarks */
+const SQUARE = new Set(["/judges/goldmansachs.png", "/judges/oxford.png", "/professionals/apple.png"]);
 const JUDGES_FROM: [string, string][] = [
-  ["Microsoft", "microsoft"], ["Apple", "apple"], ["Amazon", "amazon"], ["Meta", "meta"],
-  ["PayPal", "paypal"], ["AWS", "aws"], ["Visa", "visa"], ["JPMorgan Chase", "jpmorgan"],
-  ["Cisco", "ciscosystems"], ["HCLTech", "hcltech"], ["U.S. Bank", "usbank"], ["Citizens", "citizensbank"],
-  ["State Street", "statestreet"], ["Highspot", "highspot"], ["Develop Health", "develophealth"],
-  ["Octery", "octery"], ["ERP Smart Labs", "erpsmartlabs"], ["Achieve", "achieve"],
+  ["Y Combinator", "/judges/ycombinator.png"], ["Goldman Sachs", "/judges/goldmansachs.png"],
+  ["University of Oxford", "/judges/oxford.png"], ["Columbia Business School", "/judges/columbia.png"],
+  ["D. E. Shaw", "/judges/deshaw.png"],
+  ["Microsoft", "/professionals/microsoft.png"], ["Apple", "/professionals/apple.png"], ["Amazon", "/professionals/amazon.png"], ["Meta", "/professionals/meta.png"],
+  ["PayPal", "/professionals/paypal.png"], ["AWS", "/professionals/aws.png"], ["Visa", "/professionals/visa.png"], ["JPMorgan Chase", "/professionals/jpmorgan.png"],
+  ["Cisco", "/professionals/ciscosystems.png"], ["HCLTech", "/professionals/hcltech.png"], ["U.S. Bank", "/professionals/usbank.png"], ["Citizens", "/professionals/citizensbank.png"],
+  ["State Street", "/professionals/statestreet.png"], ["Highspot", "/professionals/highspot.png"], ["Develop Health", "/professionals/develophealth.png"],
+  ["Octery", "/professionals/octery.png"], ["ERP Smart Labs", "/professionals/erpsmartlabs.png"], ["Achieve", "/professionals/achieve.png"],
 ];
 
 const TALKS = [
@@ -48,16 +75,21 @@ export default function People() {
             <p className="sub">
               Want to support DSH Hacks? Reach us on Discord or message the hackathon manager on Devpost.
             </p>
-            <ul className="logo-list">
-              {SPONSORS.map((s) => (
-                <li key={s.name}>
-                  <a href={s.href} {...ext}>
-                    <img className="logo" src={s.logo} alt={s.name} loading="lazy" />
-                    <span>{domain(s.href)}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {SPONSORS.map(({ group, list }) => (
+              <div key={group} className="logo-group">
+                <p className="label">{group}</p>
+                <ul className="logo-list">
+                  {list.map((sp) => (
+                    <li key={sp.name}>
+                      <a href={sp.href} {...ext}>
+                        <img className="logo" src={`/sponsors/${sp.logo}.png`} alt={sp.name} loading="lazy" />
+                        <span>{domain(sp.href)}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
           <div id="judges">
             <h3 className="people-h">Judges from</h3>
@@ -65,9 +97,9 @@ export default function People() {
               Interested in judging? Same channels: Discord, or the hackathon manager on Devpost.
             </p>
             <div className="logo-grid">
-              {JUDGES_FROM.map(([name, file]) => (
-                <div key={file}>
-                  <img className="logo" src={`/professionals/${file}.png`} alt={name} loading="lazy" />
+              {JUDGES_FROM.map(([name, src]) => (
+                <div key={src}>
+                  <img className={SQUARE.has(src) ? "logo sq" : "logo"} src={src} alt={name} loading="lazy" />
                 </div>
               ))}
             </div>
