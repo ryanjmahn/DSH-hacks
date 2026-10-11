@@ -48,10 +48,14 @@ Working notes for the V2 "Blueprint" reskin. The brief is in `DSH_REDESIGN_BRIEF
 - Copy additions are labels only: "Drawing index", "T-minus to submission close · Nov 07 23:45 PST", "Time →", "General notes", C1–C4, WS-01…, Q.01…, Pl. 001…, and figure captions. *next.* on the final CTA is now italic; the words didn't change.
 - Not done: the `/_kit` route, the cursor crosshair (optional), parallax, the schedule "now" cursor (optional), the section-cut `A — A` markers, and a Lighthouse run.
 
+## Content synced from Devpost (2026-10-12)
+
+- Deadline moved to Nov 14, 2026, 11:45pm PST. Submissions opened Jun 24, judging runs Nov 15–22, and winners are announced Nov 23. Updated in the countdown, hero, schedule, ledger, FAQ and CTA.
+- Added the prize schedule (P1–P5, non-cash), the Devpost wording for judging criteria and submission requirements, and three new V2 judges with their Devpost photos.
+
 ## Content flags (not changed)
 
 - Projects say "283 submissions", but `projects.ts` has 281 entries, so the filter shows "All 281".
-- Ledger entry C has the date "2026" only.
 
 ## Assets
 

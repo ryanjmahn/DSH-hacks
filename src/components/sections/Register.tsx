@@ -10,7 +10,7 @@ export default function Register() {
           <div>
             <h2 className="reg-h" data-beat="">Your project goes here <em>next.</em></h2>
             <p className="reg-body">
-              Register on Devpost, find a team in the Discord, and submit by November 7. Compete for
+              Register on Devpost, find a team in the Discord, and submit by November 14. Compete for
               prizes or just come for the workshops; either way you&apos;re in.
             </p>
             <div className="btn-row">

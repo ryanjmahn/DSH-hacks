@@ -8,7 +8,7 @@ const BOARD: [string, string][] = [
   ["Who", "Students, ages 13+"],
   ["Entry", "Free"],
   ["Prize pool", "$100,000+"],
-  ["Deadline", "Nov 7, 11:45pm PST"],
+  ["Deadline", "Nov 14, 11:45pm PST"],
 ];
 
 export default function Hero() {
@@ -51,7 +51,7 @@ export default function Hero() {
           </dl>
           <div className="readout">
             <Countdown />
-            <p className="label">T-minus to submission close · Nov 07 23:45 PST</p>
+            <p className="label">T-minus to submission close · Nov 14 23:45 PST</p>
           </div>
         </div>
         <TitleBlock no={0} title="Cover" />

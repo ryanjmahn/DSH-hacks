@@ -166,6 +166,7 @@ export default function World() {
     let w = 0, h = 0, dpr = 1, d = 1;
     let objs: Model[] = [];
     let t0 = -1, raf = 0, mouse = 0, mouseT = 0, burst = 0;
+    let camS = -1, last = 0; // eased camera z, last frame time
     let intro = !reduced;
 
     // 12 growable buckets: 4 line kinds × 3 depth bands
@@ -211,7 +212,12 @@ export default function World() {
       burst *= 0.97;
 
       const sY = window.scrollY;
-      const camZ = reduced ? 0 : sY * SPEED;
+      // the camera glides after the scroll position instead of snapping to it
+      const dt = Math.min(0.1, last ? (now - last) / 1000 : 0);
+      last = now;
+      const target = sY * SPEED;
+      camS = camS < 0 ? target : camS + (target - camS) * (1 - Math.exp(-dt * 5));
+      const camZ = reduced ? 0 : camS;
       const camX = w < 720 ? 30 : 0;
       mouse += (mouseT - mouse) * 0.04;
       const yaw = reduced ? 0 : 0.05 * Math.sin(camZ * 0.008) + mouse;

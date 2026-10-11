@@ -3,7 +3,7 @@
 
 export const SHEETS = 7;
 /* Latest revision already issued in the ledger (C: V2 registration opens). */
-export const REV = "REV C · 2026";
+export const REV = "REV C · 2026.06";
 
 /* Engineering title block, bottom-right of each sheet. Decorative: everything
    in it is already on the page. */

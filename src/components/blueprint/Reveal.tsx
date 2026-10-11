@@ -21,6 +21,12 @@ function countUp(el: HTMLElement) {
   requestAnimationFrame(step);
 }
 
+const RISE = [
+  ".lead", ".prose > p", ".quote", ".record > div", ".about-fig", ".steps > li", ".criteria > div",
+  ".prize-table tbody tr", ".ledger > li", ".faq details", ".talks li", ".logo-list li", ".logo-grid > div",
+  ".tblock", ".pool-sub", ".reg-body", ".empty-plate", ".people-h", ".sub", ".axis", ".gal-bar",
+].join(", ");
+
 export default function Reveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -30,6 +36,33 @@ export default function Reveal() {
       const r = s.getBoundingClientRect();
       if (r.top < vh && r.bottom > 0) s.classList.add("in");
     }
+    // blocks rise in as each one reaches the viewport, staggered among
+    // siblings that arrive together; ones already on screen show at once
+    const blocks: HTMLElement[] = [];
+    for (const s of sheets) {
+      const seen = new Map<Element, number>();
+      s.querySelectorAll<HTMLElement>(RISE).forEach((el) => {
+        const p = el.parentElement!;
+        const i = seen.get(p) ?? 0;
+        seen.set(p, i + 1);
+        el.classList.add("rv");
+        el.style.setProperty("--d", String(Math.min(i % 6, 5) * 70));
+        const r = el.getBoundingClientRect();
+        if (r.top < vh && r.bottom > 0) el.classList.add("on");
+        else blocks.push(el);
+      });
+    }
+    const bio = new IntersectionObserver(
+      (es) => {
+        for (const e of es) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("on");
+          bio.unobserve(e.target);
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    blocks.forEach((el) => bio.observe(el));
     document.documentElement.classList.add("reveal");
     const io = new IntersectionObserver(
       (es) => {
@@ -44,7 +77,10 @@ export default function Reveal() {
       { rootMargin: "0px 0px -15% 0px" },
     );
     sheets.filter((s) => !s.classList.contains("in")).forEach((s) => io.observe(s));
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      bio.disconnect();
+    };
   }, []);
   return null;
 }
