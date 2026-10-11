@@ -1,11 +1,11 @@
-/* Fig. 1: patient signal → model → confidence gate → care, drawn as a
-   schematic. Self-draws on load (CSS); the ECG pulse loops unless reduced
+/* Fig. 2: patient signal → model → confidence gate → care, drawn as a
+   schematic. Draws itself when its sheet scrolls in (CSS); the ECG pulse loops unless reduced
    motion. Callouts (.co) drop out on narrow screens. */
 const ECG = "30,118 60,118 68,108 74,118 84,118 90,80 96,150 102,118 116,118 124,110 132,118 170,118";
 
-export default function HeroFigure() {
+export default function Pipeline() {
   return (
-    <svg className="fig fig-hero" viewBox="0 0 560 380" role="img" aria-label="Schematic: patient signal, to a model, to a confidence gate; high confidence goes to care, low goes to human review.">
+    <svg className="fig fig-pipe" viewBox="0 0 560 380" role="img" aria-label="Schematic: patient signal, to a model, to a confidence gate; high confidence goes to care, low goes to human review.">
       {/* dimension: measures signal box left edge to care box right edge */}
       <g className="ln thin">
         <line x1="20" y1="16" x2="20" y2="62" className="dash" />

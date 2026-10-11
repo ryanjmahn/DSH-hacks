@@ -1,3 +1,4 @@
+import Pipeline from "@/components/blueprint/Pipeline";
 import WorldDots from "@/components/blueprint/WorldDots";
 import { FigCaption, TitleBlock } from "@/components/blueprint/parts";
 import { SectionHead } from "./shared";
@@ -39,17 +40,23 @@ export default function About() {
             </blockquote>
           </div>
           <figure className="about-fig">
-            <WorldDots />
-            <FigCaption no={2} title="V1 reach: 1,294 hackers, 80+ countries" />
+            <Pipeline />
+            <FigCaption no={2} title="What you could build: signal to care" />
           </figure>
         </div>
-        <div className="record" aria-label="The V1 record">
-          {RECORD.map(([n, l]) => (
-            <div key={l}>
-              <span className="big" data-count="">{n}</span>
-              <span className="label">{l}</span>
-            </div>
-          ))}
+        <div className="record-row">
+          <div className="record" aria-label="The V1 record">
+            {RECORD.map(([n, l]) => (
+              <div key={l}>
+                <span className="big" data-count="">{n}</span>
+                <span className="label">{l}</span>
+              </div>
+            ))}
+          </div>
+          <figure className="about-fig">
+            <WorldDots />
+            <FigCaption no={3} title="V1 reach: 1,294 hackers, 80+ countries" />
+          </figure>
         </div>
         <TitleBlock no={1} title="About" />
       </div>

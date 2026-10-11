@@ -1,4 +1,5 @@
 import { TitleBlock } from "@/components/blueprint/parts";
+import Scene from "@/components/scene/Scene";
 import { LINKS, ext } from "./shared";
 
 export default function Register() {
@@ -19,7 +20,7 @@ export default function Register() {
           </div>
           {/* the next plate on the wall, still blank */}
           <div className="empty-plate" aria-hidden="true">
-            <div className="ep-frame"><span className="ep-x" /></div>
+            <div className="ep-frame"><Scene kind="sapling" tone="cyan" labels={false} label="" /></div>
             <div className="dim"><span>4 : 5</span></div>
             <p className="ep-call">Your project · Pl. 284</p>
           </div>

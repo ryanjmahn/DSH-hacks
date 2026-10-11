@@ -1,5 +1,4 @@
 import Countdown from "@/components/Countdown";
-import HeroFigure from "@/components/blueprint/HeroFigure";
 import { Dim, FigCaption, TitleBlock } from "@/components/blueprint/parts";
 import { LINKS, ext } from "./shared";
 
@@ -34,8 +33,10 @@ export default function Hero() {
             </div>
           </div>
           <figure className="hero-fig">
-            <HeroFigure />
-            <FigCaption no={1} title="Build something that reaches further" />
+            {/* the garden canvas draws the grove's elevation into this slot, then
+                swings it into 3D */}
+            <div className="world-slot" role="img" aria-label="A grove of lattice supertrees drawn as a blueprint elevation that turns into a 3D garden: roots for data, trunks for models, canopies for care." />
+            <FigCaption no={1} title="The grove: data at the roots, models in the trunk, care at the canopy" />
           </figure>
         </div>
 

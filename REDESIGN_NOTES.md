@@ -6,7 +6,7 @@ Working notes for the V2 "Blueprint" reskin. The brief is in `DSH_REDESIGN_BRIEF
 
 - Next.js 15 (App Router, static export), Tailwind v4 import plus hand-written CSS in `src/app/globals.css`. Fonts load through `next/font` in `src/app/layout.tsx`.
 - Sections: `src/components/sections/*`. Data stays where it was: projects in `plates/projects.ts`, judges in `sections/judges.ts`, sponsors, talks, FAQ and ledger inline in their sections.
-- Features kept: countdown, project wall (filters, search, Wall/List, dither on hover, lightbox), winners marquee, judges band, workshops, ledger, FAQ, terminal footer, Konami, heartbeat trace.
+- Features kept: countdown, project wall (filters, search, Wall/List, dither on hover, lightbox), winners marquee, judges band, workshops, ledger, FAQ, terminal footer, Konami.
 
 ## Fonts
 
@@ -15,13 +15,24 @@ Working notes for the V2 "Blueprint" reskin. The brief is in `DSH_REDESIGN_BRIEF
 - Body text stays **Geist Mono** at 14px. Departure is hard to read at paragraph length.
 - Instrument Serif for display, unchanged. Doto was dropped.
 
+## The garden (`src/components/scene/`)
+
+- `World.tsx` is one fixed canvas behind the page. Scrolling moves the camera through a Supertree garden at 0.07 m per px, and a raised walkway runs the full length.
+- On load, the hero grove draws itself as a flat elevation in `.world-slot`, then swings into perspective. Structures ahead draw themselves bottom-up as you approach.
+- Landmarks are laid out from the live section positions: five arches during Schedule, a conservatory dome you walk into during Prizes. The layout is rebuilt when the page height changes.
+- Over `.cyan` sheets the canvas paints the blue ground and redraws the lines in paper. `.has-world .cyan` drops the CSS fill.
+- Plain canvas 2D with no dependencies: about 60fps in headless Chromium at 1440px. Lines very close to the camera fade out so they don't sprawl over the copy.
+- Reduced motion: no intro, no loop, the camera stays at the start, and the frame is redrawn on scroll.
+- `Scene.tsx` draws the small sapling in the CTA's empty plate.
+- This replaced the heartbeat trace (`world/Trace.tsx`). The `beat` terminal command now speeds up the vine pulses instead.
+
 ## Decisions and deviations
 
-- **Removed the dithered skyline field** (`world/Field.tsx`, `world/shapes.ts`): it was the old illustration treatment and the cobalt flood. Prizes and Register are now solid cyanotype sheets instead. The heartbeat trace stays.
+- **Removed the dithered skyline field** (`world/Field.tsx`, `world/shapes.ts`) and the heartbeat trace. The garden replaces both.
 - **Judges stay as the drifting pill band** (recolored, square, between hairlines) instead of the brief's bill-of-materials table. The band is recent work, and it already covers the "ticker" idea. "Judges from" is still the logo grid.
 - **Sponsor logos stay monochrome on hover**, not full color, so a dark logo can't vanish on the dark ground.
-- **Fig. 1 dimension reads "SIGNAL → CARE", not "4 WEEKS".** V2's hacking period length isn't stated anywhere on the site, and the line measures the pipeline it sits over.
-- **Fig. 2 lit dots are a fixed pseudo-random scatter**, captioned "(illustrative)". The repo has no per-country data.
+- Fig. 1 is now the garden's grove. The pipeline is Fig. 2 in About; its dimension reads "SIGNAL → CARE", not "4 WEEKS", because V2's hacking period length isn't stated on the site.
+- **Fig. 3 lit dots are a fixed pseudo-random scatter**, captioned "(illustrative)". The repo has no per-country data.
 - Title-block revision is **REV C · 2026**: the latest ledger entry already issued. D (submissions close) is still in the future.
 - Ledger isn't numbered as a sheet. The sheets are 00 cover, 01–06, and 07 register.
 - The ghost-outline duplicate headings were removed, not just hidden.

@@ -13,7 +13,7 @@ export default function Plates() {
         </p>
         <figure className="plates-fig">
           <Gallery />
-          <FigCaption no={3} title="Every V1 submission, printed in dither" note="hover for the original" />
+          <FigCaption no={4} title="Every V1 submission, printed in dither" note="hover for the original" />
         </figure>
         <div className="gal-foot">
           <p>V1 had 283 submissions.</p>

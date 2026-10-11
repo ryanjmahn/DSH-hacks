@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Script from "next/script";
 import Reveal from "@/components/blueprint/Reveal";
-import Trace from "@/components/world/Trace";
+import World from "@/components/scene/World";
 import Konami from "@/components/world/Konami";
 
 const instrumentSerif = Instrument_Serif({
@@ -64,9 +64,9 @@ export default function RootLayout({
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
-        {/* Background stock + the continuous world, mounted once. */}
+        {/* Background stock + the garden world, mounted once. */}
         <div className="stock-grid" aria-hidden="true" />
-        <Trace />
+        <World />
         <Konami />
         <Reveal />
         {children}

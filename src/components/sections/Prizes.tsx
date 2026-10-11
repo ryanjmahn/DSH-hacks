@@ -8,7 +8,8 @@ const CRITERIA = [
   { name: "Presentation", detail: "Does the presentation clearly define and address the problem statement?" },
 ];
 
-/* Cyanotype sheet: solid blueprint ground, paper linework. */
+/* Cyanotype sheet: the garden canvas paints its blueprint ground and walks
+   you into the conservatory here. */
 export default function Prizes() {
   return (
     <section id="prizes" className="section prizes sheet cyan" data-swing="">
