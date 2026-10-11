@@ -28,6 +28,14 @@ const GROVE: V3 = [40, 0, 120];
 const GROVE_FIT = 38, GROVE_CY = 21;
 const STAGES = 5;
 const MAGLEV_X = 15, MAGLEV_Y = 9;
+/* Text blocks the world dims itself behind. */
+const QUIET = [
+  ".hero-kicker", ".h1", ".hero .lead", ".sheet-label", ".sec-title", ".lead", ".prose p", ".quote",
+  ".record > div", ".plates-intro", ".gal-foot", ".axis", ".steps > li", ".pool", ".pool-sub", ".prize-note",
+  ".criteria > div", ".people-h", ".sub", ".logo-group > .label", ".talks a", ".ledger-head", ".ledger > li",
+  ".faq summary", ".faq details[open] p", ".reg-h", ".reg-body", ".tblock", ".figcap", ".index ol",
+  ".foot-grid > div", ".foot-bar", ".roll-filters",
+].join(", ");
 const SKY = sky();
 
 const INK = { rgb: ["242,244,248", "141,176,255", "141,176,255", "141,176,255"], a: [0.42, 0.85, 0.5, 0.13] };
@@ -161,6 +169,9 @@ export default function World() {
     html.classList.add("has-world");
     const font = `11px ${getComputedStyle(html).getPropertyValue("--font-departure") || "monospace"}`;
     const cyanEls = Array.from(document.querySelectorAll<HTMLElement>(".cyan"));
+    // text the linework fades behind (re-read when the page re-lays)
+    const findText = () => Array.from(document.querySelectorAll<HTMLElement>(QUIET));
+    let quiet = findText();
     const slot = document.querySelector<HTMLElement>(".world-slot");
 
     let w = 0, h = 0, dpr = 1, d = 1;
@@ -185,6 +196,7 @@ export default function World() {
     };
 
     const rebuild = () => {
+      quiet = findText();
       d = w < 720 ? 0.45 : 0.7;
       objs = layout(d, h);
     };
@@ -517,6 +529,29 @@ export default function World() {
         paint(CYAN, "#123A8C");
         ctx.restore();
       }
+      // quiet zones: a soft patch of the ground colour behind every text block
+      // on screen, so lines fade where you read. One blurred fill per ground.
+      const dark = new Path2D(), blue = new Path2D();
+      let nd = 0, nb = 0;
+      const cy = cyanEls.map((el) => el.getBoundingClientRect());
+      for (const el of quiet) {
+        const q = el.getBoundingClientRect();
+        if (q.bottom < 0 || q.top > h || !q.width) continue;
+        const mid = (q.top + q.bottom) / 2;
+        const onBlue = cy.some((c) => mid > c.top && mid < c.bottom);
+        (onBlue ? blue : dark).rect(q.left - 14, q.top - 8, q.width + 28, q.height + 16);
+        if (onBlue) nb++; else nd++;
+      }
+      ctx.save();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.shadowBlur = 26;
+      for (const [path, n, rgb] of [[dark, nd, "5,7,11"], [blue, nb, "18,58,140"]] as const) {
+        if (!n) continue;
+        ctx.shadowColor = `rgba(${rgb},.9)`;
+        ctx.fillStyle = `rgba(${rgb},.8)`;
+        ctx.fill(path);
+      }
+      ctx.restore();
       hud(camZ, yaw);
     }
 
