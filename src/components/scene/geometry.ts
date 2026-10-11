@@ -183,7 +183,7 @@ export function dome(x: number, z: number, R: number, d: number): Model {
   g.line([x - R, 0, z - R - 2], [x - R, 0, z - R - 8], K.hidden);
   g.line([x + R, 0, z - R - 2], [x + R, 0, z - R - 8], K.hidden);
   g.dims.push({ a: [x - R, 0, z - R - 6], b: [x + R, 0, z - R - 6], text: `Ø ${(2 * R).toFixed(1)} M` });
-  g.labels.push({ at: P(5, Math.round(M * 0.62)), text: `Conservatory · ${M * (L - 1) * 2 + M} panels`, side: -1 });
+  // unlabelled: it stands behind the prize pool, where a label would cover the copy
   return g.done();
 }
 
@@ -556,5 +556,59 @@ export function sky(): Model {
   const ridge: V3[] = [];
   for (let i = 0; i <= 120; i++) ridge.push([-6000 + i * 100, 140 + 160 * Math.max(0, r(i)) + 60 * r(i * 2.3), 3600]);
   g.poly(ridge, K.line);
+  return g.done();
+}
+
+/* Prizes: a three-tier podium, a lathe-turned trophy on each tier (sized by
+   place), place numerals stroked on the front faces. */
+export function podium(): Model {
+  const g = new Builder();
+  const box = (x: number, h: number, w: number) => {
+    const X = [x - w / 2, x + w / 2], Z = [-w / 2, w / 2];
+    for (const y of [0, h]) g.poly([[X[0], y, Z[0]], [X[1], y, Z[0]], [X[1], y, Z[1]], [X[0], y, Z[1]], [X[0], y, Z[0]]], y ? K.accent : K.line);
+    for (const xx of X) for (const zz of Z) g.line([xx, 0, zz], [xx, h, zz], K.line);
+  };
+  const DIGITS: Record<number, [number, number][][]> = {
+    1: [[[0.5, 0], [0.5, 1]], [[0.2, 0.8], [0.5, 1]]],
+    2: [[[0, 1], [1, 1], [1, 0.5], [0, 0.5], [0, 0], [1, 0]]],
+    3: [[[0, 1], [1, 1], [1, 0], [0, 0]], [[0.15, 0.5], [1, 0.5]]],
+  };
+  const digit = (n: number, cx: number, cy: number, s: number) => {
+    for (const path of DIGITS[n]) g.poly(path.map(([u, v]) => [cx + (u - 0.5) * s * 0.6, cy + (v - 0.5) * s, -4.01] as V3), K.accent);
+  };
+  // lathe profile (radius, height) of a cup
+  const PROFILE: [number, number][] = [[2, 0], [2, 0.4], [0.7, 0.8], [0.45, 2.2], [1.5, 2.7], [2.3, 4], [2.6, 5.4]];
+  const trophy = (x: number, y: number, k: number) => {
+    const P = (a: number, [r, h]: [number, number]): V3 => [x + Math.cos(a) * r * k, y + h * k, Math.sin(a) * r * k];
+    const n = 16;
+    for (let j = 0; j < n; j++) g.poly(PROFILE.map((p) => P((TAU * j) / n, p)), K.line);
+    PROFILE.forEach((p, i) => {
+      for (let j = 0; j < n; j++) g.line(P((TAU * j) / n, p), P((TAU * (j + 1)) / n, p), i === PROFILE.length - 1 ? K.accent : K.line);
+    });
+    // handles
+    for (const s of [-1, 1]) {
+      const pts: V3[] = [];
+      for (let i = 0; i <= 10; i++) {
+        const t = (i / 10) * Math.PI;
+        pts.push([x + s * (2.3 + Math.sin(t) * 1.3) * k, y + (3.1 + 1.9 * (1 - Math.cos(t)) / 2 + 0.4) * k, 0]);
+      }
+      g.poly(pts, K.line);
+    }
+    for (let j = 0; j < 8; j++) g.nodes.push(P((TAU * j) / 8, PROFILE[PROFILE.length - 1]));
+  };
+  const tiers: [place: number, x: number, h: number, k: number][] = [[2, -8.4, 5, 0.8], [1, 0, 8, 1], [3, 8.4, 3.5, 0.7]];
+  for (const [place, x, h, k] of tiers) {
+    box(x, h, 8);
+    digit(place, x, h / 2, Math.min(3.2, h * 0.55));
+    trophy(x, h, k);
+  }
+  g.ring([0, 0, 0], 17, 64, K.faint);
+  g.line([4.6, 0, -4], [9.5, 0, -4], K.hidden);
+  g.dims.push({ a: [-14.5, 0, -4], b: [-14.5, 8, -4], text: "P1" });
+  g.labels.push(
+    { at: [0, 13.5, 0], text: "P1 · 1st place", side: 1 },
+    { at: [-8.4, 9.3, 0], text: "P2", side: -1 },
+    { at: [8.4, 7.3, 0], text: "P3", side: 1 },
+  );
   return g.done();
 }

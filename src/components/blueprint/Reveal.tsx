@@ -23,7 +23,7 @@ function countUp(el: HTMLElement) {
 
 const RISE = [
   ".lead", ".prose > p", ".quote", ".record > div", ".about-fig", ".steps > li", ".criteria > div",
-  ".prize-table tbody tr", ".ledger > li", ".faq details", ".talks li", ".logo-list li", ".logo-grid > div",
+  ".prize-fig", ".pcard", ".scard", ".ledger > li", ".faq details", ".talks li", ".logo-list li", ".logo-grid > div",
   ".tblock", ".pool-sub", ".reg-body", ".empty-plate", ".people-h", ".sub", ".axis", ".gal-bar",
 ].join(", ");
 

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { sapling, type Model, type V3 } from "./geometry";
+import { podium, sapling, type Model, type V3 } from "./geometry";
 
-/* A small standalone blueprint drawing (the empty plate's sapling). Draws
-   itself bottom-up as a flat elevation when it scrolls into view; a model
-   with morph set would then swing into perspective and turn. Plain canvas
+/* A small standalone blueprint drawing: the Prizes podium and the empty
+   plate's sapling. Draws itself bottom-up as a flat elevation when it scrolls
+   into view; with morph set it then swings into perspective and turns. Plain canvas
    2D, stroked in 12 batches (4 line kinds × 3 depth bands). Runs only while
    on screen. The page-wide garden is World.tsx. */
-type Kind = "sapling";
+type Kind = "sapling" | "podium";
 type Cfg = {
   make: (detail: number) => Model;
   fit: number; // world radius that fills the shorter side
@@ -23,6 +23,7 @@ type Cfg = {
 
 const CFG: Record<Kind, Cfg> = {
   sapling: { make: () => sapling(), fit: 8.5, cy: 5.2, morph: false, yaw0: 0, pitch: 0, spin: 0, build: 2 },
+  podium: { make: () => podium(), fit: 12.5, cy: 7, morph: true, yaw0: -0.45, pitch: 0.3, spin: 0.22, build: 2.4 },
 };
 
 /* rgb per tone: [line, accent, hidden, faint, hot] */
