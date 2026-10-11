@@ -511,10 +511,10 @@ a:hover .logo, .logo-grid > div:hover .logo { opacity: 1; }
 .foot-grid .brand { font-size: 11px; }
 .foot-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 20px; color: var(--paper-dim); }
 .foot-bar .term { margin-left: auto; }
-/* big low-contrast wordmark, cropped by the page's bottom edge */
+/* big low-contrast wordmark across the foot of the page */
 .foot-mark {
-  margin: 40px 0 0; height: .62em; padding-bottom: env(safe-area-inset-bottom);
-  font-family: var(--serif); font-size: clamp(88px, 21vw, 330px); line-height: .8; letter-spacing: -.03em;
+  margin: 40px 0 0; padding-bottom: calc(clamp(16px, 3vw, 40px) + env(safe-area-inset-bottom));
+  font-family: var(--serif); font-size: clamp(80px, 19vw, 300px); line-height: 1; letter-spacing: -.03em;
   text-align: center; white-space: nowrap; color: rgba(141, 176, 255, .07); user-select: none;
 }
 

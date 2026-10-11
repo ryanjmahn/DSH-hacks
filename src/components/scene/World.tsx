@@ -529,9 +529,11 @@ export default function World() {
         const r = s.getBoundingClientRect();
         return r.top <= mid && r.bottom > mid;
       });
-      const idx = cur ? sections.indexOf(cur) : 0;
+      // past the last section (the footer) you've reached the end of the walk
+      const end = !cur && window.scrollY > h;
+      const idx = cur ? sections.indexOf(cur) : end ? sections.length : 0;
       const hdg = ((((yaw * 180) / Math.PI) % 360) + 360) % 360;
-      const txt = `Z ${camZ.toFixed(1).padStart(6, "0")} M · HDG ${hdg.toFixed(0).padStart(3, "0")}° · SECTOR ${String(idx).padStart(2, "0")} ${(cur?.id ?? "hero").toUpperCase()}`;
+      const txt = `Z ${camZ.toFixed(1).padStart(6, "0")} M · HDG ${hdg.toFixed(0).padStart(3, "0")}° · SECTOR ${String(idx).padStart(2, "0")} ${(cur?.id ?? (end ? "end" : "hero")).toUpperCase()}`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.font = font;
       ctx.textBaseline = "alphabetic";
