@@ -19,7 +19,16 @@ Working notes for the V2 "Blueprint" reskin. The brief is in `DSH_REDESIGN_BRIEF
 
 - `World.tsx` is one fixed canvas behind the page. Scrolling moves the camera through a Supertree garden at 0.07 m per px, and a raised walkway runs the full length.
 - On load, the hero grove draws itself as a flat elevation in `.world-slot`, then swings into perspective. Structures ahead draw themselves bottom-up as you approach.
-- Landmarks are laid out from the live section positions: five arches during Schedule, a conservatory dome you walk into during Prizes. The layout is rebuilt when the page height changes.
+- Landmarks are laid out from the live section positions, and the layout is rebuilt when the page height changes:
+  - About: a DNA helix bridge over the path
+  - Projects: a twisting archive tower and a radar dish
+  - Schedule: five arches
+  - Prizes: a conservatory dome you walk into
+  - People: saddle-roof pavilions
+  - Ledger: a turning observation wheel
+  - FAQ: a row of wind turbines
+- Between landmarks the world is a tech city: supertrees with three canopy shapes, antenna spires, server-stack megatowers, floating islands, holo-panels with ECG traces, data cables with packets, a maglev with a moving train, drones, and a ringed planet, moon and mountain ridge fixed at infinity.
+- An explorer readout (distance, heading, sector) shows in the bottom left while you scroll, desktop only.
 - Over `.cyan` sheets the canvas paints the blue ground and redraws the lines in paper. `.has-world .cyan` drops the CSS fill.
 - Plain canvas 2D with no dependencies: about 60fps in headless Chromium at 1440px. Lines very close to the camera fade out so they don't sprawl over the copy.
 - Reduced motion: no intro, no loop, the camera stays at the start, and the frame is redrawn on scroll.

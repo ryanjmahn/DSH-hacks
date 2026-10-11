@@ -2,14 +2,20 @@
 
 import { useEffect, useRef } from "react";
 import { BEAT } from "@/components/world/events";
-import { arch, Builder, dome, grove, K, rails, tree, type Model, type V3 } from "./geometry";
+import { arch, Builder, cable, dish, dome, grove, guideway, helixBridge, holo, island, K, megastack, pavilions, rails, sky, spire, tower, tree, turbines, wheel, type Model, type Spin, type V3 } from "./geometry";
 
 /* The garden: one fixed canvas behind the whole page. Scrolling walks the
    camera forward through a supertree garden; a skyway runs the full length.
    On load the hero grove is a flat elevation drawn into the hero figure's
    slot, then swings into perspective. Structures ahead draw themselves
-   bottom-up as you approach. Section landmarks: the schedule's five stages
-   are arches you pass under, Prizes is a conservatory you fly into. Over
+   bottom-up as you approach. Each section has its own landmark: a DNA helix
+   bridge (About), a twisting archive tower (Projects), arches you pass under
+   (Schedule), a conservatory you walk into (Prizes), saddle-roof pavilions
+   (People), an observation wheel (Ledger) and a wind row (FAQ). Between
+   them the world is a tech city: supertrees, antenna spires, server-stack
+   megatowers, floating islands, holo-panels showing ECG traces, data cables
+   with packets, radar dishes, a maglev with a train on it, drones, and a
+   ringed planet over the horizon. Over
    .cyan sheets the canvas paints the blueprint ground itself and redraws the
    lines in paper, so the world runs through them unbroken. */
 
@@ -21,6 +27,8 @@ const PITCH = 0.12;
 const GROVE: V3 = [40, 0, 120];
 const GROVE_FIT = 38, GROVE_CY = 21;
 const STAGES = 5;
+const MAGLEV_X = 15, MAGLEV_Y = 9;
+const SKY = sky();
 
 const INK = { rgb: ["242,244,248", "141,176,255", "141,176,255", "141,176,255"], a: [0.42, 0.85, 0.5, 0.13] };
 const CYAN = { rgb: ["242,244,248", "242,244,248", "242,244,248", "242,244,248"], a: [0.5, 0.95, 0.5, 0.16] };
@@ -51,6 +59,25 @@ function layout(d: number, vh: number): Model[] {
   const out: Model[] = [grove(GROVE[0], GROVE[2], d)];
 
   const avoid: [number, number][] = [[GROVE[2] - 40, GROVE[2] + 40]];
+  // z where a section's landmark sits: `ahead` metres in front of the camera
+  // when the section is centred on screen
+  const at = (id: string, ahead: number) => {
+    const t = top(id);
+    return t ? camZ(t.top + t.h / 2 - vh / 2) + ahead : null;
+  };
+  const place = (z: number | null, half: number, make: (z: number) => Model | Model[]) => {
+    if (z === null) return;
+    const m = make(z);
+    out.push(...(Array.isArray(m) ? m : [m]));
+    avoid.push([z - half, z + half]);
+  };
+  place(at("about", 34), 10, (z) => helixBridge(z, 27, 100, d));
+  place(at("projects", 70), 18, (z) => tower(44, z, 34, d));
+  place(at("people", 55), 28, (z) => pavilions(-42, z, d));
+  place(at("ledger", 70), 32, (z) => wheel(50, z, 26, 0.9, d));
+  place(at("faq", 50), 40, (z) => turbines(-46, z - 26, 3));
+  place(at("projects", 20), 8, (z) => dish(-40, z, 9, d));
+  place(at("register", 10), 8, (z) => dish(42, z, 11, d));
   const prizes = top("prizes");
   if (prizes) {
     const zc = camZ(prizes.top + prizes.h / 2 - vh / 2) + 24;
@@ -63,15 +90,48 @@ function layout(d: number, vh: number): Model[] {
     for (let i = 0; i < STAGES; i++) out.push(arch(0, camZ(sched.top - vh * 0.4 + (sched.h * i) / 4) + 46, 17));
   }
 
-  // trees flanking the walk
+  // the city flanking the walk: a mix of structures, tops on each side
+  // strung together with data cables
   const r = rng(11);
   let side = 1;
-  for (let z = GROVE[2] + 30; z < end; z += 20 + r() * 16) {
+  const lastTop: Record<number, V3 | null> = { [-1]: null, [1]: null };
+  for (let z = GROVE[2] + 30; z < end; z += 18 + r() * 14) {
     if (avoid.some(([a, b]) => z > a && z < b)) continue;
     side = -side;
-    const h = 18 + r() * 30;
     const g = new Builder();
-    tree(g, side * (22 + r() * 26), z, h, h * 0.27, d);
+    const x = side * (24 + r() * 26), pick = r();
+    let top: V3 | null = null;
+    if (pick < 0.3) {
+      const h = 18 + r() * 30, kind = r();
+      tree(g, x, z, h, h * 0.27, d, kind < 0.3 ? 1 : kind < 0.55 ? 2 : 0);
+      top = [x, h * 0.8, z];
+    } else if (pick < 0.47) {
+      const h = 40 + r() * 40;
+      spire(g, x, z, h);
+      top = [x, h * 0.62, z];
+    } else if (pick < 0.68) {
+      const h = 30 + r() * 50;
+      megastack(g, x, z, h, r);
+      top = [x, h, z];
+    } else if (pick < 0.85) {
+      const y = 22 + r() * 18;
+      top = [x, island(g, x * 1.1, z, y, 6 + r() * 4, d, r), z];
+    } else {
+      // holo-panels hang nearer the walk, turned toward it
+      holo(g, side * (13 + r() * 6), 9 + r() * 8, z, 10 + r() * 4, 6, -side * 0.5, r);
+    }
+    if (top) {
+      const prev = lastTop[side];
+      if (prev && z - prev[2] < 70) cable(g, prev, top, 4 + r() * 4);
+      lastTop[side] = top;
+    }
+    out.push(g.done());
+  }
+
+  // maglev guideway beside the walk
+  for (let z = GROVE[2] + 20; z < end; z += 40) {
+    const g = new Builder();
+    guideway(g, MAGLEV_X, z, MAGLEV_Y);
     out.push(g.done());
   }
 
@@ -160,7 +220,7 @@ export default function World() {
       const ox = w / 2, oy = h * 0.75;
       // full strength in the hero, dimmer behind content; on phones the hero
       // copy sits over the grove, so it starts dim
-      const vis = (w < 720 ? 0.55 : 1) - (w < 720 ? 0.15 : 0.6) * clamp(sY / (h * 0.9));
+      const vis = (w < 720 ? 0.55 : 1) - (w < 720 ? 0.1 : 0.45) * clamp(sY / (h * 0.9));
 
       // camera space
       const c = [0, 0, 0];
@@ -178,7 +238,7 @@ export default function World() {
 
       cnt.fill(0);
       const win = 0.18;
-      const seg = (ax: number, ay: number, az: number, bx: number, by: number, bz: number, k: number, ortho: boolean) => {
+      const seg = (ax: number, ay: number, az: number, bx: number, by: number, bz: number, k: number, ortho: boolean, fixedBand = -1) => {
         cam(ax, ay, az);
         let x1 = c[0], y1 = c[1], z1 = c[2];
         cam(bx, by, bz);
@@ -201,6 +261,7 @@ export default function World() {
           if (m < 0.5) band = 0;
           ok = true;
         }
+        if (fixedBand >= 0) band = fixedBand;
         if (ok) push(k * 3 + band, sx1, sy1, sx2, sy2);
       };
 
@@ -213,9 +274,56 @@ export default function World() {
         for (let z = Math.ceil(zs / 6) * 6; z < ze; z += 6) seg(camX - 72, 0, z, camX + 72, 0, z, K.faint, false);
       }
 
+      // spinning models: rotate points about their axle (Rodrigues)
+      const R3 = [0, 0, 0];
+      let spn: Spin | undefined, cs = 1, sn = 0;
+      const spinTo = (M: Model) => {
+        spn = M.spin;
+        if (spn) {
+          const th = reduced ? 0.4 : el * spn.speed;
+          cs = Math.cos(th);
+          sn = Math.sin(th);
+        }
+      };
+      const turn = (x: number, y: number, z: number) => {
+        if (!spn) { R3[0] = x; R3[1] = y; R3[2] = z; return R3; }
+        const [px, py, pz] = [x - spn.o[0], y - spn.o[1], z - spn.o[2]], [ux, uy, uz] = spn.u;
+        const dot = (ux * px + uy * py + uz * pz) * (1 - cs);
+        R3[0] = spn.o[0] + px * cs + (uy * pz - uz * py) * sn + ux * dot;
+        R3[1] = spn.o[1] + py * cs + (uz * px - ux * pz) * sn + uy * dot;
+        R3[2] = spn.o[2] + pz * cs + (ux * py - uy * px) * sn + uz * dot;
+        return R3;
+      };
+
+      if (m > 0.3) {
+        // sky at infinity: moves with the camera, so only turning shows
+        const Sk = SKY.segs;
+        for (let i = 0; i < Sk.length; i += 8) {
+          seg(Sk[i] + camX, Sk[i + 1], Sk[i + 2] + camZ, Sk[i + 3] + camX, Sk[i + 4], Sk[i + 5] + camZ, Sk[i + 6], false, 1);
+        }
+        // the maglev train, gliding ahead of you
+        if (!reduced) {
+          const tz = camZ + 25 + ((el * 16) % 230);
+          for (let car = 0; car < 4; car++) {
+            const z0 = tz + car * 12, z1 = z0 + 11, x0 = MAGLEV_X - 1.3, x1 = MAGLEV_X + 1.3, y0 = MAGLEV_Y + 0.4, y1 = MAGLEV_Y + 3.4;
+            const nose = car === 3 ? 2.5 : 0;
+            for (const yy of [y0, y1]) {
+              seg(x0, yy, z0, x1, yy, z0, K.accent, false);
+              seg(x0, yy, z0, x0, yy, z1, K.accent, false);
+              seg(x1, yy, z0, x1, yy, z1, K.accent, false);
+              seg(x0, yy, z1, MAGLEV_X, yy, z1 + nose, K.accent, false);
+              seg(x1, yy, z1, MAGLEV_X, yy, z1 + nose, K.accent, false);
+            }
+            for (const [xx, zz] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) seg(xx, y0, zz, xx, y1, zz, K.line, false);
+            for (let wz = z0 + 1.5; wz < z1 - 1; wz += 2) seg(x0, y0 + 1.6, wz, x0, y0 + 2.6, wz, K.line, false);
+          }
+        }
+      }
+
       const near: Model[] = [];
       for (let o = 0; o < objs.length; o++) {
         const M = objs[o];
+        spinTo(M);
         const isGrove = o === 0;
         if (!(isGrove && m < 1) && (M.z1 < camZ - 5 || M.z0 > camZ + FAR)) continue;
         const b = isGrove ? p : reduced ? 1 : clamp((FAR - (M.z0 - camZ)) / (FAR * 0.45));
@@ -226,7 +334,12 @@ export default function World() {
           const f = clamp((b * (1 + win) - S[i + 7]) / win);
           if (f <= 0) continue;
           const ax = S[i], ay = S[i + 1], az = S[i + 2];
-          seg(ax, ay, az, ax + (S[i + 3] - ax) * f, ay + (S[i + 4] - ay) * f, az + (S[i + 5] - az) * f, S[i + 6], isGrove && m < 1);
+          const bx = ax + (S[i + 3] - ax) * f, by = ay + (S[i + 4] - ay) * f, bz = az + (S[i + 5] - az) * f;
+          if (spn) {
+            const [qx, qy, qz] = turn(ax, ay, az);
+            turn(bx, by, bz);
+            seg(qx, qy, qz, R3[0], R3[1], R3[2], S[i + 6], false);
+          } else seg(ax, ay, az, bx, by, bz, S[i + 6], isGrove && m < 1);
         }
       }
 
@@ -265,8 +378,10 @@ export default function World() {
         const lit = clamp((p - 0.85) / 0.15);
         const hot = ground ? "220,230,255" : "47,107,255";
         for (const M of near) {
+          spinTo(M);
           for (let i = 0; i < M.nodes.length; i++) {
-            const s = project(M.nodes[i]);
+            const nv = M.nodes[i];
+            const s = project(spn ? (turn(nv[0], nv[1], nv[2]).slice() as V3) : nv);
             if (!s) continue;
             const tw = reduced ? 0.8 : 0.55 + 0.45 * Math.sin(el * 2.2 + i * 1.7);
             ctx.fillStyle = `rgba(${tone.rgb[1]},${lit * tw * vis})`;
@@ -285,6 +400,28 @@ export default function World() {
               ctx.fillStyle = `rgba(${hot},${0.4 * fade})`;
               ctx.fillRect(s[0] - 3.5, s[1] - 3.5, 7, 7);
               ctx.fillStyle = `rgba(242,244,248,${fade})`;
+              ctx.fillRect(s[0] - 1.5, s[1] - 1.5, 3, 3);
+            }
+          }
+        }
+
+        // drones drifting over the garden, blinking
+        if (!reduced) {
+          for (let i = 0; i < 7; i++) {
+            const s = project([camX + 36 * Math.sin(el * 0.21 + i * 1.9), 30 + 8 * Math.sin(el * 0.37 + i * 2.3), camZ + 24 + ((i * 53 + el * 5) % 150)]);
+            if (!s) continue;
+            const a = clamp((160 - s[2]) / 60) * Math.max(vis, 0.6) * m;
+            const k = clamp(50 / s[2], 0.5, 2.2) * 3;
+            ctx.strokeStyle = `rgba(${tone.rgb[0]},${0.8 * a})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(s[0] - k, s[1] - k * 0.5); ctx.lineTo(s[0] + k, s[1] + k * 0.5);
+            ctx.moveTo(s[0] - k, s[1] + k * 0.5); ctx.lineTo(s[0] + k, s[1] - k * 0.5);
+            ctx.stroke();
+            ctx.strokeRect(s[0] - k - 1.5, s[1] - 1.5, 3, 3);
+            ctx.strokeRect(s[0] + k - 1.5, s[1] - 1.5, 3, 3);
+            if (Math.sin(el * 5 + i * 2.1) > 0.55) {
+              ctx.fillStyle = `rgba(${hot},${a})`;
               ctx.fillRect(s[0] - 1.5, s[1] - 1.5, 3, 3);
             }
           }
@@ -374,6 +511,40 @@ export default function World() {
         paint(CYAN, "#123A8C");
         ctx.restore();
       }
+      hud(camZ, yaw);
+    }
+
+    /* Explorer readout, bottom left: how far in, heading, which sector. */
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
+    // shows while you scroll, fades a moment after you stop
+    let movedAt = -1e9;
+    const onScrollHud = () => (movedAt = performance.now());
+    window.addEventListener("scroll", onScrollHud, { passive: true });
+    function hud(camZ: number, yaw: number) {
+      const a = clamp(1 - (performance.now() - movedAt - 900) / 500);
+      if (!ctx || w < 720 || a <= 0) return;
+      ctx.globalAlpha = a;
+      const mid = h / 2;
+      const cur = sections.find((s) => {
+        const r = s.getBoundingClientRect();
+        return r.top <= mid && r.bottom > mid;
+      });
+      const idx = cur ? sections.indexOf(cur) : 0;
+      const hdg = ((((yaw * 180) / Math.PI) % 360) + 360) % 360;
+      const txt = `Z ${camZ.toFixed(1).padStart(6, "0")} M · HDG ${hdg.toFixed(0).padStart(3, "0")}° · SECTOR ${String(idx).padStart(2, "0")} ${(cur?.id ?? "hero").toUpperCase()}`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = font;
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "left";
+      const tw = ctx.measureText(txt).width;
+      ctx.fillStyle = "rgba(5,7,11,.72)";
+      ctx.fillRect(14, h - 34, tw + 20, 20);
+      ctx.strokeStyle = "rgba(141,176,255,.28)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(14.5, h - 33.5, tw + 19, 19);
+      ctx.fillStyle = "rgba(141,176,255,.85)";
+      ctx.fillText(txt, 24, h - 20);
+      ctx.globalAlpha = 1;
     }
 
     const loop = (now: number) => {
@@ -429,6 +600,7 @@ export default function World() {
       ro.disconnect();
       html.classList.remove("has-world");
       window.removeEventListener("scroll", redraw);
+      window.removeEventListener("scroll", onScrollHud);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pointermove", onMove);
