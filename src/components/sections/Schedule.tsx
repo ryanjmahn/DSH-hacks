@@ -1,3 +1,4 @@
+import { TitleBlock } from "@/components/blueprint/parts";
 import { SectionHead } from "./shared";
 
 const STEPS: { t: string; d: string; hot?: boolean }[] = [
@@ -14,18 +15,21 @@ const STEPS: { t: string; d: string; hot?: boolean }[] = [
 
 export default function Schedule() {
   return (
-    <section id="schedule" className="section" data-swing="">
+    <section id="schedule" className="section sheet" data-swing="">
       <div className="wrap">
-        <SectionHead no="03" title="Schedule" />
+        <SectionHead no="03" title="Schedule" meta="5 stages" />
+        <div className="axis label" aria-hidden="true"><span>t = 0</span><span>Time →</span></div>
         <ol className="steps">
           {STEPS.map((s, i) => (
             <li key={s.t} className={s.hot ? "hot" : undefined} data-node={s.hot ? "big" : ""}>
               <span className="k" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
               <h3>{s.t}</h3>
               <p>{s.d}</p>
+              {s.hot && <span className="readout-tag" aria-hidden="true">Nov 07 · 23:45 PST</span>}
             </li>
           ))}
         </ol>
+        <TitleBlock no={3} title="Schedule" />
       </div>
     </section>
   );

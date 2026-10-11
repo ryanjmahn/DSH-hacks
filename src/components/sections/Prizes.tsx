@@ -1,3 +1,4 @@
+import { Dim, TitleBlock } from "@/components/blueprint/parts";
 import { SectionHead } from "./shared";
 
 const CRITERIA = [
@@ -7,24 +8,29 @@ const CRITERIA = [
   { name: "Presentation", detail: "Does the presentation clearly define and address the problem statement?" },
 ];
 
-/* Transparent on purpose: the field floods this section cobalt. */
+/* Cyanotype sheet: solid blueprint ground, paper linework. */
 export default function Prizes() {
   return (
-    <section id="prizes" className="section prizes" data-swing="">
+    <section id="prizes" className="section prizes sheet cyan" data-swing="">
       <div className="wrap">
-        <SectionHead no="04" title="Prizes" />
-        <p className="pool">$100,000+</p>
+        <SectionHead no="04" title="Prizes" meta="$100,000+" />
+        <div className="pool-wrap">
+          <p className="pool">$100,000+</p>
+          <Dim label="Prize pool · more on the way" />
+        </div>
         <p className="pool-sub">
           in prizes, with more on the way. Watch Devpost and the Discord for announcements.
         </p>
         <div className="criteria">
-          {CRITERIA.map((c) => (
+          {CRITERIA.map((c, i) => (
             <div key={c.name}>
+              <span className="label">C{i + 1}</span>
               <h3>{c.name}</h3>
               <p>{c.detail}</p>
             </div>
           ))}
         </div>
+        <TitleBlock no={4} title="Prizes" />
       </div>
     </section>
   );

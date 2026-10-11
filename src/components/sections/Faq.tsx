@@ -1,3 +1,4 @@
+import { TitleBlock } from "@/components/blueprint/parts";
 import { SectionHead } from "./shared";
 
 const FAQ: [string, string][] = [
@@ -17,20 +18,22 @@ const FAQ: [string, string][] = [
 
 export default function Faq() {
   return (
-    <section id="faq" className="section" data-swing="">
+    <section id="faq" className="section sheet" data-swing="">
       <div className="wrap">
-        <SectionHead no="06" title="FAQ" />
+        <SectionHead no="06" title="FAQ" name="General notes" meta={`${FAQ.length} notes`} />
         <div className="faq">
-          {FAQ.map(([q, a]) => (
+          {FAQ.map(([q, a], i) => (
             <details key={q}>
               <summary>
-                {q}
+                <span className="q">Q.{String(i + 1).padStart(2, "0")}</span>
+                <span className="qt">{q}</span>
                 <span className="pm" aria-hidden="true" />
               </summary>
               <p>{a}</p>
             </details>
           ))}
         </div>
+        <TitleBlock no={6} title="General notes" />
       </div>
     </section>
   );

@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Geist_Mono, Doto } from "next/font/google";
+import { Instrument_Serif, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Script from "next/script";
-import Field from "@/components/world/Field";
+import Reveal from "@/components/blueprint/Reveal";
 import Trace from "@/components/world/Trace";
 import Konami from "@/components/world/Konami";
 
@@ -21,11 +22,11 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-/* Countdown digits and schedule step numbers only. */
-const doto = Doto({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-doto",
+/* Departure Mono (OFL), the label face from arlanrakh.com: a pixel mono drawn
+   on an 11px grid, so labels sit at 11px. Body stays Geist Mono for reading. */
+const departure = localFont({
+  src: "./fonts/DepartureMono-Regular.woff2",
+  variable: "--font-departure",
   display: "swap",
 });
 
@@ -42,7 +43,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#000000",
+  themeColor: "#05070B",
 };
 
 export default function RootLayout({
@@ -51,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${instrumentSerif.variable} ${geistMono.variable} ${doto.variable}`}>
+    <html lang="en" className={`${instrumentSerif.variable} ${geistMono.variable} ${departure.variable}`}>
       <body>
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
@@ -65,9 +66,9 @@ export default function RootLayout({
         />
         {/* Background stock + the continuous world, mounted once. */}
         <div className="stock-grid" aria-hidden="true" />
-        <Field />
         <Trace />
         <Konami />
+        <Reveal />
         {children}
         <div className="stock-grain" aria-hidden="true" />
       </body>

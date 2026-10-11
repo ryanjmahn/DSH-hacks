@@ -1,4 +1,6 @@
 import Countdown from "@/components/Countdown";
+import HeroFigure from "@/components/blueprint/HeroFigure";
+import { Dim, FigCaption, TitleBlock } from "@/components/blueprint/parts";
 import { LINKS, ext } from "./shared";
 
 const BOARD: [string, string][] = [
@@ -12,25 +14,33 @@ const BOARD: [string, string][] = [
 
 export default function Hero() {
   return (
-    <section id="hero" className="hero">
-      <div className="wrap hero-grid">
-        <div>
-          <p className="hero-kicker">DeltaForge Hacks × NXT Horizon × STEMise present V2</p>
-          <h1 className="h1" data-beat="center">
-            Build AI that makes healthcare <em>reach further.</em>
-          </h1>
-          <p className="lead">
-            A free, online hackathon for students 13 and up, anywhere in the world. Pick a real
-            healthcare problem and ship something that helps.
-          </p>
-          <div className="btn-row">
-            <a className="btn solid" href={LINKS.devpost} {...ext}>Register on Devpost</a>
-            <a className="btn" href={LINKS.discord} {...ext}>Join the Discord</a>
-            <a className="btn" href={LINKS.flyer} {...ext}>Flyer (PDF)</a>
+    <section id="hero" className="hero sheet">
+      <div className="wrap">
+        <div className="hero-grid">
+          <div>
+            <p className="hero-kicker">DeltaForge Hacks × NXT Horizon × STEMise present V2</p>
+            <h1 className="h1" data-beat="center">
+              Build AI that makes healthcare <em>reach further.</em>
+            </h1>
+            <Dim label="AI × Healthcare" className="hero-dim" />
+            <p className="lead">
+              A free, online hackathon for students 13 and up, anywhere in the world. Pick a real
+              healthcare problem and ship something that helps.
+            </p>
+            <div className="btn-row">
+              <a className="btn solid" href={LINKS.devpost} {...ext}>Register on Devpost</a>
+              <a className="btn" href={LINKS.discord} {...ext}>Join the Discord</a>
+              <a className="btn" href={LINKS.flyer} {...ext}>Flyer (PDF)</a>
+            </div>
           </div>
+          <figure className="hero-fig">
+            <HeroFigure />
+            <FigCaption no={1} title="Build something that reaches further" />
+          </figure>
         </div>
-        <div className="board">
-          <dl>
+
+        <div className="hero-spec">
+          <dl className="spec-strip">
             {BOARD.map(([k, v]) => (
               <div key={k}>
                 <dt>{k}</dt>
@@ -38,11 +48,12 @@ export default function Hero() {
               </div>
             ))}
           </dl>
-          <div className="board-clock">
-            <div className="label">Until submissions close</div>
+          <div className="readout">
             <Countdown />
+            <p className="label">T-minus to submission close · Nov 07 23:45 PST</p>
           </div>
         </div>
+        <TitleBlock no={0} title="Cover" />
       </div>
     </section>
   );

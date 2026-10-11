@@ -7,17 +7,21 @@ const ENTRIES: { date: string; v: string; text: string; next?: boolean }[] = [
 
 export default function Ledger() {
   return (
-    <section id="ledger" className="section" data-swing="" aria-labelledby="ledger-h">
+    <section id="ledger" className="section sheet" data-swing="" aria-labelledby="ledger-h">
       <div className="wrap">
         <div className="sec-head">
-          <span className="sec-no">Ledger</span>
-          <h2 id="ledger-h" className="sec-title" data-beat="">
-            So far<span className="ghost-dup" aria-hidden="true">So far</span>
-          </h2>
+          <div className="sheet-label">
+            <span>Ledger</span>
+            <i className="draw-x" />
+            <span>Revisions</span>
+          </div>
+          <h2 id="ledger-h" className="sec-title" data-beat="">So far</h2>
         </div>
+        <div className="ledger-head label" aria-hidden="true"><span>Rev</span><span>Date</span><span>Ver</span><span>Description</span></div>
         <ol className="ledger" reversed>
-          {ENTRIES.map((e) => (
+          {ENTRIES.map((e, i) => (
             <li key={e.text} className={e.next ? "next" : undefined} data-node={e.next ? "big" : ""}>
+              <span className="rev">{String.fromCharCode(64 + ENTRIES.length - i)}</span>
               <span className="date">{e.date}</span>
               <span className="v">{e.v}</span>
               <p>{e.text}</p>
